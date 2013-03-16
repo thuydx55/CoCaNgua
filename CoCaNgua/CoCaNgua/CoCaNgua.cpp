@@ -1,4 +1,4 @@
-/* Module      : MainFile.cpp
+﻿/* Module      : MainFile.cpp
  * Author      : 
  * Email       : 
  * Course      : Computer Graphics
@@ -22,6 +22,10 @@
 #include <gl/glu.h>
 #include <gl/glut.h>
 
+#include <iostream>
+
+using namespace std;
+
 /* -- DATA STRUCTURES ---------------------------------------------------- */
 // Our point class.
 class GLintPoint  {
@@ -29,6 +33,16 @@ class GLintPoint  {
 };
 
 /* -- GLOBAL VARIABLES --------------------------------------------------- */
+
+
+// Saved camera position
+int oldX, oldY;
+
+// Initialize camera's spin position
+float spinX = 0, spinY = 0;
+
+// Initialize camera's zoom position
+float zoom = 0;
 
 /* -- LOCAL VARIABLES ---------------------------------------------------- */
 
@@ -81,9 +95,87 @@ void myInit( void )  {
  */
 
 void myDisplay( void )  {
-  glClear( GL_COLOR_BUFFER_BIT );
+  int i;
+
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  // Save current matrix state
+  glPushMatrix();
+  glRotatef(spinY, 1, 0, 0);
+  glRotatef(spinX, 0, 1, 0);
+  glTranslatef(0, 0, -zoom);
+
+  glBegin(GL_LINES);
+  glVertex3f(0, 0, 0);
+  glVertex3f(10, 0, 0);
+  glEnd();
+
+  glBegin(GL_LINES);
+  glVertex3f(0, 0, 0);
+  glVertex3f(0, 10, 0);
+  glEnd();
+
+  glBegin(GL_LINES);
+  glVertex3f(0, 0, 0);
+  glVertex3f(0, 0, 10);
+  glEnd();
+
+  // Draw ground plane
+  glBegin(GL_QUADS);
+    //glColor3ub(0, 128, 255);
+    glVertex3f(-2, 0, -2);
+    glVertex3f(-2, 0, 2);
+    glVertex3f(2, 0, 2);
+    glVertex3f(2, 0, -2);
+  glEnd();
+
+  glPopMatrix();
+  glutSwapBuffers();
+
+  glFlush();
 }
 
+void reshapeFunc(int width, int height) {
+  float black[] = {0, 0, 0, 0};
+
+  // Set viewport
+  glViewport(0, 0, width, height);
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluPerspective(60, (float)width/height, 1, 1000);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  gluLookAt(0, 1, 3, 0, 1, 0, 0, 1, 0);
+
+
+  //// Set display stuffs
+  //glPointSize(pointSize);
+  //glEnable(GL_POINT_SMOOTH);
+  //glEnable(GL_BLEND);
+  //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  //glEnable(GL_COLOR_MATERIAL);
+  //glEnable(GL_DEPTH_TEST);
+  //glEnable(GL_LIGHT0);
+
+}
+
+/*
+ * Callback function for mouse event
+ */
+void mouseFunc(int button, int state, int x, int y) {
+	oldX = x;
+	oldY = y;
+	glutPostRedisplay();
+}
+
+/*
+ * Callback function for animation motion event
+ */
+void motionFunc(int x, int y) {
+	spinX = x - oldX;
+	spinY = y - oldY;
+	glutPostRedisplay();
+}
 
 /* ----------------------------------------------------------------------- */
 /* Function    : int main( int argc, char** argv )
@@ -98,20 +190,20 @@ void myDisplay( void )  {
  */
 
 int main( int argc, char *argv[] )  {
-  // Initialize GLUT.
-  glutInit( &argc, argv );
-  // Set the mode to draw in.
-  glutInitDisplayMode( GLUT_SINGLE | GLUT_RGB );
-  // Set the window size in screen pixels.
-  glutInitWindowSize( 640, 480 );
-  // Set the window position in screen pixels.
-  glutInitWindowPosition( 100, 150 );
+  glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
+  glutInitWindowPosition(0, 0);
+  glutInitWindowSize(800, 600);
+  glutInit(&argc, argv);
   // Create the window.
-  glutCreateWindow( "Lab" );
+  glutCreateWindow( "Assignment - 08. Co Ca Ngua" );
   // Set the callback funcion to call when we need to draw something.
   glutDisplayFunc( myDisplay );
+  glutReshapeFunc(reshapeFunc);
+  glutMotionFunc(motionFunc);
+  glutMouseFunc(mouseFunc);
   // Initialize some things.
   myInit( );
+
   // Now that we have set everything up, loop responding to events.
   glutMainLoop( );
 }
