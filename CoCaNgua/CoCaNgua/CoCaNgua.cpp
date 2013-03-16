@@ -24,6 +24,9 @@
 
 #include <iostream>
 
+#include "model_obj.h"
+#include "gl2.h"
+
 using namespace std;
 
 /* -- DATA STRUCTURES ---------------------------------------------------- */
@@ -32,8 +35,12 @@ class GLintPoint  {
 
 };
 
-/* -- GLOBAL VARIABLES --------------------------------------------------- */
+typedef std::map<std::string, GLuint> ModelTextures;
 
+/* -- GLOBAL VARIABLES --------------------------------------------------- */
+ModelOBJ            g_model;
+ModelTextures       g_modelTextures;
+bool                g_enableTextures = false;
 
 // Saved camera position
 int oldX, oldY;
@@ -62,6 +69,78 @@ void drawDot( GLint x, GLint y )  {
 
 }
 
+void DrawModelUsingFixedFuncPipeline()
+{
+  const ModelOBJ::Mesh *pMesh = 0;
+  const ModelOBJ::Material *pMaterial = 0;
+  const ModelOBJ::Vertex *pVertices = 0;
+  ModelTextures::const_iterator iter;
+
+  for (int i = 0; i < g_model.getNumberOfMeshes(); ++i)
+  {
+    pMesh = &g_model.getMesh(i);
+    pMaterial = pMesh->pMaterial;
+    pVertices = g_model.getVertexBuffer();
+
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, pMaterial->ambient);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, pMaterial->diffuse);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, pMaterial->specular);
+    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, pMaterial->shininess * 128.0f);
+
+    if (g_enableTextures)
+    {
+      iter = g_modelTextures.find(pMaterial->colorMapFilename);
+
+      if (iter == g_modelTextures.end())
+      {
+        glDisable(GL_TEXTURE_2D);
+      }
+      else
+      {
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, iter->second);
+      }
+    }
+    else
+    {
+      glDisable(GL_TEXTURE_2D);
+    }
+
+    if (g_model.hasPositions())
+    {
+      glEnableClientState(GL_VERTEX_ARRAY);
+      glVertexPointer(3, GL_FLOAT, g_model.getVertexSize(),
+        g_model.getVertexBuffer()->position);
+    }
+
+    if (g_model.hasTextureCoords())
+    {
+      glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+      glTexCoordPointer(2, GL_FLOAT, g_model.getVertexSize(),
+        g_model.getVertexBuffer()->texCoord);
+    }
+
+    if (g_model.hasNormals())
+    {
+      glEnableClientState(GL_NORMAL_ARRAY);
+      glNormalPointer(GL_FLOAT, g_model.getVertexSize(),
+        g_model.getVertexBuffer()->normal);
+    }
+
+    glDrawElements(GL_TRIANGLES, pMesh->triangleCount * 3, GL_UNSIGNED_INT,
+      g_model.getIndexBuffer() + pMesh->startIndex);
+
+    if (g_model.hasNormals())
+      glDisableClientState(GL_NORMAL_ARRAY);
+
+    if (g_model.hasTextureCoords())
+      glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+    if (g_model.hasPositions())
+      glDisableClientState(GL_VERTEX_ARRAY);
+  }
+}
+
 /* ----------------------------------------------------------------------- */
 /* Function    : void myInit( void )
  *
@@ -80,6 +159,10 @@ void myInit( void )  {
   glMatrixMode( GL_PROJECTION );
   glLoadIdentity( );
   gluOrtho2D( 0.0, 640.0, 0.0, 480.0 );
+
+  g_model.import("Models/cube.obj");
+  //g_model.normalize();
+
 }
 
 
@@ -99,6 +182,7 @@ void myDisplay( void )  {
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+  
   // Save current matrix state
   glPushMatrix();
   glRotatef(spinY, 1, 0, 0);
@@ -129,6 +213,8 @@ void myDisplay( void )  {
     glVertex3f(2, 0, -2);
   glEnd();
 
+  DrawModelUsingFixedFuncPipeline();
+
   glPopMatrix();
   glutSwapBuffers();
 
@@ -145,7 +231,9 @@ void reshapeFunc(int width, int height) {
   gluPerspective(60, (float)width/height, 1, 1000);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  gluLookAt(0, 1, 3, 0, 1, 0, 0, 1, 0);
+  gluLookAt(5, 5, 20,
+            0, 1, 0, 
+            0, 1, 0);
 
 
   //// Set display stuffs
@@ -163,7 +251,7 @@ void reshapeFunc(int width, int height) {
  * Callback function for mouse event
  */
 void mouseFunc(int button, int state, int x, int y) {
-	oldX = x;
+  oldX = x;
 	oldY = y;
 	glutPostRedisplay();
 }
@@ -207,6 +295,8 @@ int main( int argc, char *argv[] )  {
   // Now that we have set everything up, loop responding to events.
   glutMainLoop( );
 }
+
+
 
 /* ----------------------------------------------------------------------- */
 
