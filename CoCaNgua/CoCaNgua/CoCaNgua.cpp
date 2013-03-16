@@ -153,6 +153,12 @@ void DrawModelUsingFixedFuncPipeline()
  */
 
 void myInit( void )  {
+  glEnable(GL_TEXTURE_2D);
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_CULL_FACE);
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
+
   glClearColor( 1.0, 1.0, 1.0, 0.0 );
   glColor3f( 0.0, 0.0, 0.0 );
   glPointSize( 1.0 );
@@ -160,7 +166,7 @@ void myInit( void )  {
   glLoadIdentity( );
   gluOrtho2D( 0.0, 640.0, 0.0, 480.0 );
 
-  g_model.import("Models/cube.obj");
+  g_model.import("Models/a.obj");
   //g_model.normalize();
 
 }
