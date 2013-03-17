@@ -25,7 +25,6 @@
 #include <iostream>
 
 #include "model_obj.h"
-//#include "gl2.h"
 
 using namespace std;
 
