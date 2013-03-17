@@ -15,3 +15,7 @@ Project's Member
 3. Đặng Trần Thái
 4. Nguyễn Thế Tùng
 5. Trịnh Văn Tú
+
+IDE
+---
+Visual Studio 2012
