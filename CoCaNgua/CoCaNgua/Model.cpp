@@ -3,6 +3,7 @@
 
 Model::Model(void)
 {
+  
 }
 
 void Model::DrawModelUsingFixedFuncPipeline()
@@ -83,15 +84,19 @@ void Model::drawModel()
 {
   float x, y, z;
   getCenter(x, y, z);
+  // Move Object to coordinate origin
   glTranslatef(-x, -y, -z);
 
   glPushMatrix();
 
-  glTranslated(mPos.x, mPos.y, mPos.z);
+  glTranslated(mPos.x - mAnchor.x*getWidth(), 
+               mPos.y - mAnchor.y*getHeight(),
+               mPos.z - mAnchor.z*getLength());
 
   DrawModelUsingFixedFuncPipeline();
 
   glPopMatrix();
+
 }
 
 Model::~Model(void)

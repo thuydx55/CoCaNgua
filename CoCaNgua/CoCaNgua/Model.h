@@ -8,7 +8,10 @@
 
 class Model : public ModelOBJ
 {
-  GLSYNTHESIZE(GLPoint3f, mPos, Position);
+  GLSYNTHESIZE(GLPoint3f, mPos, Position);       // Default is (0, 0, 0)
+  GLSYNTHESIZE(GLPoint3f, mAnchor, AnchorPoint); // Default is (0, 0, 0)
+                                                 // AnchorPoint is from -0.5 to 0.5
+
 
   void DrawModelUsingFixedFuncPipeline();
 

@@ -111,10 +111,7 @@ void myInit( void )  {
  */
 
 void myDisplay( void )  {
-  int i;
-
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
   
   // Save current matrix state
   glPushMatrix();
@@ -151,9 +148,12 @@ void myDisplay( void )  {
   glPopMatrix();
   glutSwapBuffers();
 
+  g_model.setAnchorPoint(glp3f(0, -0.5, 0));
   //g_model.setPosition(glp3f(10, 10, 0));
 
   glFlush();
+
+  //cout << g_model.getWidth() << ' ' << g_model.getHeight() << ' ' << g_model.getLength() << ' ' << g_model.getRadius();
 }
 
 void reshapeFunc(int width, int height) {
