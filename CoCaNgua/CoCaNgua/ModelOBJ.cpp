@@ -40,7 +40,7 @@
 #include <cstring>
 #include <limits>
 #include <string>
-#include "model_obj.h"
+#include "ModelOBJ.h"
 
 namespace
 {

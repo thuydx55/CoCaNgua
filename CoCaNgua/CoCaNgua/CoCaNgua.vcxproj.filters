@@ -22,18 +22,21 @@
     <ClCompile Include="CoCaNgua.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="model_obj.cpp">
+    <ClCompile Include="ModelOBJ.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gl2.cpp">
+    <ClCompile Include="Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="model_obj.h">
+    <ClInclude Include="ModelOBJ.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="gl2.h">
+    <ClInclude Include="Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

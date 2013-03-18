@@ -80,12 +80,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CoCaNgua.cpp" />
-    <ClCompile Include="gl2.cpp" />
-    <ClCompile Include="model_obj.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="ModelOBJ.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="gl2.h" />
-    <ClInclude Include="model_obj.h" />
+    <ClInclude Include="Geometry.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="ModelOBJ.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
