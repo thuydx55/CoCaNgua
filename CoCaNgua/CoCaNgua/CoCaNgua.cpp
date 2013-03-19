@@ -26,6 +26,7 @@
 
 #include "ModelOBJ.h"
 #include "Model.h"
+#include "bitmap.h"
 
 using namespace std;
 
@@ -35,17 +36,19 @@ class GLintPoint  {
 
 };
 
-typedef std::map<std::string, GLuint> ModelTextures;
-
 /* -- GLOBAL VARIABLES --------------------------------------------------- */
+
+GLPoint3f           eyePoint(0, 5.0, 20.0);
+GLPoint3f           lookAtPoint(0.0, 1.0, 0.0);
+
 Model               g_model;
-ModelTextures       g_modelTextures;
 
 // Saved camera position
 int oldX, oldY;
 
 // Initialize camera's spin position
 float spinX = 0, spinY = 0;
+float oldSpinX = 0, oldSpinY = 0;
 
 // Initialize camera's zoom position
 float zoom = 0;
@@ -86,16 +89,17 @@ void myInit( void )  {
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
 
-  glClearColor( 1.0, 1.0, 1.0, 0.0 );
+  
+
+  glClearColor( 0.3, 0.3, 0.3, 0.0 );
   glColor3f( 0.0, 0.0, 0.0 );
   glPointSize( 1.0 );
   glMatrixMode( GL_PROJECTION );
   glLoadIdentity( );
   gluOrtho2D( 0.0, 640.0, 0.0, 480.0 );
 
-  g_model.import("Models/HalfSphere.obj");
+  g_model.loadModel("Models/cube.obj");
   //g_model.normalize();
-
 }
 
 
@@ -111,6 +115,7 @@ void myInit( void )  {
  */
 
 void myDisplay( void )  {
+
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
   // Save current matrix state
@@ -120,19 +125,25 @@ void myDisplay( void )  {
   glTranslatef(0, 0, -zoom);
 
   glBegin(GL_LINES);
-  glVertex3f(0, 0, 0);
-  glVertex3f(10, 0, 0);
+    glVertex3f(0, 0, 0);
+    glVertex3f(10, 0, 0);
+
+    glVertex3f(0, 0, 0);
+    glVertex3f(0, 10, 0);
+
+    glVertex3f(0, 0, 0);
+    glVertex3f(0, 0, 10);
   glEnd();
 
-  glBegin(GL_LINES);
-  glVertex3f(0, 0, 0);
-  glVertex3f(0, 10, 0);
-  glEnd();
+  /*glBegin(GL_QUADS);
+    glColor3ub(0, 128, 255);
+    glVertex3f(100, 100, -100);
+    glVertex3f(-100, 100, -100);
+    glVertex3f(-100, -100, -100);
+    glVertex3f(100, -100, -100);
+  glEnd();*/
 
-  glBegin(GL_LINES);
-  glVertex3f(0, 0, 0);
-  glVertex3f(0, 0, 10);
-  glEnd();
+
 
   // Draw ground plane
   //glBegin(GL_QUADS);
@@ -148,10 +159,8 @@ void myDisplay( void )  {
   glPopMatrix();
   glutSwapBuffers();
 
-  g_model.setAnchorPoint(glp3f(0, -0.5, 0));
+  //g_model.setAnchorPoint(glp3f(0, -0.5, 0));
   //g_model.setPosition(glp3f(10, 10, 0));
-
-  glFlush();
 
   //cout << g_model.getWidth() << ' ' << g_model.getHeight() << ' ' << g_model.getLength() << ' ' << g_model.getRadius();
 }
@@ -166,10 +175,9 @@ void reshapeFunc(int width, int height) {
   gluPerspective(60, (float)width/height, 1, 1000);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  gluLookAt(5, 5, 20,
-            0, 1, 0, 
+  gluLookAt(eyePoint.x, eyePoint.y, eyePoint.z,
+            lookAtPoint.x, lookAtPoint.y, lookAtPoint.z, 
             0, 1, 0);
-
 
   //// Set display stuffs
   //glPointSize(pointSize);
@@ -179,6 +187,8 @@ void reshapeFunc(int width, int height) {
   //glEnable(GL_COLOR_MATERIAL);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_LIGHT0);
+  glEnable(GL_CULL_FACE);
+  glEnable(GL_LIGHTING);
 
 }
 
@@ -186,18 +196,51 @@ void reshapeFunc(int width, int height) {
  * Callback function for mouse event
  */
 void mouseFunc(int button, int state, int x, int y) {
+  if (state)
+  {
+    oldSpinX += x - oldX;
+    oldSpinY += y - oldY;
+
+    if (oldSpinY < 2*-eyePoint.y)
+    {
+      oldSpinY = 2*-eyePoint.y;
+    }
+
+    if (oldSpinY > 60)
+    {
+      oldSpinY = 60;
+    }
+  }
+  
   oldX = x;
 	oldY = y;
 	glutPostRedisplay();
+
+  cout << oldSpinX << ' ' << oldSpinY << endl;
+
 }
 
 /*
  * Callback function for animation motion event
  */
 void motionFunc(int x, int y) {
-	spinX = x - oldX;
-	spinY = y - oldY;
+	spinX = oldSpinX + x - oldX;
+	spinY = oldSpinY + y - oldY;
+
+  if (spinY < 2*-eyePoint.y)
+  {
+    spinY = 2*-eyePoint.y;
+  }
+
+  if (spinY > 60)
+  {
+    spinY = 60;
+  }
+
 	glutPostRedisplay();
+
+  //cout << x << ' ' << oldX << ' ' << y << ' ' << oldY << endl;
+  //cout << spinX << ' ' << spinY << endl;
 }
 
 /* ----------------------------------------------------------------------- */
