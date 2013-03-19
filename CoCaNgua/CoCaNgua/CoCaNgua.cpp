@@ -30,11 +30,32 @@
 
 using namespace std;
 
-/* -- DATA STRUCTURES ---------------------------------------------------- */
-// Our point class.
-class GLintPoint  {
+// GLUT CALLBACK functions
+void displayCB();
+void reshapeCB(int w, int h);
+void timerCB(int millisec);
+void keyboardCB(unsigned char key, int x, int y);
+void mouseCB(int button, int stat, int x, int y);
+void mouseMotionCB(int x, int y);
 
-};
+void initGL();
+int  initGLUT(int argc, char **argv);
+bool initSharedMem();
+void initLights();
+
+void setCamera(float posX, float posY, float posZ, float targetX, float targetY, float targetZ);
+void drawString(const char *str, int x, int y, float color[4], void *font);
+void drawString3D(const char *str, float pos[3], float color[4], void *font);
+
+/* -- CONSTANT ----------------------------------------------------------- */
+const int   SCREEN_WIDTH    = 800;
+const int   SCREEN_HEIGHT   = 600;
+const float CAMERA_DISTANCE = 10.0f;
+const int   TEXT_WIDTH      = 8;
+const int   TEXT_HEIGHT     = 13;
+
+/* -- DATA STRUCTURES ---------------------------------------------------- */
+
 
 /* -- GLOBAL VARIABLES --------------------------------------------------- */
 
@@ -43,32 +64,119 @@ GLPoint3f           lookAtPoint(0.0, 1.0, 0.0);
 
 Model               g_model;
 
-// Saved camera position
-int oldX, oldY;
 
-// Initialize camera's spin position
-float spinX = 0, spinY = 0;
-float oldSpinX = 0, oldSpinY = 0;
-
-// Initialize camera's zoom position
-float zoom = 0;
+void *font = GLUT_BITMAP_8_BY_13;
+int screenWidth;
+int screenHeight;
+bool mouseLeftDown;
+bool mouseRightDown;
+bool mouseMiddleDown;
+float mouseX, mouseY;
+float cameraAngleX;
+float cameraAngleY;
+float cameraDistance;
 
 /* -- LOCAL VARIABLES ---------------------------------------------------- */
 
 
-/* ----------------------------------------------------------------------- */
-/* Function    : void drawDot( GLint x, GLint y )
- *
- * Description : Draw a point at location (x, y) in the window.
- *
- * Parameters  : GLint x : X coordinate of point to draw.
- *               GLint y : X coordinate of point to draw.
- *
- * Returns     : void
- */
 
-void drawDot( GLint x, GLint y )  {
+///////////////////////////////////////////////////////////////////////////////
+// initialize global variables
+///////////////////////////////////////////////////////////////////////////////
+bool initSharedMem()
+{
+  screenWidth = SCREEN_WIDTH;
+  screenHeight = SCREEN_HEIGHT;
 
+  mouseLeftDown = mouseRightDown = mouseMiddleDown = false;
+  mouseX = mouseY = 0;
+
+  cameraAngleX = cameraAngleY = 0.0f;
+  cameraDistance = CAMERA_DISTANCE;
+
+  return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// initialize GLUT for windowing
+///////////////////////////////////////////////////////////////////////////////
+int initGLUT(int argc, char **argv)
+{
+  // GLUT stuff for windowing
+  // initialization openGL window.
+  // it is called before any other GLUT routine
+  glutInit(&argc, argv);
+
+  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_STENCIL);   // display mode
+
+  glutInitWindowSize(screenWidth, screenHeight);  // window size
+
+  glutInitWindowPosition(100, 100);               // window location
+
+  // finally, create a window with openGL context
+  // Window will not displayed until glutMainLoop() is called
+  // it returns a unique ID
+  int handle = glutCreateWindow("Assignment - 08. Co Ca Ngua");     // param is the title of window
+
+  // register GLUT callback functions
+  glutDisplayFunc(displayCB);
+  glutTimerFunc(33, timerCB, 33);             // redraw only every given millisec
+  glutReshapeFunc(reshapeCB);
+  glutKeyboardFunc(keyboardCB);
+  glutMouseFunc(mouseCB);
+  glutMotionFunc(mouseMotionCB);
+
+  return handle;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// initialize OpenGL
+// disable unused features
+///////////////////////////////////////////////////////////////////////////////
+void initGL()
+{
+  glShadeModel(GL_SMOOTH);                    // shading mathod: GL_SMOOTH or GL_FLAT
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 4);      // 4-byte pixel alignment
+
+  // enable /disable features
+  glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+  //glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+  //glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_LIGHTING);
+  glEnable(GL_TEXTURE_2D);
+  glEnable(GL_CULL_FACE);
+
+  // track material ambient and diffuse from surface color, call it before glEnable(GL_COLOR_MATERIAL)
+  glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+  glEnable(GL_COLOR_MATERIAL);
+
+  glClearColor(0, 0, 0, 0);                   // background color
+  glClearStencil(0);                          // clear stencil buffer
+  glClearDepth(1.0f);                         // 0 is near, 1 is far
+  glDepthFunc(GL_LEQUAL);
+
+  initLights();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// initialize lights
+///////////////////////////////////////////////////////////////////////////////
+void initLights()
+{
+  // set up light colors (ambient, diffuse, specular)
+  GLfloat lightKa[] = {.2f, .2f, .2f, 1.0f};  // ambient light
+  GLfloat lightKd[] = {.7f, .7f, .7f, 1.0f};  // diffuse light
+  GLfloat lightKs[] = {1, 1, 1, 1};           // specular light
+  glLightfv(GL_LIGHT0, GL_AMBIENT, lightKa);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, lightKd);
+  glLightfv(GL_LIGHT0, GL_SPECULAR, lightKs);
+
+  // position the light
+  float lightPos[4] = {0, 0, 20, 1}; // positional light
+  glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+
+  glEnable(GL_LIGHT0);                        // MUST enable each light source after configuration
 }
 
 /* ----------------------------------------------------------------------- */
@@ -82,24 +190,89 @@ void drawDot( GLint x, GLint y )  {
  * Returns     : void
  */
 
-void myInit( void )  {
-  glEnable(GL_TEXTURE_2D);
-  glEnable(GL_DEPTH_TEST);
-  glEnable(GL_CULL_FACE);
-  glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
-
-  
-
-  glClearColor( 0.3, 0.3, 0.3, 0.0 );
-  glColor3f( 0.0, 0.0, 0.0 );
-  glPointSize( 1.0 );
-  glMatrixMode( GL_PROJECTION );
-  glLoadIdentity( );
-  gluOrtho2D( 0.0, 640.0, 0.0, 480.0 );
+void initModel( void )  {
 
   g_model.loadModel("Models/a.obj");
   //g_model.normalize();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// set the projection matrix as perspective
+///////////////////////////////////////////////////////////////////////////////
+void toPerspective()
+{
+  // set viewport to be the entire window
+  glViewport(0, 0, (GLsizei)screenWidth, (GLsizei)screenHeight);
+
+  // set perspective viewing frustum
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluPerspective(60.0f, (float)(screenWidth)/screenHeight, 1.0f, 1000.0f); // FOV, AspectRatio, NearClip, FarClip
+
+  // switch to modelview matrix in order to set scene
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// set camera position and lookat direction
+///////////////////////////////////////////////////////////////////////////////
+void setCamera(float posX, float posY, float posZ, float targetX, float targetY, float targetZ)
+{
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  gluLookAt(posX, posY, posZ, targetX, targetY, targetZ, 0, 1, 0); // eye(x,y,z), focal(x,y,z), up(x,y,z)
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// write 2d text using GLUT
+// The projection matrix must be set to orthogonal before call this function.
+///////////////////////////////////////////////////////////////////////////////
+void drawString(const char *str, int x, int y, float color[4], void *font)
+{
+  glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT); // lighting and color mask
+  glDisable(GL_LIGHTING);     // need to disable lighting for proper text color
+  glDisable(GL_TEXTURE_2D);
+
+  glColor4fv(color);          // set text color
+  glRasterPos2i(x, y);        // place text position
+
+  // loop all characters in the string
+  while(*str)
+  {
+    glutBitmapCharacter(font, *str);
+    ++str;
+  }
+
+  glEnable(GL_TEXTURE_2D);
+  glEnable(GL_LIGHTING);
+  glPopAttrib();
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// draw a string in 3D space
+///////////////////////////////////////////////////////////////////////////////
+void drawString3D(const char *str, float pos[3], float color[4], void *font)
+{
+  glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT); // lighting and color mask
+  glDisable(GL_LIGHTING);     // need to disable lighting for proper text color
+  glDisable(GL_TEXTURE_2D);
+
+  glColor4fv(color);          // set text color
+  glRasterPos3fv(pos);        // place text position
+
+  // loop all characters in the string
+  while(*str)
+  {
+    glutBitmapCharacter(font, *str);
+    ++str;
+  }
+
+  glEnable(GL_TEXTURE_2D);
+  glEnable(GL_LIGHTING);
+  glPopAttrib();
 }
 
 
@@ -114,15 +287,15 @@ void myInit( void )  {
  * Returns     : void
  */
 
-void myDisplay( void )  {
+void displayCB( void )  {
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
   // Save current matrix state
   glPushMatrix();
-  glRotatef(spinY, 1, 0, 0);
-  glRotatef(spinX, 0, 1, 0);
-  glTranslatef(0, 0, -zoom);
+  glTranslatef(0, 0, -cameraDistance);
+  glRotatef(cameraAngleX, 1, 0, 0);   // pitch
+  glRotatef(cameraAngleY, 0, 1, 0);   // heading
 
   glBegin(GL_LINES);
     glColor3f(0, 0, 0);
@@ -158,107 +331,119 @@ void myDisplay( void )  {
   g_model.drawModel();
   glEnable(GL_COLOR_MATERIAL);
 
+  float pos[3] = {0.0f, 5.0f, 0};
+  float color[4] = {1,1,1,1};
+  drawString3D("Chess board", pos, color, font);
+
+  glDisable(GL_TEXTURE_2D);
+
   glPopMatrix();
   glutSwapBuffers();
   glutPostRedisplay();
 
-  //g_model.setAnchorPoint(glp3f(0, -0.5, 0));
+  g_model.setAnchorPoint(glp3f(0, -0.5, 0));
   //g_model.setPosition(glp3f(10, 10, 0));
 
   //cout << g_model.getWidth() << ' ' << g_model.getHeight() << ' ' << g_model.getLength() << ' ' << g_model.getRadius();
 }
 
-void reshapeFunc(int width, int height) {
-  float black[] = {0, 0, 0, 0};
-
-  // Set viewport
-  glViewport(0, 0, width, height);
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  gluPerspective(60, (float)width/height, 1, 1000);
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-  gluLookAt(eyePoint.x, eyePoint.y, eyePoint.z,
-            lookAtPoint.x, lookAtPoint.y, lookAtPoint.z, 
-            0, 1, 0);
-
-  //// Set display stuffs
-  //glPointSize(pointSize);
-  glEnable(GL_POINT_SMOOTH);
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glEnable(GL_DEPTH_TEST);
-  glEnable(GL_LIGHT0);
-  glEnable(GL_CULL_FACE);
-  glEnable(GL_LIGHTING);
-
+void reshapeCB(int width, int height) {
+  screenWidth = width;
+  screenHeight = height;
+  toPerspective();
+  setCamera(eyePoint.x, eyePoint.y, eyePoint.z, lookAtPoint.x, lookAtPoint.y, lookAtPoint.z);
 }
 
 /*
  * Callback function for mouse event
  */
-void mouseFunc(int button, int state, int x, int y) {
-  if (state)
+void mouseCB(int button, int state, int x, int y) {
+
+  mouseX = x;
+  mouseY = y;
+
+  if(button == GLUT_LEFT_BUTTON)
   {
-    oldSpinX += x - oldX;
-    oldSpinY += y - oldY;
-
-    if (oldSpinY < 2*-eyePoint.y)
+    if(state == GLUT_DOWN)
     {
-      oldSpinY = 2*-eyePoint.y;
+      mouseLeftDown = true;
     }
-
-    if (oldSpinY > 60)
-    {
-      oldSpinY = 60;
-    }
+    else if(state == GLUT_UP)
+      mouseLeftDown = false;
   }
-  
-  oldX = x;
-	oldY = y;
-	glutPostRedisplay();
 
-  cout << oldSpinX << ' ' << oldSpinY << endl;
+  else if(button == GLUT_RIGHT_BUTTON)
+  {
+    if(state == GLUT_DOWN)
+    {
+      mouseRightDown = true;
+    }
+    else if(state == GLUT_UP)
+      mouseRightDown = false;
+  }
 
+  else if(button == GLUT_MIDDLE_BUTTON)
+  {
+    if(state == GLUT_DOWN)
+    {
+      mouseMiddleDown = true;
+    }
+    else if(state == GLUT_UP)
+      mouseMiddleDown = false;
+  }
 }
 
 /*
  * Callback function for animation motion event
  */
-void motionFunc(int x, int y) {
-	spinX = oldSpinX + x - oldX;
-	spinY = oldSpinY + y - oldY;
+void mouseMotionCB(int x, int y) {
 
-  if (spinY < 2*-eyePoint.y)
+  if(mouseLeftDown)
   {
-    spinY = 2*-eyePoint.y;
-  }
+    cameraAngleY += (x - mouseX);
+    cameraAngleX += (y - mouseY);
+    mouseX = x;
+    mouseY = y;
 
-  if (spinY > 60)
+    if (cameraAngleX < -eyePoint.y)
+    {
+      cameraAngleX = -eyePoint.y;
+    }
+
+    if (cameraAngleX > 60)
+    {
+      cameraAngleX = 60;
+    }
+  }
+  if(mouseRightDown)
   {
-    spinY = 60;
+    cameraDistance -= (y - mouseY) * 0.2f;
+    mouseY = y;
   }
-
-	glutPostRedisplay();
-
-  //cout << x << ' ' << oldX << ' ' << y << ' ' << oldY << endl;
-  //cout << spinX << ' ' << spinY << endl;
 }
 
-void keyboard(unsigned char key,int x,int y)
+void keyboardCB(unsigned char key,int x,int y)
 {
   switch(key){
   case 's':
     SOIL_save_screenshot(
       "screenshot.bmp",
       SOIL_SAVE_TYPE_BMP,
-      0, 0, 800, 600
+      0, 0, screenWidth, screenHeight
     );
     break;
   default:
     break;
   }
 }
+
+void timerCB(int value) {
+  
+  glutPostRedisplay(); //Redraw scene
+
+  glutTimerFunc(5, timerCB, 0); //Call update in 5 milliseconds
+}
+
 
 /* ----------------------------------------------------------------------- */
 /* Function    : int main( int argc, char** argv )
@@ -273,20 +458,17 @@ void keyboard(unsigned char key,int x,int y)
  */
 
 int main( int argc, char *argv[] )  {
-  glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
-  glutInitWindowPosition(0, 0);
-  glutInitWindowSize(800, 600);
-  glutInit(&argc, argv);
-  // Create the window.
-  glutCreateWindow( "Assignment - 08. Co Ca Ngua" );
-  // Set the callback funcion to call when we need to draw something.
-  glutDisplayFunc( myDisplay );
-  glutReshapeFunc(reshapeFunc);
-  glutMotionFunc(motionFunc);
-  glutMouseFunc(mouseFunc);
-  glutKeyboardFunc(keyboard);
+  // init global vars
+  initSharedMem();
+
+  // init GLUT and GL
+  initGLUT(argc, argv);
+  initGL();
+
   // Initialize some things.
-  myInit( );
+  initModel( );
+
+  //glutTimerFunc(5, update, 0);
 
   // Now that we have set everything up, loop responding to events.
   glutMainLoop( );

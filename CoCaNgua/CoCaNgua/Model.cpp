@@ -10,13 +10,6 @@ Model::Model(void)
   glEnable(GL_CULL_FACE);
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
-
-  //glActiveTexture(GL_TEXTURE1);
-  glEnable(GL_TEXTURE_2D);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 }
 
 
@@ -94,8 +87,6 @@ void Model::DrawModelUsingFixedFuncPipeline()
   }
 
 }
-
-
 
 void Model::loadModel(const char *pszFilename)
 {
@@ -193,12 +184,19 @@ GLuint Model::loadTexture(const char *pszFilename)
   //}
   //return id;
 
-  return SOIL_load_OGL_texture(
+  GLuint id = SOIL_load_OGL_texture(
     pszFilename,
     SOIL_LOAD_AUTO,
     SOIL_CREATE_NEW_ID,
     SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
   );
+
+  if( 0 == id )
+  {
+    printf( "SOIL loading error: '%s'\n", SOIL_last_result() );
+  }
+
+  return id;
 }
 
 void Model::drawModel()
