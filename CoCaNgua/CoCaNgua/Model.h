@@ -4,7 +4,8 @@
 
 #include "ModelOBJ.h"
 #include "Geometry.h"
-#include "bitmap.h"
+
+#include "SOIL/SOIL.h"
 
 #include <gl/glut.h>
 

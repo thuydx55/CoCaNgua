@@ -26,7 +26,7 @@
 
 #include "ModelOBJ.h"
 #include "Model.h"
-#include "bitmap.h"
+
 
 using namespace std;
 
@@ -98,7 +98,7 @@ void myInit( void )  {
   glLoadIdentity( );
   gluOrtho2D( 0.0, 640.0, 0.0, 480.0 );
 
-  g_model.loadModel("Models/cube.obj");
+  g_model.loadModel("Models/a.obj");
   //g_model.normalize();
 }
 

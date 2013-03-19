@@ -3,7 +3,7 @@
 
 Model::Model(void)
 {
-  g_enableTextures = false;
+  g_enableTextures = true;
 
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_DEPTH_TEST);
@@ -171,27 +171,34 @@ void Model::loadModel(const char *pszFilename)
 
 GLuint Model::loadTexture(const char *pszFilename)
 {
-  GLuint id = 0;
-  Bitmap bitmap;
+  //GLuint id = 0;
+  //Bitmap bitmap;
 
-  if (bitmap.loadPicture(pszFilename))
-  {
-    // The Bitmap class loads images and orients them top-down.
-    // OpenGL expects bitmap images to be oriented bottom-up.
-    bitmap.flipVertical();
+  //if (bitmap.loadPicture(pszFilename))
+  //{
+  //  // The Bitmap class loads images and orients them top-down.
+  //  // OpenGL expects bitmap images to be oriented bottom-up.
+  //  bitmap.flipVertical();
 
-    glGenTextures(1, &id);
-    glBindTexture(GL_TEXTURE_2D, id);
+  //  glGenTextures(1, &id);
+  //  glBindTexture(GL_TEXTURE_2D, id);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-    gluBuild2DMipmaps(GL_TEXTURE_2D, 4, bitmap.width, bitmap.height,
-      GL_BGRA_EXT, GL_UNSIGNED_BYTE, bitmap.getPixels());
-  }
-  return id;
+  //  gluBuild2DMipmaps(GL_TEXTURE_2D, 4, bitmap.width, bitmap.height,
+  //    GL_BGRA_EXT, GL_UNSIGNED_BYTE, bitmap.getPixels());
+  //}
+  //return id;
+
+  return SOIL_load_OGL_texture(
+    pszFilename,
+    SOIL_LOAD_AUTO,
+    SOIL_CREATE_NEW_ID,
+    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+  );
 }
 
 void Model::drawModel()
