@@ -125,6 +125,7 @@ void myDisplay( void )  {
   glTranslatef(0, 0, -zoom);
 
   glBegin(GL_LINES);
+    glColor3f(0, 0, 0);
     glVertex3f(0, 0, 0);
     glVertex3f(10, 0, 0);
 
@@ -135,29 +136,31 @@ void myDisplay( void )  {
     glVertex3f(0, 0, 10);
   glEnd();
 
+  
   /*glBegin(GL_QUADS);
-    glColor3ub(0, 128, 255);
+    glColor3f(0, 128, 255);
     glVertex3f(100, 100, -100);
     glVertex3f(-100, 100, -100);
     glVertex3f(-100, -100, -100);
     glVertex3f(100, -100, -100);
   glEnd();*/
-
-
-
+  
   // Draw ground plane
-  //glBegin(GL_QUADS);
-  //  //glColor3ub(0, 128, 255);
-  //  glVertex3f(-2, 0, -2);
-  //  glVertex3f(-2, 0, 2);
-  //  glVertex3f(2, 0, 2);
-  //  glVertex3f(2, 0, -2);
-  //glEnd();
+  glBegin(GL_QUADS);
+    glColor3ub(0, 128, 255);
+    glVertex3f(-2000, 0, -2000);
+    glVertex3f(-2000, 0, 2000);
+    glVertex3f(2000, 0, 2000);
+    glVertex3f(2000, 0, -2000);
+  glEnd();
 
+  glDisable(GL_COLOR_MATERIAL);
   g_model.drawModel();
+  glEnable(GL_COLOR_MATERIAL);
 
   glPopMatrix();
   glutSwapBuffers();
+  glutPostRedisplay();
 
   //g_model.setAnchorPoint(glp3f(0, -0.5, 0));
   //g_model.setPosition(glp3f(10, 10, 0));
@@ -184,7 +187,6 @@ void reshapeFunc(int width, int height) {
   glEnable(GL_POINT_SMOOTH);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  //glEnable(GL_COLOR_MATERIAL);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_LIGHT0);
   glEnable(GL_CULL_FACE);
@@ -243,6 +245,21 @@ void motionFunc(int x, int y) {
   //cout << spinX << ' ' << spinY << endl;
 }
 
+void keyboard(unsigned char key,int x,int y)
+{
+  switch(key){
+  case 's':
+    SOIL_save_screenshot(
+      "screenshot.bmp",
+      SOIL_SAVE_TYPE_BMP,
+      0, 0, 800, 600
+    );
+    break;
+  default:
+    break;
+  }
+}
+
 /* ----------------------------------------------------------------------- */
 /* Function    : int main( int argc, char** argv )
  *
@@ -267,6 +284,7 @@ int main( int argc, char *argv[] )  {
   glutReshapeFunc(reshapeFunc);
   glutMotionFunc(motionFunc);
   glutMouseFunc(mouseFunc);
+  glutKeyboardFunc(keyboard);
   // Initialize some things.
   myInit( );
 
