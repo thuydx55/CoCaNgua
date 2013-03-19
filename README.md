@@ -19,3 +19,9 @@ Project's Member
 IDE
 ---
 Visual Studio 2012
+
+Third-party software component
+------------------------------
+
+* [GLObjViewer](http://www.dhpoware.com/demos/glObjViewer.html)
+* Simple OpenGL Image Library ([SOIL](http://www.lonesock.net/soil.html))
