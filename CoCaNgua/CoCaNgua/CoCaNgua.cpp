@@ -387,7 +387,31 @@ void displayCB( void )  {
   /************************************************************************/
   /* Draw the road                                                        */
   /************************************************************************/
-  
+  glColor3f(1, 1, 1);
+  for (int i = 2; i <= 5; i++)
+  {
+    DrawCircle(4, 4*i, 1.2, 100, 3);
+    DrawCircle(-4, 4*i, 1.2, 100, 3);
+
+    DrawCircle(4, -4*i, 1.2, 100, 3);
+    DrawCircle(-4, -4*i, 1.2, 100, 3);
+
+    DrawCircle(4*i, 4, 1.2, 100, 3);
+    DrawCircle(4*i, -4, 1.2, 100, 3);
+
+    DrawCircle(-4*i, 4, 1.2, 100, 3);
+    DrawCircle(-4*i, -4, 1.2, 100, 3);
+  }
+  DrawCircle(4, 4, 1.2, 100, 3);
+  DrawCircle(4, -4, 1.2, 100, 3);
+  DrawCircle(-4, 4, 1.2, 100, 3);
+  DrawCircle(-4, -4, 1.2, 100, 3);
+
+  DrawCircle(20, 0, 1.2, 100, 3);
+  DrawCircle(0, 20, 1.2, 100, 3);
+  DrawCircle(-20, 0, 1.2, 100, 3);
+  DrawCircle(0, -20, 1.2, 100, 3);
+
 
   glDisable(GL_COLOR_MATERIAL);
   //g_model.drawModel();

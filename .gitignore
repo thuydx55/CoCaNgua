@@ -12,6 +12,10 @@
 *.la
 *.a
 
+*.exe
+*.ink
+*.pdb
+
 CoCaNgua/CoCaNgua.sdf
 CoCaNgua/CoCaNgua.opensdf
 CoCaNgua/ipch
