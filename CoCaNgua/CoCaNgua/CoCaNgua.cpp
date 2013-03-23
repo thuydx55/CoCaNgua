@@ -57,6 +57,15 @@ const float DELTA_TIME      = 33;
 
 /* -- DATA STRUCTURES ---------------------------------------------------- */
 
+struct BoardPoint
+{
+  float x, y;
+  bool startPoint;
+
+  BoardPoint() : x(0), y(0), startPoint(false) {}; 
+  BoardPoint(float _x, float _y, bool _s) : x(_x), y(_y), startPoint(_s) {};
+};
+
 
 /* -- GLOBAL VARIABLES --------------------------------------------------- */
 
@@ -194,7 +203,7 @@ void initLights()
 
 void initModel( void )  {
 
-  g_model.loadModel("Models/a.obj");
+  g_model.loadModel("Models/board.obj");
   //g_model.normalize();
   
 }
@@ -369,52 +378,9 @@ void displayCB( void )  {
   }
   glEnd();
 
-  /************************************************************************/
-  /*  Draw center plus                                                    */
-  /************************************************************************/
-  for (int i = 1; i <= 4; i++)
-  {
-    glColor3f(1, 0, 0);     // red
-    DrawCircle(0, 4*i, 1.5, 100, 3);
-    glColor3f(1, 1, 0);     // yellow
-    DrawCircle(4*i, 0, 1.5, 100, 3);
-    glColor3f(0, 1, 0);     // green
-    DrawCircle(0, -4*i, 1.5, 100, 3);
-    glColor3f(0, 0, 1);     // blue
-    DrawCircle(-4*i, 0, 1.5, 100, 3);
-  }
-
-  /************************************************************************/
-  /* Draw the road                                                        */
-  /************************************************************************/
-  glColor3f(1, 1, 1);
-  for (int i = 2; i <= 5; i++)
-  {
-    DrawCircle(4, 4*i, 1.2, 100, 3);
-    DrawCircle(-4, 4*i, 1.2, 100, 3);
-
-    DrawCircle(4, -4*i, 1.2, 100, 3);
-    DrawCircle(-4, -4*i, 1.2, 100, 3);
-
-    DrawCircle(4*i, 4, 1.2, 100, 3);
-    DrawCircle(4*i, -4, 1.2, 100, 3);
-
-    DrawCircle(-4*i, 4, 1.2, 100, 3);
-    DrawCircle(-4*i, -4, 1.2, 100, 3);
-  }
-  DrawCircle(4, 4, 1.2, 100, 3);
-  DrawCircle(4, -4, 1.2, 100, 3);
-  DrawCircle(-4, 4, 1.2, 100, 3);
-  DrawCircle(-4, -4, 1.2, 100, 3);
-
-  DrawCircle(20, 0, 1.2, 100, 3);
-  DrawCircle(0, 20, 1.2, 100, 3);
-  DrawCircle(-20, 0, 1.2, 100, 3);
-  DrawCircle(0, -20, 1.2, 100, 3);
-
 
   glDisable(GL_COLOR_MATERIAL);
-  //g_model.drawModel();
+  g_model.drawModel();
   glEnable(GL_COLOR_MATERIAL);
 
   float pos[3] = {0.0f, 5.0f, 0};
