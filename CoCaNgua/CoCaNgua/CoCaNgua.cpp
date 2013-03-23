@@ -24,7 +24,6 @@
 
 #include <iostream>
 
-#include "ModelOBJ.h"
 #include "Model.h"
 
 
@@ -46,6 +45,7 @@ void initLights();
 void setCamera(float posX, float posY, float posZ, float targetX, float targetY, float targetZ);
 void drawString(const char *str, int x, int y, float color[4], void *font);
 void drawString3D(const char *str, float pos[3], float color[4], void *font);
+void DrawCircle(float cx, float cy, float r, int num_segments, unsigned int border = 0);
 
 /* -- CONSTANT ----------------------------------------------------------- */
 const int   SCREEN_WIDTH    = 800;
@@ -53,13 +53,14 @@ const int   SCREEN_HEIGHT   = 600;
 const float CAMERA_DISTANCE = 10.0f;
 const int   TEXT_WIDTH      = 8;
 const int   TEXT_HEIGHT     = 13;
+const float DELTA_TIME      = 33;
 
 /* -- DATA STRUCTURES ---------------------------------------------------- */
 
 
 /* -- GLOBAL VARIABLES --------------------------------------------------- */
 
-GLPoint3f           eyePoint(0, 5.0, 20.0);
+GLPoint3f           eyePoint(5.0, 20.0, 30.0);
 GLPoint3f           lookAtPoint(0.0, 1.0, 0.0);
 
 Model               g_model;
@@ -77,7 +78,6 @@ float cameraAngleY;
 float cameraDistance;
 
 /* -- LOCAL VARIABLES ---------------------------------------------------- */
-
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -120,7 +120,7 @@ int initGLUT(int argc, char **argv)
 
   // register GLUT callback functions
   glutDisplayFunc(displayCB);
-  glutTimerFunc(33, timerCB, 33);             // redraw only every given millisec
+  glutTimerFunc(DELTA_TIME, timerCB, 33);             // redraw only every given millisec
   glutReshapeFunc(reshapeCB);
   glutKeyboardFunc(keyboardCB);
   glutMouseFunc(mouseCB);
@@ -140,18 +140,20 @@ void initGL()
 
   // enable /disable features
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-  //glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-  //glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+  glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+  glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_LIGHTING);
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_CULL_FACE);
 
+  glShadeModel(GL_SMOOTH);
+
   // track material ambient and diffuse from surface color, call it before glEnable(GL_COLOR_MATERIAL)
   glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-  glEnable(GL_COLOR_MATERIAL);
+  //glEnable(GL_COLOR_MATERIAL);
 
-  glClearColor(0, 0, 0, 0);                   // background color
+  glClearColor(0.3, 0.3, 0.3, 1);                   // background color
   glClearStencil(0);                          // clear stencil buffer
   glClearDepth(1.0f);                         // 0 is near, 1 is far
   glDepthFunc(GL_LEQUAL);
@@ -173,7 +175,7 @@ void initLights()
   glLightfv(GL_LIGHT0, GL_SPECULAR, lightKs);
 
   // position the light
-  float lightPos[4] = {0, 0, 20, 1}; // positional light
+  float lightPos[4] = {0, 100, 0, 1}; // positional light
   glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
 
   glEnable(GL_LIGHT0);                        // MUST enable each light source after configuration
@@ -194,6 +196,7 @@ void initModel( void )  {
 
   g_model.loadModel("Models/a.obj");
   //g_model.normalize();
+  
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -275,6 +278,51 @@ void drawString3D(const char *str, float pos[3], float color[4], void *font)
   glPopAttrib();
 }
 
+void DrawCircle(float cx, float cy, float r, int num_segments, unsigned int border) 
+{ 
+  glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT); // lighting and color mask
+  glDisable(GL_LIGHTING);     // need to disable lighting for proper text color
+  glDisable(GL_TEXTURE_2D);
+
+  float theta = 2 * 3.1415926 / float(num_segments); 
+  float c = cosf(theta);//precalculate the sine and cosine
+  float s = sinf(theta);
+  float t;
+
+  float x = r;//we start at angle = 0 
+  float y = 0; 
+
+  glBegin(GL_TRIANGLE_FAN); 
+  for(int ii = 0; ii < num_segments; ii++) 
+  { 
+    glVertex3f(x + cx, 0, y + cy);//output vertex 
+
+    //apply the rotation matrix
+    t = y;
+    y = c * y - s * x;
+    x = s * t + c * x;
+  } 
+  glEnd(); 
+
+  glLineWidth(border);
+  glColor3f(1, 1, 1);
+  glBegin(GL_LINE_LOOP);
+  for (int ii = 0; ii < num_segments; ii++)
+  {
+    glVertex3f(x + cx, 0, y + cy);//output vertex 
+
+    //apply the rotation matrix
+    t = y;
+    y = c * y - s * x;
+    x = s * t + c * x;
+  }
+  glEnd();
+  glLineWidth(1);
+
+  glEnable(GL_TEXTURE_2D);
+  glEnable(GL_LIGHTING);
+  glPopAttrib();
+}
 
 /* ----------------------------------------------------------------------- */
 /* Function    : void myDisplay( void )
@@ -309,38 +357,52 @@ void displayCB( void )  {
     glVertex3f(0, 0, 10);
   glEnd();
 
-  
-  /*glBegin(GL_QUADS);
-    glColor3f(0, 128, 255);
-    glVertex3f(100, 100, -100);
-    glVertex3f(-100, 100, -100);
-    glVertex3f(-100, -100, -100);
-    glVertex3f(100, -100, -100);
-  glEnd();*/
-  
-  // Draw ground plane
-  glBegin(GL_QUADS);
-    glColor3ub(0, 128, 255);
-    glVertex3f(-2000, 0, -2000);
-    glVertex3f(-2000, 0, 2000);
-    glVertex3f(2000, 0, 2000);
-    glVertex3f(2000, 0, -2000);
+  glBegin(GL_LINES);
+  glColor3f(.1, .1, .1);
+  for (int i = -100; i < 100; i+=2)
+  {
+    glVertex3f(100, 0, i);
+    glVertex3f(-100, 0, i);
+
+    glVertex3f(i, 0, 100);
+    glVertex3f(i, 0, -100);
+  }
   glEnd();
 
+  /************************************************************************/
+  /*  Draw center plus                                                    */
+  /************************************************************************/
+  for (int i = 1; i <= 4; i++)
+  {
+    glColor3f(1, 0, 0);     // red
+    DrawCircle(0, 4*i, 1.5, 100, 3);
+    glColor3f(1, 1, 0);     // yellow
+    DrawCircle(4*i, 0, 1.5, 100, 3);
+    glColor3f(0, 1, 0);     // green
+    DrawCircle(0, -4*i, 1.5, 100, 3);
+    glColor3f(0, 0, 1);     // blue
+    DrawCircle(-4*i, 0, 1.5, 100, 3);
+  }
+
+  /************************************************************************/
+  /* Draw the road                                                        */
+  /************************************************************************/
+  
+
   glDisable(GL_COLOR_MATERIAL);
-  g_model.drawModel();
+  //g_model.drawModel();
   glEnable(GL_COLOR_MATERIAL);
 
   float pos[3] = {0.0f, 5.0f, 0};
   float color[4] = {1,1,1,1};
   drawString3D("Chess board", pos, color, font);
 
-  glDisable(GL_TEXTURE_2D);
+  //glDisable(GL_TEXTURE_2D);
 
   glPopMatrix();
   glutSwapBuffers();
-  glutPostRedisplay();
-
+  //glutPostRedisplay();
+  
   g_model.setAnchorPoint(glp3f(0, -0.5, 0));
   //g_model.setPosition(glp3f(10, 10, 0));
 
@@ -441,7 +503,7 @@ void timerCB(int value) {
   
   glutPostRedisplay(); //Redraw scene
 
-  glutTimerFunc(5, timerCB, 0); //Call update in 5 milliseconds
+  glutTimerFunc(DELTA_TIME, timerCB, 0); //Call update in 5 milliseconds
 }
 
 
@@ -468,7 +530,7 @@ int main( int argc, char *argv[] )  {
   // Initialize some things.
   initModel( );
 
-  //glutTimerFunc(5, update, 0);
+  //glutTimerFunc(DELTA_TIME, timerCB, 0);
 
   // Now that we have set everything up, loop responding to events.
   glutMainLoop( );
