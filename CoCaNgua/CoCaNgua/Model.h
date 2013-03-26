@@ -20,21 +20,21 @@ class Model : public ModelOBJ
   GLSYNTHESIZE(GLPoint3f, mPos, Position);       // Default is (0, 0, 0)
   GLSYNTHESIZE(GLPoint3f, mAnchor, AnchorPoint); // Default is (0, 0, 0)
                                                  // AnchorPoint is from -0.5 to 0.5
+  GLSYNTHESIZE(GLPoint3f, mRotate, Rotate);
+  GLSYNTHESIZE(GLfloat, mAngle, Angle);
 
   bool                g_enableTextures;
   ModelTextures       g_modelTextures;
 
   void DrawModelUsingFixedFuncPipeline();
+  GLuint loadTexture(const char *pszFilename);
 
 public:
   Model(void);
   ~Model(void);
 
   void loadModel(const char *pszFilename);
-  GLuint loadTexture(const char *pszFilename);
   void drawModel();
-
-  
 };
 
 #endif // !_MODEL_H_

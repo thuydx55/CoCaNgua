@@ -26,6 +26,8 @@
 
 #include "Model.h"
 
+#define SHOW_GRID 0;
+
 
 using namespace std;
 
@@ -72,7 +74,8 @@ struct BoardPoint
 GLPoint3f           eyePoint(5.0, 20.0, 30.0);
 GLPoint3f           lookAtPoint(0.0, 1.0, 0.0);
 
-Model               g_model;
+Model               mBoard;
+Model               red[4], blue[4], green[4], yellow[4];
 
 
 void *font = GLUT_BITMAP_8_BY_13;
@@ -118,8 +121,10 @@ int initGLUT(int argc, char **argv)
 
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_STENCIL);   // display mode
 
-  glutInitWindowSize(screenWidth, screenHeight);  // window size
+//   glutGameModeString("800x600:16@60");
+//   glutEnterGameMode();
 
+  glutInitWindowSize(screenWidth, screenHeight);  // window size
   glutInitWindowPosition(100, 100);               // window location
 
   // finally, create a window with openGL context
@@ -160,7 +165,7 @@ void initGL()
 
   // track material ambient and diffuse from surface color, call it before glEnable(GL_COLOR_MATERIAL)
   glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-  //glEnable(GL_COLOR_MATERIAL);
+  glEnable(GL_COLOR_MATERIAL);
 
   glClearColor(0.3, 0.3, 0.3, 1);                   // background color
   glClearStencil(0);                          // clear stencil buffer
@@ -203,7 +208,9 @@ void initLights()
 
 void initModel( void )  {
 
-  g_model.loadModel("Models/board.obj");
+  mBoard.loadModel("Models/board.obj");
+
+  red[0].loadModel("Models/knight.obj");
   //g_model.normalize();
   
 }
@@ -354,16 +361,17 @@ void displayCB( void )  {
   glRotatef(cameraAngleX, 1, 0, 0);   // pitch
   glRotatef(cameraAngleY, 0, 1, 0);   // heading
 
+#if SHOW_GRID
   glBegin(GL_LINES);
-    glColor3f(0, 0, 0);
-    glVertex3f(0, 0, 0);
-    glVertex3f(10, 0, 0);
+  glColor3f(0, 0, 0);
+  glVertex3f(0, 0, 0);
+  glVertex3f(10, 0, 0);
 
-    glVertex3f(0, 0, 0);
-    glVertex3f(0, 10, 0);
+  glVertex3f(0, 0, 0);
+  glVertex3f(0, 10, 0);
 
-    glVertex3f(0, 0, 0);
-    glVertex3f(0, 0, 10);
+  glVertex3f(0, 0, 0);
+  glVertex3f(0, 0, 10);
   glEnd();
 
   glBegin(GL_LINES);
@@ -377,10 +385,11 @@ void displayCB( void )  {
     glVertex3f(i, 0, -100);
   }
   glEnd();
-
+#endif
 
   glDisable(GL_COLOR_MATERIAL);
-  g_model.drawModel();
+  mBoard.drawModel();
+  red[0].drawModel();
   glEnable(GL_COLOR_MATERIAL);
 
   float pos[3] = {0.0f, 5.0f, 0};
@@ -393,7 +402,11 @@ void displayCB( void )  {
   glutSwapBuffers();
   //glutPostRedisplay();
   
-  g_model.setAnchorPoint(glp3f(0, -0.5, 0));
+  red[0].setAnchorPoint(glp3f(0, -0.5, 0));
+  red[0].setPosition(glp3f(4, 0, 4));
+  //red[0].setAngle(180);
+
+  mBoard.setAnchorPoint(glp3f(0, 0.5, 0));
   //g_model.setPosition(glp3f(10, 10, 0));
 
   //cout << g_model.getWidth() << ' ' << g_model.getHeight() << ' ' << g_model.getLength() << ' ' << g_model.getRadius();

@@ -5,6 +5,9 @@ Model::Model(void)
 {
   g_enableTextures = true;
 
+  mRotate = glp3f(0, 1, 0);
+  mAngle = 0;
+
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_CULL_FACE);
@@ -211,6 +214,7 @@ void Model::drawModel()
   glTranslated(mPos.x - mAnchor.x*getWidth(), 
                mPos.y - mAnchor.y*getHeight(),
                mPos.z - mAnchor.z*getLength());
+  glRotatef(mAngle, mRotate.x, mRotate.y, mRotate.z);
 
   DrawModelUsingFixedFuncPipeline();
 
