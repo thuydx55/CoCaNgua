@@ -74,6 +74,9 @@ struct BoardPoint
 GLPoint3f           eyePoint(5.0, 20.0, 30.0);
 GLPoint3f           lookAtPoint(0.0, 1.0, 0.0);
 
+GLdouble X1, Y1, Z1;
+GLdouble X2, Y2, Z2;
+
 Model               mBoard;
 Model               red[4], blue[4], green[4], yellow[4];
 
@@ -160,8 +163,6 @@ void initGL()
   glEnable(GL_LIGHTING);
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_CULL_FACE);
-
-  glShadeModel(GL_SMOOTH);
 
   // track material ambient and diffuse from surface color, call it before glEnable(GL_COLOR_MATERIAL)
   glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
@@ -361,6 +362,12 @@ void displayCB( void )  {
   glRotatef(cameraAngleX, 1, 0, 0);   // pitch
   glRotatef(cameraAngleY, 0, 1, 0);   // heading
 
+  glBegin(GL_LINES);
+    glVertex3f(X1, Y1, Z1);
+    glVertex3f(X2, Y2, Z2);
+    //glVertex3f(eyePoint.x, eyePoint.y, eyePoint.z);
+  glEnd();
+
 #if SHOW_GRID
   glBegin(GL_LINES);
   glColor3f(0, 0, 0);
@@ -456,6 +463,51 @@ void mouseCB(int button, int state, int x, int y) {
     else if(state == GLUT_UP)
       mouseMiddleDown = false;
   }
+
+  GLint viewport[4];
+  GLdouble modelview[16];
+  GLdouble projection[16];
+  GLfloat winX, winY, winZ;
+  GLdouble _x, _y, _z;
+
+
+  glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
+  glGetDoublev(GL_PROJECTION_MATRIX, projection);
+  glGetIntegerv(GL_VIEWPORT, viewport);
+
+  winX = (GLfloat)mouseX;
+  winY = (GLfloat)viewport[3] - (GLfloat)mouseY;
+  glReadPixels(mouseX, GLint(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ);
+
+  //gluUnProject(winX, winY, winZ, modelview, projection, viewport, &_x, &_y, &_z);
+  gluUnProject(winX, winY, 0.0, modelview, projection, viewport, &X1, &Y1, &Z1);
+  gluUnProject(winX, winY, 1.0, modelview, projection, viewport, &X2, &Y2, &Z2);
+
+  //Find X and Z when Y is 0
+  float zeropoint, zeroperc;
+  double posXt, posYt, posZt;
+  posXt = X1 - X2;
+  posYt = Y1 - Y2;
+  posZt = Z1 - Z2;
+
+  //Check the Y's pass through the plane on 0
+//   if (Y1 < 0.0 && Y2 < 0.0 &#0124; &#0124; Y1 > 0.0 && Y2 > 0.0)
+//     return;
+
+  //Now we'll nudge out stuff up and find out the zero point
+  zeropoint = 0.0f - (float)Y1;
+
+  //Find the percentage that this point is between them
+  zeroperc = (zeropoint / (float)posYt);
+
+  float posX = (float)X1 + (float)(posXt * zeroperc);	
+  float posY = (float)Y1 + (float)(posYt * zeroperc);	
+  float posZ = (float)Z1 + (float)(posZt * zeroperc);
+
+  cout << posX << ' ' << posY << ' ' << posZ << ' ' << endl;
+  //cout << X1 << ' ' << Y1 << ' ' << Z1 << ' ' << endl;
+  //cout << X2 << ' ' << Y2 << ' ' << Z2 << ' ' << endl << endl;
+  //cout << winX << ' ' << winY << ' ' << winZ << endl << endl;
 }
 
 /*
@@ -463,7 +515,7 @@ void mouseCB(int button, int state, int x, int y) {
  */
 void mouseMotionCB(int x, int y) {
 
-  if(mouseLeftDown)
+  if(mouseRightDown)
   {
     cameraAngleY += (x - mouseX);
     cameraAngleX += (y - mouseY);
@@ -480,7 +532,7 @@ void mouseMotionCB(int x, int y) {
       cameraAngleX = 60;
     }
   }
-  if(mouseRightDown)
+  if(mouseMiddleDown)
   {
     cameraDistance -= (y - mouseY) * 0.2f;
     mouseY = y;
@@ -496,6 +548,9 @@ void keyboardCB(unsigned char key,int x,int y)
       SOIL_SAVE_TYPE_BMP,
       0, 0, screenWidth, screenHeight
     );
+    break;
+  case 'r':
+    cameraAngleX = cameraAngleY = 0;
     break;
   default:
     break;
