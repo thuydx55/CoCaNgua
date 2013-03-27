@@ -23,7 +23,8 @@ class Model : public ModelOBJ
   GLSYNTHESIZE(GLPoint3f, mRotate, Rotate);
   GLSYNTHESIZE(GLfloat, mAngle, Angle);
 
-  bool                g_enableTextures;
+  GLSYNTHESIZE(bool, g_enableTextures, EnableTextures);
+
   ModelTextures       g_modelTextures;
 
   void DrawModelUsingFixedFuncPipeline();

@@ -25,6 +25,7 @@
 #include <iostream>
 
 #include "Model.h"
+#include "Light.h"
 
 #define SHOW_GRID 0;
 
@@ -47,7 +48,6 @@ void initLights();
 void setCamera(float posX, float posY, float posZ, float targetX, float targetY, float targetZ);
 void drawString(const char *str, int x, int y, float color[4], void *font);
 void drawString3D(const char *str, float pos[3], float color[4], void *font);
-void DrawCircle(float cx, float cy, float r, int num_segments, unsigned int border = 0);
 
 /* -- CONSTANT ----------------------------------------------------------- */
 const int   SCREEN_WIDTH    = 800;
@@ -190,7 +190,7 @@ void initLights()
   glLightfv(GL_LIGHT0, GL_SPECULAR, lightKs);
 
   // position the light
-  float lightPos[4] = {0, 100, 0, 1}; // positional light
+  float lightPos[4] = {50, 50, 50, 1}; // positional light
   glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
 
   glEnable(GL_LIGHT0);                        // MUST enable each light source after configuration
@@ -295,52 +295,6 @@ void drawString3D(const char *str, float pos[3], float color[4], void *font)
   glPopAttrib();
 }
 
-void DrawCircle(float cx, float cy, float r, int num_segments, unsigned int border) 
-{ 
-  glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT); // lighting and color mask
-  glDisable(GL_LIGHTING);     // need to disable lighting for proper text color
-  glDisable(GL_TEXTURE_2D);
-
-  float theta = 2 * 3.1415926 / float(num_segments); 
-  float c = cosf(theta);//precalculate the sine and cosine
-  float s = sinf(theta);
-  float t;
-
-  float x = r;//we start at angle = 0 
-  float y = 0; 
-
-  glBegin(GL_TRIANGLE_FAN); 
-  for(int ii = 0; ii < num_segments; ii++) 
-  { 
-    glVertex3f(x + cx, 0, y + cy);//output vertex 
-
-    //apply the rotation matrix
-    t = y;
-    y = c * y - s * x;
-    x = s * t + c * x;
-  } 
-  glEnd(); 
-
-  glLineWidth(border);
-  glColor3f(1, 1, 1);
-  glBegin(GL_LINE_LOOP);
-  for (int ii = 0; ii < num_segments; ii++)
-  {
-    glVertex3f(x + cx, 0, y + cy);//output vertex 
-
-    //apply the rotation matrix
-    t = y;
-    y = c * y - s * x;
-    x = s * t + c * x;
-  }
-  glEnd();
-  glLineWidth(1);
-
-  glEnable(GL_TEXTURE_2D);
-  glEnable(GL_LIGHTING);
-  glPopAttrib();
-}
-
 /* ----------------------------------------------------------------------- */
 /* Function    : void myDisplay( void )
  *
@@ -354,7 +308,7 @@ void DrawCircle(float cx, float cy, float r, int num_segments, unsigned int bord
 
 void displayCB( void )  {
 
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
   
   // Save current matrix state
   glPushMatrix();
@@ -363,6 +317,7 @@ void displayCB( void )  {
   glRotatef(cameraAngleY, 0, 1, 0);   // heading
 
   glBegin(GL_LINES);
+    glColor3f(1, 1, 1);
     glVertex3f(X1, Y1, Z1);
     glVertex3f(X2, Y2, Z2);
     //glVertex3f(eyePoint.x, eyePoint.y, eyePoint.z);
@@ -398,6 +353,13 @@ void displayCB( void )  {
   mBoard.drawModel();
   red[0].drawModel();
   glEnable(GL_COLOR_MATERIAL);
+
+  glEnable(GL_BLEND);
+  glColor4f(1.0f, 1.0f, 1.0f, 0.7f);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  
+  glDisable(GL_BLEND);
+  
 
   float pos[3] = {0.0f, 5.0f, 0};
   float color[4] = {1,1,1,1};

@@ -196,7 +196,7 @@ GLuint Model::loadTexture(const char *pszFilename)
 
   if( 0 == id )
   {
-    printf( "SOIL loading error: '%s'\n", SOIL_last_result() );
+    printf( "SOIL loading error: '%s' %s\n", SOIL_last_result(), pszFilename );
   }
   //cout << id << ' ' << pszFilename << endl;
   return id;
