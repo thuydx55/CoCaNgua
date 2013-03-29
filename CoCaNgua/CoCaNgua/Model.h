@@ -10,6 +10,7 @@
 #include <gl/glut.h>
 
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
@@ -32,6 +33,7 @@ class Model : public ModelOBJ
 
 public:
   Model(void);
+  Model(const Model* other);
   ~Model(void);
 
   void loadModel(const char *pszFilename);

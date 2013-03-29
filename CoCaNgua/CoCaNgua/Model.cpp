@@ -15,6 +15,11 @@ Model::Model(void)
   glEnable(GL_LIGHT0);
 }
 
+Model::Model( const Model* other )
+{
+  memcpy(this, other, sizeof(*other));
+}
+
 
 void Model::DrawModelUsingFixedFuncPipeline()
 {

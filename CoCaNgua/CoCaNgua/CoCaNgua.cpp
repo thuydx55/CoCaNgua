@@ -77,8 +77,8 @@ GLPoint3f           lookAtPoint(0.0, 1.0, 0.0);
 GLdouble X1, Y1, Z1;
 GLdouble X2, Y2, Z2;
 
-Model               mBoard;
-Model               red[4], blue[4], green[4], yellow[4];
+Model*              mBoard;
+Model*              red[4], blue[4], green[4], yellow[4];
 
 
 void *font = GLUT_BITMAP_8_BY_13;
@@ -209,11 +209,16 @@ void initLights()
 
 void initModel( void )  {
 
-  mBoard.loadModel("Models/board.obj");
+  mBoard = new Model();
+  red[0] = new Model();
 
-  red[0].loadModel("Models/knight.obj");
-  //g_model.normalize();
+  mBoard->loadModel("Models/board.obj");
+  mBoard->setAnchorPoint(glp3f(0, 0.5, 0));
+
+  red[0]->loadModel("Models/knight.obj");
+  red[0]->setAnchorPoint(glp3f(0, -0.5, 0));
   
+  red[1] = new Model(red[0]);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -350,8 +355,8 @@ void displayCB( void )  {
 #endif
 
   glDisable(GL_COLOR_MATERIAL);
-  mBoard.drawModel();
-  red[0].drawModel();
+  mBoard->drawModel();
+  red[1]->drawModel();
   glEnable(GL_COLOR_MATERIAL);
 
   glEnable(GL_BLEND);
@@ -371,11 +376,9 @@ void displayCB( void )  {
   glutSwapBuffers();
   //glutPostRedisplay();
   
-  red[0].setAnchorPoint(glp3f(0, -0.5, 0));
-  red[0].setPosition(glp3f(4, 0, 4));
+  red[0]->setPosition(glp3f(4, 0, 4));
   //red[0].setAngle(180);
 
-  mBoard.setAnchorPoint(glp3f(0, 0.5, 0));
   //g_model.setPosition(glp3f(10, 10, 0));
 
   //cout << g_model.getWidth() << ' ' << g_model.getHeight() << ' ' << g_model.getLength() << ' ' << g_model.getRadius();

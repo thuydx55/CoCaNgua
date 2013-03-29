@@ -12,9 +12,9 @@
 *.la
 *.a
 
-*.exe
-*.ink
-*.pdb
+CoCaNgua/CoCaNgua/CoCaNgua.exe
+CoCaNgua/CoCaNgua/CoCaNgua.ink
+CoCaNgua/CoCaNgua/CoCaNgua.pdb
 
 CoCaNgua/CoCaNgua.sdf
 CoCaNgua/CoCaNgua.opensdf

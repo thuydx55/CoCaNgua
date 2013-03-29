@@ -1,5 +1,5 @@
 # 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
-# File Created: 27.03.2013 16:35:35
+# File Created: 29.03.2013 22:27:11
 
 mtllib knight.mtl
 
@@ -19628,7 +19628,7 @@ vn 0.2223 -0.9077 0.3559
 # 9774 vertex normals
 
 g knight_white
-usemtl Material__0
+usemtl Material__1
 s 1
 f 1//1 2//2 3//3 
 f 3//3 4//4 1//1 
