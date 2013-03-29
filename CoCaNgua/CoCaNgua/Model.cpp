@@ -21,7 +21,7 @@ Model::Model( const Model* other )
 }
 
 
-void Model::DrawModelUsingFixedFuncPipeline()
+void Model::draw()
 {
   const ModelOBJ::Mesh *pMesh = 0;
   const ModelOBJ::Material *pMaterial = 0;
@@ -221,7 +221,7 @@ void Model::drawModel()
                mPos.z - mAnchor.z*getLength());
   glRotatef(mAngle, mRotate.x, mRotate.y, mRotate.z);
 
-  DrawModelUsingFixedFuncPipeline();
+  draw();
 
   glPopMatrix();
 

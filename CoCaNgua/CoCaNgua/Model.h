@@ -28,7 +28,7 @@ class Model : public ModelOBJ
 
   ModelTextures       g_modelTextures;
 
-  void DrawModelUsingFixedFuncPipeline();
+  void draw();
   GLuint loadTexture(const char *pszFilename);
 
 public:
