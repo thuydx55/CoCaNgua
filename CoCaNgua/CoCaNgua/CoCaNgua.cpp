@@ -27,7 +27,12 @@
 #include "Model.h"
 #include "Light.h"
 
-#define SHOW_GRID 0;
+#define SHOW_GRID 0
+#define SHOW_LIGHT_SOURCE 1
+
+#define M_PI 3.141592654
+
+static float lightAngle = 0.0, lightHeight = 20;
 
 
 using namespace std;
@@ -74,12 +79,15 @@ struct BoardPoint
 GLPoint3f           eyePoint(5.0, 20.0, 30.0);
 GLPoint3f           lookAtPoint(0.0, 1.0, 0.0);
 
+static GLfloat lightPosition[4] = {50, 50, 50, 1};
+
 GLdouble X1, Y1, Z1;
 GLdouble X2, Y2, Z2;
 
 Model*              mBoard;
 Model               *red[4], *blue[4], *green[4], *yellow[4];
 
+bool renderReflection = true, stencilReflection = true;
 
 void *font = GLUT_BITMAP_8_BY_13;
 int screenWidth;
@@ -190,8 +198,11 @@ void initLights()
   glLightfv(GL_LIGHT0, GL_SPECULAR, lightKs);
 
   // position the light
-  float lightPos[4] = {50, 50, 50, 1}; // positional light
-  glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+  lightPosition[0] = 15*cos(lightAngle);
+  lightPosition[1] = lightHeight;
+  lightPosition[2] = 15*sin(lightAngle);
+
+  glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 
   glEnable(GL_LIGHT0);                        // MUST enable each light source after configuration
 }
@@ -341,6 +352,7 @@ void displayCB( void )  {
     //glVertex3f(eyePoint.x, eyePoint.y, eyePoint.z);
   glEnd();
 
+
 #if SHOW_GRID
   glBegin(GL_LINES);
   glColor3f(0, 0, 0);
@@ -368,8 +380,10 @@ void displayCB( void )  {
 #endif
 
   glDisable(GL_COLOR_MATERIAL);
+
   mBoard->drawModel();
   red[1]->drawModel();
+
   glEnable(GL_COLOR_MATERIAL);
 
   glEnable(GL_BLEND);
@@ -383,15 +397,55 @@ void displayCB( void )  {
   float color[4] = {1,1,1,1};
   drawString3D("Chess board", pos, color, font);
 
-  //glDisable(GL_TEXTURE_2D);
+#if SHOW_LIGHT_SOURCE
+  lightPosition[0] = 15*cos(lightAngle);
+  lightPosition[1] = lightHeight;
+  lightPosition[2] = 15*sin(lightAngle);
+
+  glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+
+  bool directionalLight = true;
+
+  /* Begin light source location render. */
+  glPushMatrix();
+  glDisable(GL_LIGHTING);
+  glColor3f(1.0, 1.0, 0.0);
+  if (directionalLight) {
+    /* Draw an arrowhead. */
+    glDisable(GL_CULL_FACE);
+    glTranslatef(lightPosition[0], lightPosition[1], lightPosition[2]);
+    glRotatef(lightAngle * -180.0 / M_PI, 0, 1, 0);
+    glRotatef(atan(lightHeight/12) * 180.0 / M_PI, 0, 0, 1);
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex3f(0, 0, 0);
+    glVertex3f(2, 1, 1);
+    glVertex3f(2, -1, 1);
+    glVertex3f(2, -1, -1);
+    glVertex3f(2, 1, -1);
+    glVertex3f(2, 1, 1);
+    glEnd();
+    /* Draw a white line from light direction. */
+    glColor3f(1.0, 1.0, 1.0);
+    glBegin(GL_LINES);
+    glVertex3f(0.1, 0, 0);
+    glVertex3f(5, 0, 0);
+    glEnd();
+    glEnable(GL_CULL_FACE);
+  } else {
+    /* Draw a yellow ball at the light source. */
+    glTranslatef(lightPosition[0], lightPosition[1], lightPosition[2]);
+    glutSolidSphere(1.0, 5, 5);
+  }
+  glEnable(GL_LIGHTING);
+  glPopMatrix();
+#endif // SHOW_LIGHT_SOURCE
 
   glPopMatrix();
-  glutSwapBuffers();
-  //glutPostRedisplay();
   
   red[1]->setPosition(glp3f(4, 0, 4));
   //red[0].setAngle(180);
 
+  glutSwapBuffers();
 }
 
 void reshapeCB(int width, int height) {
@@ -533,6 +587,7 @@ void keyboardCB(unsigned char key,int x,int y)
 }
 
 void timerCB(int value) {
+  lightAngle+=0.3;
   
   glutPostRedisplay(); //Redraw scene
 

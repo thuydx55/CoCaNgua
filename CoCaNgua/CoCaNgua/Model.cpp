@@ -54,6 +54,9 @@ void Model::draw()
     {
       ambi[i] = pMaterial->ambient[i] + mColorTint[i];
       diff[i] = pMaterial->diffuse[i] + mColorTint[i];
+
+      if (ambi[i] > 1.0) ambi[i] = 1.0;
+      if (diff[i] > 1.0) diff[i] = 1.0;
     }
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambi);
