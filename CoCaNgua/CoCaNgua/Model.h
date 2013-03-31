@@ -25,7 +25,10 @@ class Model : public ModelOBJ
   GLSYNTHESIZE(GLfloat, mAngle, Angle);
 
   GLSYNTHESIZE(bool, g_enableTextures, EnableTextures);
+  GLSYNTHESIZE(GLfloat, mHighlightThickness, HighLightThickness);
 
+  bool mHighlight;
+  GLfloat mHighlightColor[4];
   ModelTextures       g_modelTextures;
 
   void draw();
@@ -38,6 +41,9 @@ public:
 
   void loadModel(const char *pszFilename);
   void drawModel();
+
+  void highlight(bool value);
+  void setHighLightColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
 };
 
 #endif // !_MODEL_H_

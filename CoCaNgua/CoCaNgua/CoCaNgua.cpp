@@ -219,6 +219,7 @@ void initModel( void )  {
   red[0]->setAnchorPoint(glp3f(0, -0.5, 0));
   
   red[1] = new Model(red[0]);
+  red[1]->highlight(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -376,7 +377,7 @@ void displayCB( void )  {
   glutSwapBuffers();
   //glutPostRedisplay();
   
-  red[0]->setPosition(glp3f(4, 0, 4));
+  red[1]->setPosition(glp3f(4, 4, 4));
   //red[0].setAngle(180);
 
   //g_model.setPosition(glp3f(10, 10, 0));
@@ -487,15 +488,15 @@ void mouseMotionCB(int x, int y) {
     mouseX = x;
     mouseY = y;
 
-    if (cameraAngleX < -eyePoint.y)
-    {
-      cameraAngleX = -eyePoint.y;
-    }
+    //if (cameraAngleX < -eyePoint.y)
+    //{
+    //  cameraAngleX = -eyePoint.y;
+    //}
 
-    if (cameraAngleX > 60)
-    {
-      cameraAngleX = 60;
-    }
+    //if (cameraAngleX > 60)
+    //{
+    //  cameraAngleX = 60;
+    //}
   }
   if(mouseMiddleDown)
   {

@@ -5,6 +5,13 @@ Model::Model(void)
 {
   g_enableTextures = true;
 
+  mHighlight = false;
+  mHighlightThickness =  1;
+  mHighlightColor[0] = 0.8;
+  mHighlightColor[1] = 0.8;
+  mHighlightColor[2] = 0.0;
+  mHighlightColor[3] = 0.5;
+
   mRotate = glp3f(0, 1, 0);
   mAngle = 0;
 
@@ -199,9 +206,12 @@ GLuint Model::loadTexture(const char *pszFilename)
     SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
   );
 
-  if( 0 == id )
+  if( 0 != id )
   {
-    printf( "SOIL loading error: '%s' %s\n", SOIL_last_result(), pszFilename );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   }
   //cout << id << ' ' << pszFilename << endl;
   return id;
@@ -214,6 +224,8 @@ void Model::drawModel()
   // Move Object to coordinate origin
   glTranslatef(-x, -y, -z);
 
+  float scale = (getHeight() + mHighlightThickness)/getHeight();
+
   glPushMatrix();
 
   glTranslated(mPos.x - mAnchor.x*getWidth(), 
@@ -221,11 +233,58 @@ void Model::drawModel()
                mPos.z - mAnchor.z*getLength());
   glRotatef(mAngle, mRotate.x, mRotate.y, mRotate.z);
 
+
+  if(mHighlight)
+  {
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_ALWAYS, 0x0, 0x4);
+    glStencilMask(0x4);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+  }
+
   draw();
 
-  glPopMatrix();
+  if (mHighlight)
+  {
+    glStencilMask(0xffffffff);
+    glClearStencil(0x4);
 
+    glDisable(GL_LIGHTING);
+    glEnable(GL_BLEND);
+    glEnable(GL_STENCIL_TEST);
+    glColor4f(mHighlightColor[0], mHighlightColor[1], mHighlightColor[2], mHighlightColor[3]);  /* 30% sorta yellow. */
+    glStencilFunc(GL_EQUAL, 0x4, 0x4);
+    glStencilMask(0x4);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_INVERT);
+
+    glPushMatrix();
+      glScalef(scale, 1, scale);
+      //glTranslated(0, -getHeight()*(scale-1)/2, 0);
+      draw();
+    glPopMatrix();
+
+    glDisable(GL_BLEND);
+    glDisable(GL_STENCIL_TEST);
+    glEnable(GL_LIGHTING);
+  }
+
+  glPopMatrix();
 }
+
+void Model::highlight(bool value)
+{
+  mHighlight = value;
+}
+
+
+void Model::setHighLightColor( GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha )
+{
+  mHighlightColor[0] = red;
+  mHighlightColor[1] = green;
+  mHighlightColor[2] = blue;
+  mHighlightColor[3] = alpha;
+}
+
 
 Model::~Model(void)
 {
