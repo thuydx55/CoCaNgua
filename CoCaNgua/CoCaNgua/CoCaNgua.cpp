@@ -78,7 +78,7 @@ GLdouble X1, Y1, Z1;
 GLdouble X2, Y2, Z2;
 
 Model*              mBoard;
-Model*              red[4], blue[4], green[4], yellow[4];
+Model               *red[4], *blue[4], *green[4], *yellow[4];
 
 
 void *font = GLUT_BITMAP_8_BY_13;
@@ -218,8 +218,20 @@ void initModel( void )  {
   red[0]->loadModel("Models/knight.obj");
   red[0]->setAnchorPoint(glp3f(0, -0.5, 0));
   
-  red[1] = new Model(red[0]);
-  red[1]->highlight(true);
+  for (int i = 0; i < 4; i++)
+  {
+    red[i] = new Model(red[0]);
+    red[i]->setColorTint(1, 0, 0);    // RED
+
+    green[i] = new Model(red[0]);
+    green[i]->setColorTint(0, 1, 0);    // GREEN
+
+    blue[i] = new Model(red[0]);
+    blue[i]->setColorTint(0, 0, 1);    // BLUE
+
+    yellow[i] = new Model(red[0]);
+    yellow[i]->setColorTint(1, 1, 0);    // YELLOW
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -377,12 +389,9 @@ void displayCB( void )  {
   glutSwapBuffers();
   //glutPostRedisplay();
   
-  red[1]->setPosition(glp3f(4, 4, 4));
+  red[1]->setPosition(glp3f(4, 0, 4));
   //red[0].setAngle(180);
 
-  //g_model.setPosition(glp3f(10, 10, 0));
-
-  //cout << g_model.getWidth() << ' ' << g_model.getHeight() << ' ' << g_model.getLength() << ' ' << g_model.getRadius();
 }
 
 void reshapeCB(int width, int height) {

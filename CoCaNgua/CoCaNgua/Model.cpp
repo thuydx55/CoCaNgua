@@ -12,6 +12,10 @@ Model::Model(void)
   mHighlightColor[2] = 0.0;
   mHighlightColor[3] = 0.5;
 
+  mColorTint[0] = 0.0;
+  mColorTint[1] = 0.0;
+  mColorTint[2] = 0.0;
+
   mRotate = glp3f(0, 1, 0);
   mAngle = 0;
 
@@ -43,8 +47,17 @@ void Model::draw()
     pMaterial = pMesh->pMaterial;
     pVertices = getVertexBuffer();
 
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, pMaterial->ambient);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, pMaterial->diffuse);
+    GLfloat ambi[4];
+    GLfloat diff[4];
+
+    for (int i = 0; i < 3; i++)
+    {
+      ambi[i] = pMaterial->ambient[i] + mColorTint[i];
+      diff[i] = pMaterial->diffuse[i] + mColorTint[i];
+    }
+
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambi);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diff);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, pMaterial->specular);
     glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, pMaterial->shininess * 128.0f);
 
@@ -177,28 +190,6 @@ void Model::loadModel(const char *pszFilename)
 
 GLuint Model::loadTexture(const char *pszFilename)
 {
-  //GLuint id = 0;
-  //Bitmap bitmap;
-
-  //if (bitmap.loadPicture(pszFilename))
-  //{
-  //  // The Bitmap class loads images and orients them top-down.
-  //  // OpenGL expects bitmap images to be oriented bottom-up.
-  //  bitmap.flipVertical();
-
-  //  glGenTextures(1, &id);
-  //  glBindTexture(GL_TEXTURE_2D, id);
-
-  //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-  //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-  //  gluBuild2DMipmaps(GL_TEXTURE_2D, 4, bitmap.width, bitmap.height,
-  //    GL_BGRA_EXT, GL_UNSIGNED_BYTE, bitmap.getPixels());
-  //}
-  //return id;
-
   GLuint id = SOIL_load_OGL_texture(
     pszFilename,
     SOIL_LOAD_AUTO,
@@ -213,7 +204,6 @@ GLuint Model::loadTexture(const char *pszFilename)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   }
-  //cout << id << ' ' << pszFilename << endl;
   return id;
 }
 
@@ -283,6 +273,13 @@ void Model::setHighLightColor( GLfloat red, GLfloat green, GLfloat blue, GLfloat
   mHighlightColor[1] = green;
   mHighlightColor[2] = blue;
   mHighlightColor[3] = alpha;
+}
+
+void Model::setColorTint( GLfloat red, GLfloat green, GLfloat blue)
+{
+  mColorTint[0] = red;
+  mColorTint[1] = green;
+  mColorTint[2] = blue;
 }
 
 

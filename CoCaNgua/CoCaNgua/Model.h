@@ -29,6 +29,7 @@ class Model : public ModelOBJ
 
   bool mHighlight;
   GLfloat mHighlightColor[4];
+  GLfloat mColorTint[3];
   ModelTextures       g_modelTextures;
 
   void draw();
@@ -44,6 +45,8 @@ public:
 
   void highlight(bool value);
   void setHighLightColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
+
+  void setColorTint(GLfloat red, GLfloat green, GLfloat blue);
 };
 
 #endif // !_MODEL_H_
