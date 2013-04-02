@@ -32,9 +32,6 @@
 
 #define M_PI 3.141592654
 
-static float lightAngle = 0.0, lightHeight = 20;
-
-
 using namespace std;
 
 // GLUT CALLBACK functions
@@ -87,7 +84,7 @@ GLdouble X2, Y2, Z2;
 Model*              mBoard;
 Model               *red[4], *blue[4], *green[4], *yellow[4];
 
-bool renderReflection = true, stencilReflection = true;
+static float lightAngle = 0.0, lightHeight = 20;
 
 void *font = GLUT_BITMAP_8_BY_13;
 int screenWidth;
@@ -145,7 +142,7 @@ int initGLUT(int argc, char **argv)
 
   // register GLUT callback functions
   glutDisplayFunc(displayCB);
-  glutTimerFunc(DELTA_TIME, timerCB, 33);             // redraw only every given millisec
+  glutTimerFunc(DELTA_TIME, timerCB, 0);             // redraw only every given millisec
   glutReshapeFunc(reshapeCB);
   glutKeyboardFunc(keyboardCB);
   glutMouseFunc(mouseCB);
@@ -181,42 +178,8 @@ void initGL()
   glClearDepth(1.0f);                         // 0 is near, 1 is far
   glDepthFunc(GL_LEQUAL);
 
-  initLights();
+  Light::inst().setPosition(lightPosition[0], lightPosition[1], lightPosition[2], lightPosition[3]);
 }
-
-///////////////////////////////////////////////////////////////////////////////
-// initialize lights
-///////////////////////////////////////////////////////////////////////////////
-void initLights()
-{
-  // set up light colors (ambient, diffuse, specular)
-  GLfloat lightKa[] = {.2f, .2f, .2f, 1.0f};  // ambient light
-  GLfloat lightKd[] = {.7f, .7f, .7f, 1.0f};  // diffuse light
-  GLfloat lightKs[] = {1, 1, 1, 1};           // specular light
-  glLightfv(GL_LIGHT0, GL_AMBIENT, lightKa);
-  glLightfv(GL_LIGHT0, GL_DIFFUSE, lightKd);
-  glLightfv(GL_LIGHT0, GL_SPECULAR, lightKs);
-
-  // position the light
-  lightPosition[0] = 15*cos(lightAngle);
-  lightPosition[1] = lightHeight;
-  lightPosition[2] = 15*sin(lightAngle);
-
-  glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-
-  glEnable(GL_LIGHT0);                        // MUST enable each light source after configuration
-}
-
-/* ----------------------------------------------------------------------- */
-/* Function    : void myInit( void )
- *
- * Description : Initialize OpenGL and the window where things will be
- *               drawn.
- *
- * Parameters  : void
- *
- * Returns     : void
- */
 
 void initModel( void )  {
 
@@ -402,42 +365,8 @@ void displayCB( void )  {
   lightPosition[1] = lightHeight;
   lightPosition[2] = 15*sin(lightAngle);
 
-  glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-
-  bool directionalLight = true;
-
-  /* Begin light source location render. */
-  glPushMatrix();
-  glDisable(GL_LIGHTING);
-  glColor3f(1.0, 1.0, 0.0);
-  if (directionalLight) {
-    /* Draw an arrowhead. */
-    glDisable(GL_CULL_FACE);
-    glTranslatef(lightPosition[0], lightPosition[1], lightPosition[2]);
-    glRotatef(lightAngle * -180.0 / M_PI, 0, 1, 0);
-    glRotatef(atan(lightHeight/12) * 180.0 / M_PI, 0, 0, 1);
-    glBegin(GL_TRIANGLE_FAN);
-    glVertex3f(0, 0, 0);
-    glVertex3f(2, 1, 1);
-    glVertex3f(2, -1, 1);
-    glVertex3f(2, -1, -1);
-    glVertex3f(2, 1, -1);
-    glVertex3f(2, 1, 1);
-    glEnd();
-    /* Draw a white line from light direction. */
-    glColor3f(1.0, 1.0, 1.0);
-    glBegin(GL_LINES);
-    glVertex3f(0.1, 0, 0);
-    glVertex3f(5, 0, 0);
-    glEnd();
-    glEnable(GL_CULL_FACE);
-  } else {
-    /* Draw a yellow ball at the light source. */
-    glTranslatef(lightPosition[0], lightPosition[1], lightPosition[2]);
-    glutSolidSphere(1.0, 5, 5);
-  }
-  glEnable(GL_LIGHTING);
-  glPopMatrix();
+  Light::inst().setPosition(lightPosition[0], lightPosition[1], lightPosition[2], lightPosition[3]);
+  Light::inst().drawLightSource(lightAngle, lightHeight);
 #endif // SHOW_LIGHT_SOURCE
 
   glPopMatrix();
