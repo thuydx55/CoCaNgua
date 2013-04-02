@@ -42,8 +42,6 @@ public:
     _position[2] = z;
     _position[3] = w;
     glLightfv(GL_LIGHT0, GL_POSITION, _position);
-
-    cout << _position[0] <<' '<< _position[1]<<' '<< _position[2] << endl;
   }
 
   void setAmbient(float r, float g, float b, float a)

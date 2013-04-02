@@ -61,13 +61,22 @@ const float DELTA_TIME      = 33;
 
 /* -- DATA STRUCTURES ---------------------------------------------------- */
 
+enum army
+{
+  ARMY_RED,
+  ARMY_BLUE,
+  ARMY_GREEN,
+  ARMY_YELLOW,
+  ARMY_NONE
+};
+
 struct BoardPoint
 {
   float x, y;
-  bool startPoint;
+  army startPoint;
 
-  BoardPoint() : x(0), y(0), startPoint(false) {}; 
-  BoardPoint(float _x, float _y, bool _s) : x(_x), y(_y), startPoint(_s) {};
+  BoardPoint() : x(0), y(0), startPoint(ARMY_NONE) {}; 
+  BoardPoint(float _x, float _y, army _s) : x(_x), y(_y), startPoint(_s) {};
 };
 
 
@@ -83,6 +92,7 @@ GLdouble X2, Y2, Z2;
 
 Model*              mBoard;
 Model               *red[4], *blue[4], *green[4], *yellow[4];
+Model*              dice;
 
 static float lightAngle = 0.0, lightHeight = 20;
 
@@ -185,9 +195,13 @@ void initModel( void )  {
 
   mBoard = new Model();
   red[0] = new Model();
+  dice   = new Model();
 
   mBoard->loadModel("Models/board.obj");
   mBoard->setAnchorPoint(glp3f(0, 0.5, 0));
+
+  dice->loadModel("Models/dice.obj");
+  dice->setAnchorPoint(glp3f(0, -0.5, 0));
 
   red[0]->loadModel("Models/knight.obj");
   red[0]->setAnchorPoint(glp3f(0, -0.5, 0));
@@ -346,6 +360,7 @@ void displayCB( void )  {
 
   mBoard->drawModel();
   red[1]->drawModel();
+  dice->drawModel();
 
   glEnable(GL_COLOR_MATERIAL);
 
@@ -372,6 +387,7 @@ void displayCB( void )  {
   glPopMatrix();
   
   red[1]->setPosition(glp3f(4, 0, 4));
+  //dice->setPosition(glp3f(-4, 4, 4));
   //red[0].setAngle(180);
 
   glutSwapBuffers();
