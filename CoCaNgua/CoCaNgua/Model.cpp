@@ -269,6 +269,10 @@ void Model::highlight(bool value)
   mHighlight = value;
 }
 
+bool Model::isHighlight()
+{
+  return mHighlight;
+}
 
 void Model::setHighLightColor( GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha )
 {

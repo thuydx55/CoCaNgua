@@ -47,6 +47,8 @@ public:
   void setHighLightColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
 
   void setColorTint(GLfloat red, GLfloat green, GLfloat blue);
+
+  bool isHighlight();
 };
 
 #endif // !_MODEL_H_

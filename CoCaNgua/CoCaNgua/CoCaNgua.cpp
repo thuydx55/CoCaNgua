@@ -1,20 +1,20 @@
 ﻿/* Module      : MainFile.cpp
- * Author      : 
- * Email       : 
- * Course      : Computer Graphics
- *
- * Description : 
- *
- *
- * Date        : 
- *
- * History:
- * Revision      Date          Changed By
- * --------      ----------    ----------
- * 01.00         ?????          ???
- * First release.
- *
- */
+* Author      : 
+* Email       : 
+* Course      : Computer Graphics
+*
+* Description : 
+*
+*
+* Date        : 
+*
+* History:
+* Revision      Date          Changed By
+* --------      ----------    ----------
+* 01.00         ?????          ???
+* First release.
+*
+*/
 
 /* -- INCLUDE FILES ------------------------------------------------------ */
 #include <windows.h>
@@ -139,8 +139,8 @@ int initGLUT(int argc, char **argv)
 
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_STENCIL);   // display mode
 
-//   glutGameModeString("800x600:16@60");
-//   glutEnterGameMode();
+  //   glutGameModeString("800x600:16@60");
+  //   glutEnterGameMode();
 
   glutInitWindowSize(screenWidth, screenHeight);  // window size
   glutInitWindowPosition(100, 100);               // window location
@@ -205,7 +205,7 @@ void initModel( void )  {
 
   red[0]->loadModel("Models/knight.obj");
   red[0]->setAnchorPoint(glp3f(0, -0.5, 0));
-  
+
   for (int i = 0; i < 4; i++)
   {
     red[i] = new Model(red[0]);
@@ -303,19 +303,19 @@ void drawString3D(const char *str, float pos[3], float color[4], void *font)
 
 /* ----------------------------------------------------------------------- */
 /* Function    : void myDisplay( void )
- *
- * Description : This function gets called everytime the window needs to
- *               be redrawn.
- *
- * Parameters  : void
- *
- * Returns     : void
- */
+*
+* Description : This function gets called everytime the window needs to
+*               be redrawn.
+*
+* Parameters  : void
+*
+* Returns     : void
+*/
 
 void displayCB( void )  {
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-  
+
   // Save current matrix state
   glPushMatrix();
   glTranslatef(0, 0, -cameraDistance);
@@ -323,10 +323,10 @@ void displayCB( void )  {
   glRotatef(cameraAngleY, 0, 1, 0);   // heading
 
   glBegin(GL_LINES);
-    glColor3f(1, 1, 1);
-    glVertex3f(X1, Y1, Z1);
-    glVertex3f(X2, Y2, Z2);
-    //glVertex3f(eyePoint.x, eyePoint.y, eyePoint.z);
+  glColor3f(1, 1, 1);
+  glVertex3f(X1, Y1, Z1);
+  glVertex3f(X2, Y2, Z2);
+  //glVertex3f(eyePoint.x, eyePoint.y, eyePoint.z);
   glEnd();
 
 
@@ -358,8 +358,13 @@ void displayCB( void )  {
 
   glDisable(GL_COLOR_MATERIAL);
 
+  glLoadName(1);
   mBoard->drawModel();
+
+  glLoadName(2);
   red[1]->drawModel();
+
+  glLoadName(3);
   dice->drawModel();
 
   glEnable(GL_COLOR_MATERIAL);
@@ -367,9 +372,9 @@ void displayCB( void )  {
   glEnable(GL_BLEND);
   glColor4f(1.0f, 1.0f, 1.0f, 0.7f);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  
+
   glDisable(GL_BLEND);
-  
+
 
   float pos[3] = {0.0f, 5.0f, 0};
   float color[4] = {1,1,1,1};
@@ -385,7 +390,7 @@ void displayCB( void )  {
 #endif // SHOW_LIGHT_SOURCE
 
   glPopMatrix();
-  
+
   red[1]->setPosition(glp3f(4, 0, 4));
   //dice->setPosition(glp3f(-4, 4, 4));
   //red[0].setAngle(180);
@@ -400,9 +405,145 @@ void reshapeCB(int width, int height) {
   setCamera(eyePoint.x, eyePoint.y, eyePoint.z, lookAtPoint.x, lookAtPoint.y, lookAtPoint.z);
 }
 
+void list_hits(GLint hits, GLuint *names)
+{
+  int i;
+
+  /*
+  For each hit in the buffer are allocated 4 bytes:
+  1. Number of hits selected (always one,
+  beacuse when we draw each object
+  we use glLoadName, so we replace the
+  prevous name in the stack)
+  2. Min Z
+  3. Max Z
+  4. Name of the hit (glLoadName)
+  */
+
+  printf("%d hits:\n", hits);
+
+  GLubyte max = 0;
+  int name = -1;
+
+  for (i = 0; i < hits; i++) {
+    printf(	"Number: %d\n"
+      "Min Z: %d\n"
+      "Max Z: %d\n"
+      "Name on stack: %d\n",
+      (GLubyte)names[i * 4],
+      (GLubyte)names[i * 4 + 1],
+      (GLubyte)names[i * 4 + 2],
+      (GLubyte)names[i * 4 + 3]
+    );
+
+    if ((GLubyte)names[i*4+1] > max) {
+      max = (GLubyte)names[i*4+1];
+      name = (int)names[i*4+3];
+    }
+  }
+
+  if (name == 3)
+  {
+    dice->highlight(!dice->isHighlight());
+  }
+  if (name == 2)
+  {
+    red[1]->highlight(!red[1]->isHighlight());
+  }
+
+  printf("\n");
+}
+
+void gl_select(int x, int y)
+{
+  GLuint buff[64] = {0};
+  GLint hits, view[4];
+
+  /*
+  This choose the buffer where store the values for the selection data
+  */
+  glSelectBuffer(64, buff);
+
+  /*
+  This retrieve info about the viewport
+  */
+  glGetIntegerv(GL_VIEWPORT, view);
+
+  /*
+  Switching in selecton mode
+  */
+  glRenderMode(GL_SELECT);
+
+  /*
+  Clearing the name's stack
+  This stack contains all the info about the objects
+  */
+  glInitNames();
+
+  /*
+  Now fill the stack with one element (or glLoadName will generate an error)
+  */
+  glPushName(0);
+
+  /*
+  Now modify the vieving volume, restricting selection area around the cursor
+  */
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+
+  /*
+  restrict the draw to an area around the cursor
+  */
+  gluPickMatrix(x, y, 1.0, 1.0, view);
+  gluPerspective(60.0f, (float)(screenWidth)/screenHeight, 1.0f, 1000.0f); // FOV, AspectRatio, NearClip, FarClip
+
+  /*
+  Draw the objects onto the screen
+  */
+  glMatrixMode(GL_MODELVIEW);
+
+  /*
+  draw only the names in the stack, and fill the array
+  */
+  glutSwapBuffers();
+  displayCB();
+
+  /*
+  Do you remeber? We do pushMatrix in PROJECTION mode
+  */
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+
+  /*
+  get number of objects drawed in that area
+  and return to render mode
+  */
+  hits = glRenderMode(GL_RENDER);
+
+  /*
+  Print a list of the objects
+  */
+  list_hits(hits, buff);
+
+  /*
+  uncomment this to show the whole buffer
+  * /
+  gl_selall(hits, buff);
+  */
+
+  glMatrixMode(GL_MODELVIEW);
+}
+
+void mousedw(int x, int y, int but)
+{
+  printf("Mouse button %d pressed at %d %d\n", but, x, y);
+  gl_select(x,screenHeight-y); //Important: gl (0,0) ist bottom left but window coords (0,0) are top left so we have to change this!
+}
+
 /*
- * Callback function for mouse event
- */
+* Callback function for mouse event
+*/
 void mouseCB(int button, int state, int x, int y) {
 
   mouseX = x;
@@ -438,55 +579,15 @@ void mouseCB(int button, int state, int x, int y) {
       mouseMiddleDown = false;
   }
 
-  GLint viewport[4];
-  GLdouble modelview[16];
-  GLdouble projection[16];
-  GLfloat winX, winY, winZ;
-  GLdouble _x, _y, _z;
-
-
-  glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
-  glGetDoublev(GL_PROJECTION_MATRIX, projection);
-  glGetIntegerv(GL_VIEWPORT, viewport);
-
-  winX = (GLfloat)mouseX;
-  winY = (GLfloat)viewport[3] - (GLfloat)mouseY;
-  glReadPixels(mouseX, GLint(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ);
-
-  //gluUnProject(winX, winY, winZ, modelview, projection, viewport, &_x, &_y, &_z);
-  gluUnProject(winX, winY, 0.0, modelview, projection, viewport, &X1, &Y1, &Z1);
-  gluUnProject(winX, winY, 1.0, modelview, projection, viewport, &X2, &Y2, &Z2);
-
-  //Find X and Z when Y is 0
-  float zeropoint, zeroperc;
-  double posXt, posYt, posZt;
-  posXt = X1 - X2;
-  posYt = Y1 - Y2;
-  posZt = Z1 - Z2;
-
-  //Check the Y's pass through the plane on 0
-//   if (Y1 < 0.0 && Y2 < 0.0 &#0124; &#0124; Y1 > 0.0 && Y2 > 0.0)
-//     return;
-
-  //Now we'll nudge out stuff up and find out the zero point
-  zeropoint = 0.0f - (float)Y1;
-
-  //Find the percentage that this point is between them
-  zeroperc = (zeropoint / (float)posYt);
-
-  float posX = (float)X1 + (float)(posXt * zeroperc);	
-  float posY = (float)Y1 + (float)(posYt * zeroperc);	
-  float posZ = (float)Z1 + (float)(posZt * zeroperc);
-
-  cout << posX << ' ' << posY << ' ' << posZ << ' ' << endl;
-  //cout << X1 << ' ' << Y1 << ' ' << Z1 << ' ' << endl;
-  //cout << X2 << ' ' << Y2 << ' ' << Z2 << ' ' << endl << endl;
-  //cout << winX << ' ' << winY << ' ' << winZ << endl << endl;
+  if 	((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN))
+  {
+    mousedw(x, y, button);
+  }
 }
 
 /*
- * Callback function for animation motion event
- */
+* Callback function for animation motion event
+*/
 void mouseMotionCB(int x, int y) {
 
   if(mouseRightDown)
@@ -521,7 +622,7 @@ void keyboardCB(unsigned char key,int x,int y)
       "screenshot.bmp",
       SOIL_SAVE_TYPE_BMP,
       0, 0, screenWidth, screenHeight
-    );
+      );
     break;
   case 'r':
     cameraAngleX = cameraAngleY = 0;
@@ -533,7 +634,7 @@ void keyboardCB(unsigned char key,int x,int y)
 
 void timerCB(int value) {
   lightAngle+=0.3;
-  
+
   glutPostRedisplay(); //Redraw scene
 
   glutTimerFunc(DELTA_TIME, timerCB, 0); //Call update in 5 milliseconds
@@ -542,15 +643,15 @@ void timerCB(int value) {
 
 /* ----------------------------------------------------------------------- */
 /* Function    : int main( int argc, char** argv )
- *
- * Description : This is the main function. It sets up the rendering
- *               context, and then reacts to user events.
- *
- * Parameters  : int argc     : Number of command-line arguments.
- *               char *argv[] : Array of command-line arguments.
- *
- * Returns     : int : Return code to pass to the shell.
- */
+*
+* Description : This is the main function. It sets up the rendering
+*               context, and then reacts to user events.
+*
+* Parameters  : int argc     : Number of command-line arguments.
+*               char *argv[] : Array of command-line arguments.
+*
+* Returns     : int : Return code to pass to the shell.
+*/
 
 int main( int argc, char *argv[] )  {
   // init global vars
