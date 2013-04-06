@@ -80,6 +80,7 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CoCaNgua.cpp" />
     <ClCompile Include="mathlib.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -90,6 +91,7 @@
     <ClCompile Include="SOIL\stb_image_aug.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="mathlib.h" />
