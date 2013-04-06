@@ -59,6 +59,22 @@ const int   TEXT_WIDTH      = 8;
 const int   TEXT_HEIGHT     = 13;
 const float DELTA_TIME      = 33;
 
+int index = 0;
+GLPoint3f wayPoints[] = {glp3f(-20, 0, -4), 
+                        glp3f(-16, 0, -4), 
+                        glp3f(-12, 0, -4), 
+                        glp3f(-8, 0, -4), 
+                        glp3f(-4, 0, -4), 
+                        glp3f(-4, 0, -8), 
+                        glp3f(-4, 0, -12), 
+                        glp3f(-4, 0, -16), 
+                        glp3f(-4, 0, -20), 
+                        glp3f(0, 0, -20), 
+                        glp3f(4, 0, -20), 
+                        glp3f(4, 0, -16), 
+                        glp3f(4, 0, -12), 
+                        glp3f(4, 0, -8), 
+                        glp3f(4, 0, -4)};
 /* -- DATA STRUCTURES ---------------------------------------------------- */
 
 enum army
@@ -391,7 +407,7 @@ void displayCB( void )  {
 
   glPopMatrix();
 
-  red[1]->setPosition(glp3f(4, 0, 4));
+  //red[1]->setPosition(glp3f(4, 0, 4));
   //dice->setPosition(glp3f(-4, 4, 4));
   //red[0].setAngle(180);
 
@@ -624,9 +640,20 @@ void keyboardCB(unsigned char key,int x,int y)
       0, 0, screenWidth, screenHeight
       );
     break;
+
   case 'r':
     cameraAngleX = cameraAngleY = 0;
     break;
+  
+  case 'm':
+    if (index > 14)
+    {
+      index = 0;
+    }
+    red[1]->moveTo(wayPoints[index], 0.5);
+    index++;
+    break;
+
   default:
     break;
   }

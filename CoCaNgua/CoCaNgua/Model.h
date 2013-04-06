@@ -12,6 +12,8 @@
 #include <iostream>
 #include <cstring>
 
+#include "Timer.h"
+
 using namespace std;
 
 typedef std::map<std::string, GLuint> ModelTextures;
@@ -27,10 +29,20 @@ class Model : public ModelOBJ
   GLSYNTHESIZE(bool, g_enableTextures, EnableTextures);
   GLSYNTHESIZE(GLfloat, mHighlightThickness, HighLightThickness);
 
+  GLSYNTHESIZE(GLPoint3f, mMedDis, MediateDistance);
+
+  float mSteps;
+  float mStepCounter;
+
   bool mHighlight;
+  bool mMoving;
   GLfloat mHighlightColor[4];
   GLfloat mColorTint[3];
   ModelTextures       g_modelTextures;
+
+  //Timer mMoveTimer;
+  Timer mStepTimer;
+  
 
   void draw();
   GLuint loadTexture(const char *pszFilename);
@@ -49,6 +61,11 @@ public:
   void setColorTint(GLfloat red, GLfloat green, GLfloat blue);
 
   bool isHighlight();
+  bool isMoving();
+
+  void moveTo(GLPoint3f pTarget, float pDuration);
+
+  void update();
 };
 
 #endif // !_MODEL_H_
