@@ -27,6 +27,9 @@ public:
 
     Camera();
     ~Camera();
+
+    static Camera& inst();
+
     void update(float x, float y);
     void save(float x, float y);
     void zoom(float x);

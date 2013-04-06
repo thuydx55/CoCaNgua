@@ -1,7 +1,8 @@
 #include "Camera.h"
 
+
 Camera::Camera(){
-  at = Vector3(0.0,5.0,0.0);
+  at = Vector3(0.0,0.0,0.0);
 	up = Vector3(0.0,1.0,0.0);
 	theta = Math::PI/3;
 	phi = Math::PI/3;
@@ -11,6 +12,14 @@ Camera::Camera(){
 	//glLoadIdentity();
     //gluLookAt(eye.x,eye.y,eye.z,at.x,at.y,at.z,up.x,up.y,up.z);
 };
+
+
+Camera& Camera::inst()
+{
+  static Camera Instance;
+  return Instance;
+}
+
 
 Camera::~Camera(){};
 

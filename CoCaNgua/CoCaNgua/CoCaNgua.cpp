@@ -27,11 +27,10 @@
 #include "Model.h"
 #include "Light.h"
 #include "mathlib.h"
+#include "Camera.h"
 
 #define SHOW_GRID 1
 #define SHOW_LIGHT_SOURCE 1
-
-#define M_PI 3.141592654
 
 using namespace std;
 
@@ -82,9 +81,6 @@ struct BoardPoint
 
 
 /* -- GLOBAL VARIABLES --------------------------------------------------- */
-
-Vector3           eyePoint(5.0, 20.0, 30.0);
-Vector3           lookAtPoint(0.0, 1.0, 0.0);
 
 static GLfloat lightPosition[4] = {50, 50, 50, 1};
 
@@ -316,9 +312,9 @@ void displayCB( void )  {
 
   // Save current matrix state
   glPushMatrix();
-  glTranslatef(0, 0, -cameraDistance);
-  glRotatef(cameraAngleX, 1, 0, 0);   // pitch
-  glRotatef(cameraAngleY, 0, 1, 0);   // heading
+  //glTranslatef(0, 0, -cameraDistance);
+  //glRotatef(cameraAngleX, 1, 0, 0);   // pitch
+  //glRotatef(cameraAngleY, 0, 1, 0);   // heading
 
 #if SHOW_GRID
   glBegin(GL_LINES);
@@ -403,7 +399,8 @@ void reshapeCB(int width, int height) {
   screenWidth = width;
   screenHeight = height;
   toPerspective();
-  setCamera(eyePoint.x, eyePoint.y, eyePoint.z, lookAtPoint.x, lookAtPoint.y, lookAtPoint.z);
+  setCamera(Camera::inst().eye.x, Camera::inst().eye.y, Camera::inst().eye.z,
+            Camera::inst().at.x, Camera::inst().at.y, Camera::inst().at.z);
 }
 
 void list_hits(GLint hits, GLuint *names)
@@ -547,8 +544,7 @@ void mousedw(int x, int y, int but)
 */
 void mouseCB(int button, int state, int x, int y) {
 
-  mouseX = x;
-  mouseY = y;
+  Camera::inst().save(x, y);
 
   if(button == GLUT_LEFT_BUTTON)
   {
@@ -593,10 +589,7 @@ void mouseMotionCB(int x, int y) {
 
   if(mouseRightDown)
   {
-    cameraAngleY += (x - mouseX);
-    cameraAngleX += (y - mouseY);
-    mouseX = x;
-    mouseY = y;
+    Camera::inst().rotate(x, y);
 
     /*if (cameraAngleX < -eyePoint.y)
     {
@@ -608,11 +601,11 @@ void mouseMotionCB(int x, int y) {
       cameraAngleX = 60;
     }*/
   }
-  if(mouseMiddleDown)
-  {
-    cameraDistance -= (y - mouseY) * 0.2f;
-    mouseY = y;
-  }
+  //if(mouseMiddleDown)
+  //{
+  //  cameraDistance -= (y - mouseY) * 0.2f;
+  //  mouseY = y;
+  //}
 }
 
 void keyboardCB(unsigned char key,int x,int y)
