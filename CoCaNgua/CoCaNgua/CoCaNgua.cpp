@@ -27,7 +27,7 @@
 #include "Model.h"
 #include "Light.h"
 
-#define SHOW_GRID 0
+#define SHOW_GRID 1
 #define SHOW_LIGHT_SOURCE 1
 
 #define M_PI 3.141592654
@@ -86,9 +86,6 @@ GLPoint3f           eyePoint(5.0, 20.0, 30.0);
 GLPoint3f           lookAtPoint(0.0, 1.0, 0.0);
 
 static GLfloat lightPosition[4] = {50, 50, 50, 1};
-
-GLdouble X1, Y1, Z1;
-GLdouble X2, Y2, Z2;
 
 Model*              mBoard;
 Model               *red[4], *blue[4], *green[4], *yellow[4];
@@ -322,14 +319,6 @@ void displayCB( void )  {
   glRotatef(cameraAngleX, 1, 0, 0);   // pitch
   glRotatef(cameraAngleY, 0, 1, 0);   // heading
 
-  glBegin(GL_LINES);
-  glColor3f(1, 1, 1);
-  glVertex3f(X1, Y1, Z1);
-  glVertex3f(X2, Y2, Z2);
-  //glVertex3f(eyePoint.x, eyePoint.y, eyePoint.z);
-  glEnd();
-
-
 #if SHOW_GRID
   glBegin(GL_LINES);
   glColor3f(0, 0, 0);
@@ -343,7 +332,18 @@ void displayCB( void )  {
   glVertex3f(0, 0, 10);
   glEnd();
 
-  glBegin(GL_LINES);
+  float posi[3] = {10.0f, 0.0f, 0};
+  float color[4] = {1,1,1,1};
+  drawString3D("x", posi, color, font);
+
+  posi[0] = 0;
+  posi[1] = 10;
+  drawString3D("y", posi, color, font);
+
+  posi[1] = 0;
+  posi[2] = 10;
+  drawString3D("z", posi, color, font);
+  /*glBegin(GL_LINES);
   glColor3f(.1, .1, .1);
   for (int i = -100; i < 100; i+=2)
   {
@@ -353,7 +353,7 @@ void displayCB( void )  {
     glVertex3f(i, 0, 100);
     glVertex3f(i, 0, -100);
   }
-  glEnd();
+  glEnd();*/
 #endif
 
   glDisable(GL_COLOR_MATERIAL);
@@ -377,8 +377,8 @@ void displayCB( void )  {
 
 
   float pos[3] = {0.0f, 5.0f, 0};
-  float color[4] = {1,1,1,1};
-  drawString3D("Chess board", pos, color, font);
+  float colorS[4] = {1,1,1,1};
+  drawString3D("Chess board", pos, colorS, font);
 
 #if SHOW_LIGHT_SOURCE
   lightPosition[0] = 15*cos(lightAngle);
@@ -597,15 +597,15 @@ void mouseMotionCB(int x, int y) {
     mouseX = x;
     mouseY = y;
 
-    //if (cameraAngleX < -eyePoint.y)
-    //{
-    //  cameraAngleX = -eyePoint.y;
-    //}
+    /*if (cameraAngleX < -eyePoint.y)
+    {
+      cameraAngleX = -eyePoint.y;
+    }
 
-    //if (cameraAngleX > 60)
-    //{
-    //  cameraAngleX = 60;
-    //}
+    if (cameraAngleX > 60)
+    {
+      cameraAngleX = 60;
+    }*/
   }
   if(mouseMiddleDown)
   {

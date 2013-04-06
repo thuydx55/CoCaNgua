@@ -217,7 +217,9 @@ void Model::drawModel()
   // Move Object to coordinate origin
   glTranslatef(-x, -y, -z);
 
-  float scale = (getHeight() + mHighlightThickness)/getHeight();
+  float scaleX = (getWidth() + mHighlightThickness)/getWidth();
+  float scaleY = (getHeight() + mHighlightThickness)/getHeight();
+  float scaleZ = (getLength() + mHighlightThickness)/getLength();
 
   glPushMatrix();
 
@@ -251,8 +253,8 @@ void Model::drawModel()
     glStencilOp(GL_KEEP, GL_KEEP, GL_INVERT);
 
     glPushMatrix();
-      glScalef(scale, 1, scale);
-      //glTranslated(0, -getHeight()*(scale-1)/2, 0);
+      glScalef(scaleX, scaleY, scaleZ);
+      //glTranslated(0, -getHeight()*(scaleY-1)/2, 0);
       draw();
     glPopMatrix();
 
