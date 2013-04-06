@@ -23,6 +23,7 @@
 
 #include <cmath>
 #include <cstdlib>
+#include <string>
 
 #undef PI
 
@@ -220,6 +221,8 @@ public:
     Vector2 inverse() const;
     void normalize();
     void set(float x_, float y_);
+
+    std::string toString();
 } Vec2, *pVec2;
 
 inline Vector2 operator*(float lhs, const Vector2 &rhs)
@@ -373,6 +376,14 @@ inline void Vector2::set(float x_, float y_)
     x = x_, y = y_;
 }
 
+inline std::string Vector2::toString()
+{
+  char buffer[255];
+  sprintf(buffer, "X: %f, Y: %f\n", x, y);
+
+  return std::string(buffer);
+}
+
 //-----------------------------------------------------------------------------
 // A 3-component vector class that represents a row vector.
 
@@ -421,6 +432,8 @@ public:
     Vector3 inverse() const;
     void normalize();
     void set(float x_, float y_, float z_);
+
+    std::string toString();
 } Vec3, *pVec3;
 
 inline Vector3 operator*(float lhs, const Vector3 &rhs)
@@ -617,6 +630,14 @@ inline void Vector3::normalize()
 inline void Vector3::set(float x_, float y_, float z_)
 {
     x = x_, y = y_, z = z_;
+}
+
+inline std::string Vector3::toString()
+{
+  char buffer[255];
+  sprintf(buffer, "X: %f, Y: %f, Z: %f\n", x, y, z);
+
+  return std::string(buffer);
 }
 
 //-----------------------------------------------------------------------------

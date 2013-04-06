@@ -628,6 +628,9 @@ void keyboardCB(unsigned char key,int x,int y)
   case 'r':
     cameraAngleX = cameraAngleY = 0;
     break;
+  case 'a':
+    cout << red[0]->getAnchorPoint().y << endl;
+    cout << red[1]->getCenterLocation().toString();
   default:
     break;
   }
