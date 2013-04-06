@@ -16,7 +16,7 @@ Model::Model(void)
   mColorTint[1] = 0.0;
   mColorTint[2] = 0.0;
 
-  mRotate = glp3f(0, 1, 0);
+  mRotate = Vector3(0, 1, 0);
   mAngle = 0;
 
   glEnable(GL_TEXTURE_2D);
@@ -291,6 +291,14 @@ void Model::setColorTint( GLfloat red, GLfloat green, GLfloat blue)
   mColorTint[2] = blue;
 }
 
+Vector3 Model::getCenterLocation()
+{
+  float centerX = mPos.x - mAnchor.x*getWidth();
+  float centerY = mPos.y - mAnchor.y*getHeight();
+  float centerZ = mPos.z - mAnchor.z*getLength();
+
+  return Vector3(centerX, centerY, centerZ);
+}
 
 Model::~Model(void)
 {

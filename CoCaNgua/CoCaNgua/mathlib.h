@@ -198,7 +198,7 @@ public:
     static Vector2 perp(const Vector2 &p, const Vector2 &q);
     static Vector2 reflect(const Vector2 &i, const Vector2 &n);
 
-    Vector2() {}
+    Vector2();
     Vector2(float x_, float y_);
     ~Vector2() {}
 
@@ -284,6 +284,8 @@ inline Vector2 Vector2::reflect(const Vector2 &i, const Vector2 &n)
     // and surface normal 'n'.
     return i - 2.0f * Vector2::proj(i, n);
 }
+
+inline Vector2::Vector2() : x(0), y(0) {}
 
 inline Vector2::Vector2(float x_, float y_) : x(x_), y(y_) {}
 
@@ -393,7 +395,7 @@ public:
     static Vector3 perp(const Vector3 &p, const Vector3 &q);
     static Vector3 reflect(const Vector3 &i, const Vector3 &n);
 
-    Vector3() {}
+    Vector3();
     Vector3(float x_, float y_, float z_);
     ~Vector3() {}
 
@@ -503,6 +505,8 @@ inline Vector3 Vector3::reflect(const Vector3 &i, const Vector3 &n)
     // and surface normal 'n'.
     return i - 2.0f * Vector3::proj(i, n);
 }
+
+inline Vector3::Vector3() : x(0), y(0), z(0) {}
 
 inline Vector3::Vector3(float x_, float y_, float z_) : x(x_), y(y_), z(z_) {}
 

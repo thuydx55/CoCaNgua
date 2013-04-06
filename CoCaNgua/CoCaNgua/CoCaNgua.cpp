@@ -26,6 +26,7 @@
 
 #include "Model.h"
 #include "Light.h"
+#include "mathlib.h"
 
 #define SHOW_GRID 1
 #define SHOW_LIGHT_SOURCE 1
@@ -82,8 +83,8 @@ struct BoardPoint
 
 /* -- GLOBAL VARIABLES --------------------------------------------------- */
 
-GLPoint3f           eyePoint(5.0, 20.0, 30.0);
-GLPoint3f           lookAtPoint(0.0, 1.0, 0.0);
+Vector3           eyePoint(5.0, 20.0, 30.0);
+Vector3           lookAtPoint(0.0, 1.0, 0.0);
 
 static GLfloat lightPosition[4] = {50, 50, 50, 1};
 
@@ -195,13 +196,13 @@ void initModel( void )  {
   dice   = new Model();
 
   mBoard->loadModel("Models/board.obj");
-  mBoard->setAnchorPoint(glp3f(0, 0.5, 0));
+  mBoard->setAnchorPoint(Vector3(0, 0.5, 0));
 
   dice->loadModel("Models/dice.obj");
-  dice->setAnchorPoint(glp3f(0, -0.5, 0));
+  dice->setAnchorPoint(Vector3(0, -0.5, 0));
 
   red[0]->loadModel("Models/knight.obj");
-  red[0]->setAnchorPoint(glp3f(0, -0.5, 0));
+  red[0]->setAnchorPoint(Vector3(0, -0.5, 0));
 
   for (int i = 0; i < 4; i++)
   {
@@ -369,11 +370,11 @@ void displayCB( void )  {
 
   glEnable(GL_COLOR_MATERIAL);
 
-  glEnable(GL_BLEND);
-  glColor4f(1.0f, 1.0f, 1.0f, 0.7f);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  //glEnable(GL_BLEND);
+  //glColor4f(1.0f, 1.0f, 1.0f, 0.7f);
+  //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  glDisable(GL_BLEND);
+  //glDisable(GL_BLEND);
 
 
   float pos[3] = {0.0f, 5.0f, 0};
@@ -391,7 +392,7 @@ void displayCB( void )  {
 
   glPopMatrix();
 
-  red[1]->setPosition(glp3f(4, 0, 4));
+  red[1]->setPosition(Vector3(4, 0, 4));
   //dice->setPosition(glp3f(-4, 4, 4));
   //red[0].setAngle(180);
 

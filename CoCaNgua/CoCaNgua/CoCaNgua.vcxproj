@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CoCaNgua.cpp" />
+    <ClCompile Include="mathlib.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelOBJ.cpp" />
     <ClCompile Include="SOIL\image_DXT.c" />
@@ -91,6 +92,7 @@
   <ItemGroup>
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="mathlib.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelOBJ.h" />
     <ClInclude Include="SOIL\image_DXT.h" />

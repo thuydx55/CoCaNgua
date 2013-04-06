@@ -43,6 +43,9 @@
     <ClCompile Include="SOIL\stb_image_aug.c">
       <Filter>SOIL</Filter>
     </ClCompile>
+    <ClCompile Include="mathlib.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ModelOBJ.h">
@@ -73,6 +76,9 @@
       <Filter>SOIL</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mathlib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
