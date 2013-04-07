@@ -59,6 +59,22 @@ const int   TEXT_WIDTH      = 8;
 const int   TEXT_HEIGHT     = 13;
 const float DELTA_TIME      = 33;
 
+int index = 0;
+Vector3 wayPoints[] = {Vector3(-20, 0, -4), 
+                        Vector3(-16, 0, -4), 
+                        Vector3(-12, 0, -4), 
+                        Vector3(-8, 0, -4), 
+                        Vector3(-4, 0, -4), 
+                        Vector3(-4, 0, -8), 
+                        Vector3(-4, 0, -12), 
+                        Vector3(-4, 0, -16), 
+                        Vector3(-4, 0, -20), 
+                        Vector3(0, 0, -20), 
+                        Vector3(4, 0, -20), 
+                        Vector3(4, 0, -16), 
+                        Vector3(4, 0, -12), 
+                        Vector3(4, 0, -8), 
+                        Vector3(4, 0, -4)};
 /* -- DATA STRUCTURES ---------------------------------------------------- */
 
 enum army
@@ -389,6 +405,7 @@ void displayCB( void )  {
   glPopMatrix();
 
   red[1]->setPosition(Vector3(4, 0, 4));
+
   //dice->setPosition(glp3f(-4, 4, 4));
   //red[0].setAngle(180);
 
@@ -618,12 +635,23 @@ void keyboardCB(unsigned char key,int x,int y)
       0, 0, screenWidth, screenHeight
       );
     break;
+
   case 'r':
     cameraAngleX = cameraAngleY = 0;
     break;
   case 'a':
     cout << red[0]->getAnchorPoint().y << endl;
     cout << red[1]->getCenterLocation().toString();
+    break;
+  case 'm':
+    if (index > 14)
+    {
+      index = 0;
+    }
+    red[1]->moveTo(wayPoints[index], 0.5);
+    index++;
+    break;
+
   default:
     break;
   }

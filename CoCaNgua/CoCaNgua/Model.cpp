@@ -19,6 +19,8 @@ Model::Model(void)
   mRotate = Vector3(0, 1, 0);
   mAngle = 0;
 
+  mMoving = false;
+
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_CULL_FACE);
@@ -223,6 +225,8 @@ void Model::drawModel()
 
   glPushMatrix();
 
+  update();
+
   glTranslated(mPos.x - mAnchor.x*getWidth(), 
                mPos.y - mAnchor.y*getHeight(),
                mPos.z - mAnchor.z*getLength());
@@ -276,6 +280,11 @@ bool Model::isHighlight()
   return mHighlight;
 }
 
+bool Model::isMoving()
+{
+  return mMoving;
+}
+
 void Model::setHighLightColor( GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha )
 {
   mHighlightColor[0] = red;
@@ -302,4 +311,41 @@ Vector3 Model::getCenterLocation()
 
 Model::~Model(void)
 {
+}
+
+void Model::moveTo( Vector3 pTarget, float pDuration )
+{
+  mSteps = pDuration / 0.025;
+
+  mMedDis.x = (pTarget.x - mPos.x) / mSteps;
+  mMedDis.y = (pTarget.y - mPos.y) / mSteps;
+  mMedDis.z = (pTarget.z - mPos.z) / mSteps;
+
+  //mMoveTimer.start();
+  mStepTimer.start();
+
+  mStepCounter = 0;
+  mMoving = true;
+}
+
+void Model::update(  )
+{
+  if (mStepCounter < mSteps )
+  {
+    if (mStepTimer.elapsed() > 0.025)
+    {
+      mPos.x += mMedDis.x;
+      mPos.y += mMedDis.y;
+      mPos.z += mMedDis.z;
+
+      mStepTimer.start();
+
+      mStepCounter ++;
+      /*cout << mMoveTimer.elapsed() << endl;*/
+    }
+  }
+  else
+  {
+    mMoving = false;
+  }
 }
