@@ -404,7 +404,7 @@ void displayCB( void )  {
 
   glPopMatrix();
 
-  red[1]->setPosition(Vector3(4, 0, 4));
+  //red[1]->setPosition(Vector3(4, 0, 4));
 
   //dice->setPosition(glp3f(-4, 4, 4));
   //red[0].setAngle(180);
