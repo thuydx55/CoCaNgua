@@ -29,6 +29,7 @@
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Graphic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOIL\SOIL.h">
@@ -71,6 +72,7 @@
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Graphic.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

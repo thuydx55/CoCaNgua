@@ -83,6 +83,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CoCaNgua.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="mathlib.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelOBJ.cpp" />
@@ -95,6 +96,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Geometry.h" />
+    <ClInclude Include="Graphic.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="mathlib.h" />
     <ClInclude Include="Model.h" />

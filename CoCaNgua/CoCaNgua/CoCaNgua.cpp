@@ -28,6 +28,7 @@
 #include "Light.h"
 #include "mathlib.h"
 #include "Camera.h"
+#include "Game.h"
 
 #define SHOW_GRID 1
 #define SHOW_LIGHT_SOURCE 1
@@ -45,11 +46,6 @@ void mouseMotionCB(int x, int y);
 void initGL();
 int  initGLUT(int argc, char **argv);
 bool initSharedMem();
-void initLights();
-
-void setCamera(float posX, float posY, float posZ, float targetX, float targetY, float targetZ);
-void drawString(const char *str, int x, int y, float color[4], void *font);
-void drawString3D(const char *str, float pos[3], float color[4], void *font);
 
 /* -- CONSTANT ----------------------------------------------------------- */
 const int   SCREEN_WIDTH    = 800;
@@ -98,15 +94,6 @@ struct BoardPoint
 
 /* -- GLOBAL VARIABLES --------------------------------------------------- */
 
-static GLfloat lightPosition[4] = {50, 50, 50, 1};
-
-Model*              mBoard;
-Model               *red[4], *blue[4], *green[4], *yellow[4];
-Model*              dice;
-
-static float lightAngle = 0.0, lightHeight = 20;
-
-void *font = GLUT_BITMAP_8_BY_13;
 int screenWidth;
 int screenHeight;
 bool mouseLeftDown;
@@ -198,89 +185,8 @@ void initGL()
   glClearDepth(1.0f);                         // 0 is near, 1 is far
   glDepthFunc(GL_LEQUAL);
 
-  Light::inst().setPosition(lightPosition[0], lightPosition[1], lightPosition[2], lightPosition[3]);
-}
-
-void initModel( void )  {
-
-  mBoard = new Model();
-  red[0] = new Model();
-  dice   = new Model();
-
-  mBoard->loadModel("Models/board.obj");
-  mBoard->setAnchorPoint(Vector3(0, 0.5, 0));
-
-  dice->loadModel("Models/dice.obj");
-  dice->setAnchorPoint(Vector3(0, -0.5, 0));
-
-  red[0]->loadModel("Models/knight.obj");
-  red[0]->setAnchorPoint(Vector3(0, -0.5, 0));
-
-  for (int i = 0; i < 4; i++)
-  {
-    red[i] = new Model(red[0]);
-    red[i]->setColorTint(1, 0, 0);    // RED
-
-    green[i] = new Model(red[0]);
-    green[i]->setColorTint(0, 1, 0);    // GREEN
-
-    blue[i] = new Model(red[0]);
-    blue[i]->setColorTint(0, 0, 1);    // BLUE
-
-    yellow[i] = new Model(red[0]);
-    yellow[i]->setColorTint(1, 1, 0);    // YELLOW
-  }
-}
-
-///////////////////////////////////////////////////////////////////////////////
-// write 2d text using GLUT
-// The projection matrix must be set to orthogonal before call this function.
-///////////////////////////////////////////////////////////////////////////////
-void drawString(const char *str, int x, int y, float color[4], void *font)
-{
-  glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT); // lighting and color mask
-  glDisable(GL_LIGHTING);     // need to disable lighting for proper text color
-  glDisable(GL_TEXTURE_2D);
-
-  glColor4fv(color);          // set text color
-  glRasterPos2i(x, y);        // place text position
-
-  // loop all characters in the string
-  while(*str)
-  {
-    glutBitmapCharacter(font, *str);
-    ++str;
-  }
-
-  glEnable(GL_TEXTURE_2D);
-  glEnable(GL_LIGHTING);
-  glPopAttrib();
-}
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-// draw a string in 3D space
-///////////////////////////////////////////////////////////////////////////////
-void drawString3D(const char *str, float pos[3], float color[4], void *font)
-{
-  glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT); // lighting and color mask
-  glDisable(GL_LIGHTING);     // need to disable lighting for proper text color
-  glDisable(GL_TEXTURE_2D);
-
-  glColor4fv(color);          // set text color
-  glRasterPos3fv(pos);        // place text position
-
-  // loop all characters in the string
-  while(*str)
-  {
-    glutBitmapCharacter(font, *str);
-    ++str;
-  }
-
-  glEnable(GL_TEXTURE_2D);
-  glEnable(GL_LIGHTING);
-  glPopAttrib();
+  Light::inst().setPosition(Game::inst().lightPosition[0], Game::inst().lightPosition[1], 
+    Game::inst().lightPosition[2], Game::inst().lightPosition[3]);
 }
 
 /* ----------------------------------------------------------------------- */
@@ -298,88 +204,7 @@ void displayCB( void )  {
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-  // Save current matrix state
-  glPushMatrix();
-  //glTranslatef(0, 0, -cameraDistance);
-  //glRotatef(cameraAngleX, 1, 0, 0);   // pitch
-  //glRotatef(cameraAngleY, 0, 1, 0);   // heading
-
-#if SHOW_GRID
-  glBegin(GL_LINES);
-  glColor3f(0, 0, 0);
-  glVertex3f(0, 0, 0);
-  glVertex3f(10, 0, 0);
-
-  glVertex3f(0, 0, 0);
-  glVertex3f(0, 10, 0);
-
-  glVertex3f(0, 0, 0);
-  glVertex3f(0, 0, 10);
-  glEnd();
-
-  float posi[3] = {10.0f, 0.0f, 0};
-  float color[4] = {1,1,1,1};
-  drawString3D("x", posi, color, font);
-
-  posi[0] = 0;
-  posi[1] = 10;
-  drawString3D("y", posi, color, font);
-
-  posi[1] = 0;
-  posi[2] = 10;
-  drawString3D("z", posi, color, font);
-  /*glBegin(GL_LINES);
-  glColor3f(.1, .1, .1);
-  for (int i = -100; i < 100; i+=2)
-  {
-    glVertex3f(100, 0, i);
-    glVertex3f(-100, 0, i);
-
-    glVertex3f(i, 0, 100);
-    glVertex3f(i, 0, -100);
-  }
-  glEnd();*/
-#endif
-
-  glDisable(GL_COLOR_MATERIAL);
-
-  glLoadName(1);
-  mBoard->drawModel();
-
-  glLoadName(2);
-  red[1]->drawModel();
-
-  glLoadName(3);
-  dice->drawModel();
-
-  glEnable(GL_COLOR_MATERIAL);
-
-  //glEnable(GL_BLEND);
-  //glColor4f(1.0f, 1.0f, 1.0f, 0.7f);
-  //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-  //glDisable(GL_BLEND);
-
-
-  float pos[3] = {0.0f, 5.0f, 0};
-  float colorS[4] = {1,1,1,1};
-  drawString3D("Chess board", pos, colorS, font);
-
-#if SHOW_LIGHT_SOURCE
-  lightPosition[0] = 15*cos(lightAngle);
-  lightPosition[1] = lightHeight;
-  lightPosition[2] = 15*sin(lightAngle);
-
-  Light::inst().setPosition(lightPosition[0], lightPosition[1], lightPosition[2], lightPosition[3]);
-  Light::inst().drawLightSource(lightAngle, lightHeight);
-#endif // SHOW_LIGHT_SOURCE
-
-  glPopMatrix();
-
-  //red[1]->setPosition(Vector3(4, 0, 4));
-
-  //dice->setPosition(glp3f(-4, 4, 4));
-  //red[0].setAngle(180);
+  Game::inst().loop();
 
   glutSwapBuffers();
 }
@@ -441,14 +266,14 @@ void list_hits(GLint hits, GLuint *names)
     }
   }
 
-  if (name == 3)
-  {
-    dice->highlight(!dice->isHighlight());
-  }
-  if (name == 2)
-  {
-    red[1]->highlight(!red[1]->isHighlight());
-  }
+  //if (name == 3)
+  //{
+  //  dice->highlight(!dice->isHighlight());
+  //}
+  //if (name == 2)
+  //{
+  //  red[1]->highlight(!red[1]->isHighlight());
+  //}
 
   printf("\n");
 }
@@ -623,16 +448,12 @@ void keyboardCB(unsigned char key,int x,int y)
   case 'r':
     cameraAngleX = cameraAngleY = 0;
     break;
-  case 'a':
-    cout << red[0]->getAnchorPoint().y << endl;
-    cout << red[1]->getCenterLocation().toString();
-    break;
   case 'm':
     if (index > 14)
     {
       index = 0;
     }
-    red[1]->moveTo(wayPoints[index], 0.5);
+    //red[1]->moveTo(wayPoints[index], 0.5);
     index++;
     break;
 
@@ -642,7 +463,7 @@ void keyboardCB(unsigned char key,int x,int y)
 }
 
 void timerCB(int value) {
-  lightAngle+=0.3;
+  Game::inst().lightAngle+=0.3;
 
   glutPostRedisplay(); //Redraw scene
 
@@ -671,7 +492,7 @@ int main( int argc, char *argv[] )  {
   initGL();
 
   // Initialize some things.
-  initModel( );
+  Game::inst().initModel();
 
   //glutTimerFunc(DELTA_TIME, timerCB, 0);
 
