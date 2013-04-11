@@ -28,8 +28,12 @@
     <ClCompile Include="ModelOBJ.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Graphic.cpp" />
+    <ClCompile Include="Game.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphic.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOIL\SOIL.h">
@@ -71,8 +75,12 @@
     <ClInclude Include="Timer.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="Graphic.h" />
+    <ClInclude Include="Graphic.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

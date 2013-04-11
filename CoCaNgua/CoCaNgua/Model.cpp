@@ -216,57 +216,61 @@ void Model::drawModel()
 {
   float x, y, z;
   getCenter(x, y, z);
-  // Move Object to coordinate origin
-  glTranslatef(-x, -y, -z);
-
-  float scaleX = (getWidth() + mHighlightThickness)/getWidth();
-  float scaleY = (getHeight() + mHighlightThickness)/getHeight();
-  float scaleZ = (getLength() + mHighlightThickness)/getLength();
 
   glPushMatrix();
 
-  update();
+    // Move Object to coordinate origin
+    glTranslatef(-x, -y, -z);
 
-  glTranslated(mPos.x - mAnchor.x*getWidth(), 
-               mPos.y - mAnchor.y*getHeight(),
-               mPos.z - mAnchor.z*getLength());
-  glRotatef(mAngle, mRotate.x, mRotate.y, mRotate.z);
-
-
-  if(mHighlight)
-  {
-    glEnable(GL_STENCIL_TEST);
-    glStencilFunc(GL_ALWAYS, 0x0, 0x4);
-    glStencilMask(0x4);
-    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-  }
-
-  draw();
-
-  if (mHighlight)
-  {
-    glStencilMask(0xffffffff);
-    glClearStencil(0x4);
-
-    glDisable(GL_LIGHTING);
-    glEnable(GL_BLEND);
-    glEnable(GL_STENCIL_TEST);
-    glColor4f(mHighlightColor[0], mHighlightColor[1], mHighlightColor[2], mHighlightColor[3]);  /* 30% sorta yellow. */
-    glStencilFunc(GL_EQUAL, 0x4, 0x4);
-    glStencilMask(0x4);
-    glStencilOp(GL_KEEP, GL_KEEP, GL_INVERT);
+    float scaleX = (getWidth() + mHighlightThickness)/getWidth();
+    float scaleY = (getHeight() + mHighlightThickness)/getHeight();
+    float scaleZ = (getLength() + mHighlightThickness)/getLength();
 
     glPushMatrix();
-      glScalef(scaleX, scaleY, scaleZ);
-      //glTranslated(0, -getHeight()*(scaleY-1)/2, 0);
+
+      update();
+
+      glTranslated(mPos.x - mAnchor.x*getWidth(), 
+                   mPos.y - mAnchor.y*getHeight(),
+                   mPos.z - mAnchor.z*getLength());
+      glRotatef(mAngle, mRotate.x, mRotate.y, mRotate.z);
+
+
+      if(mHighlight)
+      {
+        glEnable(GL_STENCIL_TEST);
+        glStencilFunc(GL_ALWAYS, 0x0, 0x4);
+        glStencilMask(0x4);
+        glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+      }
+
       draw();
+
+      if (mHighlight)
+      {
+        glStencilMask(0xffffffff);
+        glClearStencil(0x4);
+
+        glDisable(GL_LIGHTING);
+        glEnable(GL_BLEND);
+        glEnable(GL_STENCIL_TEST);
+        glColor4f(mHighlightColor[0], mHighlightColor[1], mHighlightColor[2], mHighlightColor[3]);  /* 30% sorta yellow. */
+        glStencilFunc(GL_EQUAL, 0x4, 0x4);
+        glStencilMask(0x4);
+        glStencilOp(GL_KEEP, GL_KEEP, GL_INVERT);
+
+        glPushMatrix();
+          glScalef(scaleX, scaleY, scaleZ);
+          //glTranslated(0, -getHeight()*(scaleY-1)/2, 0);
+          draw();
+        glPopMatrix();
+
+        glDisable(GL_BLEND);
+        glDisable(GL_STENCIL_TEST);
+        glEnable(GL_LIGHTING);
+      }
+
     glPopMatrix();
-
-    glDisable(GL_BLEND);
-    glDisable(GL_STENCIL_TEST);
-    glEnable(GL_LIGHTING);
-  }
-
   glPopMatrix();
 }
 
