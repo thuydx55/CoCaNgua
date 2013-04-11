@@ -83,9 +83,7 @@ bool mouseLeftDown;
 bool mouseRightDown;
 bool mouseMiddleDown;
 float mouseX, mouseY;
-float cameraAngleX;
-float cameraAngleY;
-float cameraDistance;
+
 
 /* -- LOCAL VARIABLES ---------------------------------------------------- */
 
@@ -100,10 +98,6 @@ bool initSharedMem()
 
   mouseLeftDown = mouseRightDown = mouseMiddleDown = false;
   mouseX = mouseY = 0;
-
-  cameraAngleX = cameraAngleY = 0.0f;
-  cameraDistance = CAMERA_DISTANCE;
-
   return true;
 }
 
@@ -399,16 +393,6 @@ void mouseMotionCB(int x, int y) {
   if(mouseRightDown)
   {
     Camera::inst().rotate(x, y);
-
-    /*if (cameraAngleX < -eyePoint.y)
-    {
-      cameraAngleX = -eyePoint.y;
-    }
-
-    if (cameraAngleX > 60)
-    {
-      cameraAngleX = 60;
-    }*/
   }
   //if(mouseMiddleDown)
   //{
@@ -429,7 +413,7 @@ void keyboardCB(unsigned char key,int x,int y)
     break;
 
   case 'r':
-    cameraAngleX = cameraAngleY = 0;
+    //cameraAngleX = cameraAngleY = 0;
     break;
   case 'm':
     Game::inst().demoMove();

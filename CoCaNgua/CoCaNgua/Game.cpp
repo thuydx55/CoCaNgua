@@ -30,6 +30,96 @@ Game::Game(void)
   lightHeight = 20;
 
   font = GLUT_BITMAP_8_BY_13;
+
+  Vector3 redStart[] = {Vector3(-16, 0, -16),
+                        Vector3(-16, 0, -20),
+                        Vector3(-20, 0, -20),
+                        Vector3(-20, 0, -16)};
+  memcpy(redStartPos, redStart, sizeof(redStart));
+
+  Vector3 greenStart[] = {Vector3(16, 0, 16),
+                          Vector3(16, 0, 20),
+                          Vector3(20, 0, 20),
+                          Vector3(20, 0, 16)};
+  memcpy(greenStartPos, greenStart, sizeof(greenStart));
+
+  Vector3 blueStart[] = {Vector3(16, 0, -16),
+                         Vector3(16, 0, -20),
+                         Vector3(20, 0, -20),
+                         Vector3(20, 0, -16)};
+  memcpy(blueStartPos, blueStart, sizeof(blueStart));
+
+  Vector3 yellowStart[] = {Vector3(-16, 0, 16),
+                           Vector3(-16, 0, 20),
+                           Vector3(-20, 0, 20),
+                           Vector3(-20, 0, 16)};
+  memcpy(yellowStartPos, yellowStart, sizeof(yellowStart));
+
+  /* ROAD
+                x  x  G
+                x     x
+                x     x
+                x     x
+    B  x  x  x  x     x  x  x  x  x
+    x                             x
+    x  x  x  x  x     x  x  x  x  Y
+                x     x
+                x     x
+                x     x
+                R  x  x
+  */
+
+  Vector3 r[] = {Vector3(-20, 0, -4),
+
+    Vector3(-16, 0, -4),
+    Vector3(-12, 0, -4),
+    Vector3(-8, 0, -4),
+    Vector3(-4, 0, -4),
+    Vector3(-4, 0, -8),
+    Vector3(-4, 0, -12),
+    Vector3(-4, 0, -16),
+
+    Vector3(-4, 0, -20),
+    Vector3(0, 0, -20),
+    Vector3(4, 0, -20),
+
+    Vector3(4, 0, -16),
+    Vector3(4, 0, -12),
+    Vector3(4, 0, -8),
+    Vector3(4, 0, -4),
+    Vector3(8, 0, -4),
+    Vector3(12, 0, -4),
+    Vector3(16, 0, -4),
+
+    Vector3(20, 0, -4),
+    Vector3(20, 0, 0),
+    Vector3(20, 0, 4),
+
+    Vector3(16, 0, 4),
+    Vector3(12, 0, 4),
+    Vector3(8, 0, 4),
+    Vector3(4, 0, 4),
+    Vector3(4, 0, 8),
+    Vector3(4, 0, 12),
+    Vector3(4, 0, 16),
+
+    Vector3(4, 0, 20),
+    Vector3(0, 0, 20),
+    Vector3(-4, 0, 20),
+
+    Vector3(-4, 0, 16),
+    Vector3(-4, 0, 12),
+    Vector3(-4, 0, 8),
+    Vector3(-4, 0, 4),
+    Vector3(-8, 0, 4),
+    Vector3(-12, 0, 4),
+    Vector3(-16, 0, 4),
+
+    Vector3(-20, 0, 4),
+    Vector3(-20, 0, 0)
+  };
+
+  memcpy(road, r, sizeof(r));
 }
 
 Game& Game::inst()
@@ -40,32 +130,35 @@ Game& Game::inst()
 
 void Game::initModel()
 {
-  mBoard = new Model();
-  red[0] = new Model();
-  dice   = new Model();
+  mBoard       = new Model();
+  Model* horse = new Model();
+  dice         = new Model();
 
   mBoard->loadModel("Models/board.obj");
   mBoard->setAnchorPoint(Vector3(0, 0.5, 0));
 
   dice->loadModel("Models/dice.obj");
-  dice->setAnchorPoint(Vector3(0, -0.5, 0));
 
-  red[0]->loadModel("Models/knight.obj");
-  red[0]->setAnchorPoint(Vector3(0, -0.5, 0));
+  horse->loadModel("Models/knight.obj");
+  horse->setAnchorPoint(Vector3(0, -0.5, 0));
 
   for (int i = 0; i < 4; i++)
   {
-    red[i] = new Model(red[0]);
-    red[i]->setColorTint(1, 0, 0);    // RED
+    red[i] = new Model(horse);
+    red[i]->setColorTint(0.8, 0, 0);    // RED
+    red[i]->setPosition(redStartPos[i]);
 
-    green[i] = new Model(red[0]);
-    green[i]->setColorTint(0, 1, 0);    // GREEN
+    green[i] = new Model(horse);
+    green[i]->setColorTint(0, 0.8, 0);    // GREEN
+    green[i]->setPosition(greenStartPos[i]);
 
-    blue[i] = new Model(red[0]);
-    blue[i]->setColorTint(0, 0, 1);    // BLUE
+    blue[i] = new Model(horse);
+    blue[i]->setColorTint(0, 0, 0.8);    // BLUE
+    blue[i]->setPosition(blueStartPos[i]);
 
-    yellow[i] = new Model(red[0]);
-    yellow[i]->setColorTint(1, 1, 0);    // YELLOW
+    yellow[i] = new Model(horse);
+    yellow[i]->setColorTint(0.8, 0.8, 0);    // YELLOW
+    yellow[i]->setPosition(yellowStartPos[i]);
   }
 
   red[1]->setPosition(Vector3(-20, 0, -4));
@@ -118,11 +211,23 @@ void Game::draw()
   glLoadName(1);
   mBoard->drawModel();
 
-  glLoadName(2);
-  red[1]->drawModel();
+  for (int i = 0; i < 4; i++)
+  {
+    glLoadName(RED_1 + i);
+    red[i]->drawModel();
 
-  glLoadName(3);
-  dice->drawModel();
+    glLoadName(BLUE_1 + i);
+    blue[i]->drawModel();
+
+    glLoadName(GREEN_1 + i);
+    green[i]->drawModel();
+
+    glLoadName(YELLOW_1 + i);
+    yellow[i]->drawModel();
+  }
+
+  /*glLoadName(3);
+  dice->drawModel();*/
 
   glEnable(GL_COLOR_MATERIAL);
 
