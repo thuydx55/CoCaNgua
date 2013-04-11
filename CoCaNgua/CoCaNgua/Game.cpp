@@ -69,57 +69,60 @@ Game::Game(void)
                 R  x  x
   */
 
-  Vector3 r[] = {Vector3(-20, 0, -4),
+  Vector3 r[] = { Vector3(-20, 0, -4),      // RED START
 
-    Vector3(-16, 0, -4),
-    Vector3(-12, 0, -4),
-    Vector3(-8, 0, -4),
-    Vector3(-4, 0, -4),
-    Vector3(-4, 0, -8),
-    Vector3(-4, 0, -12),
-    Vector3(-4, 0, -16),
+                  Vector3(-16, 0, -4),
+                  Vector3(-12, 0, -4),
+                  Vector3(-8, 0, -4),
+                  Vector3(-4, 0, -4),
+                  Vector3(-4, 0, -8),
+                  Vector3(-4, 0, -12),
+                  Vector3(-4, 0, -16),
 
-    Vector3(-4, 0, -20),
-    Vector3(0, 0, -20),
-    Vector3(4, 0, -20),
+                  Vector3(-4, 0, -20),
+                  Vector3(0, 0, -20),
+                  Vector3(4, 0, -20),       // BLUE START
 
-    Vector3(4, 0, -16),
-    Vector3(4, 0, -12),
-    Vector3(4, 0, -8),
-    Vector3(4, 0, -4),
-    Vector3(8, 0, -4),
-    Vector3(12, 0, -4),
-    Vector3(16, 0, -4),
+                  Vector3(4, 0, -16),
+                  Vector3(4, 0, -12),
+                  Vector3(4, 0, -8),
+                  Vector3(4, 0, -4),
+                  Vector3(8, 0, -4),
+                  Vector3(12, 0, -4),
+                  Vector3(16, 0, -4),
 
-    Vector3(20, 0, -4),
-    Vector3(20, 0, 0),
-    Vector3(20, 0, 4),
+                  Vector3(20, 0, -4),
+                  Vector3(20, 0, 0),
+                  Vector3(20, 0, 4),        // GREEN START
 
-    Vector3(16, 0, 4),
-    Vector3(12, 0, 4),
-    Vector3(8, 0, 4),
-    Vector3(4, 0, 4),
-    Vector3(4, 0, 8),
-    Vector3(4, 0, 12),
-    Vector3(4, 0, 16),
+                  Vector3(16, 0, 4),
+                  Vector3(12, 0, 4),
+                  Vector3(8, 0, 4),
+                  Vector3(4, 0, 4),
+                  Vector3(4, 0, 8),
+                  Vector3(4, 0, 12),
+                  Vector3(4, 0, 16),
 
-    Vector3(4, 0, 20),
-    Vector3(0, 0, 20),
-    Vector3(-4, 0, 20),
+                  Vector3(4, 0, 20),
+                  Vector3(0, 0, 20),
+                  Vector3(-4, 0, 20),       // YELLOW START
 
-    Vector3(-4, 0, 16),
-    Vector3(-4, 0, 12),
-    Vector3(-4, 0, 8),
-    Vector3(-4, 0, 4),
-    Vector3(-8, 0, 4),
-    Vector3(-12, 0, 4),
-    Vector3(-16, 0, 4),
+                  Vector3(-4, 0, 16),
+                  Vector3(-4, 0, 12),
+                  Vector3(-4, 0, 8),
+                  Vector3(-4, 0, 4),
+                  Vector3(-8, 0, 4),
+                  Vector3(-12, 0, 4),
+                  Vector3(-16, 0, 4),
 
-    Vector3(-20, 0, 4),
-    Vector3(-20, 0, 0)
+                  Vector3(-20, 0, 4),
+                  Vector3(-20, 0, 0)
   };
 
   memcpy(road, r, sizeof(r));
+
+  int c[] = { 0, 4, 8, 10, 14, 18, 20, 24, 28, 30, 34, 38 };
+  memcpy(connerIndex, c, sizeof(c));
 }
 
 Game& Game::inst()
@@ -262,15 +265,30 @@ void Game::demoMove()
     int diceNum = rand() % 6 + 1;
 
     int tmp = index + diceNum;
-    if (index > 14 || tmp > 14)
-    {
-      tmp = 0;
-      index = 0;
-    }
+
+    index = index >= 40 ? index-40 : index;
+    tmp = tmp >= 40 ? tmp-40 : tmp;
 
     cout << "Dice: " << diceNum << " Temp: " << tmp << endl;
 
-    red[1]->jumpTo(wayPoints[index], wayPoints[tmp], tmp - index, 1.5);
+    vector<Vector3> target;
+
+    if (tmp > index)
+    {
+      for (int i = 0; i < 12; i++)
+        if (index < connerIndex[i] && connerIndex[i] < tmp )
+          target.push_back(road[connerIndex[i]]);
+    }
+    else
+    {
+      if (index < connerIndex[11])
+        target.push_back(road[connerIndex[11]]);
+      if (tmp > connerIndex[0])
+        target.push_back(road[connerIndex[0]]);
+    }
+    target.push_back(road[tmp]);
+
+    red[1]->jumpTo(road[index], target, JUMP_MOVE);
     index = tmp;
   }
 }

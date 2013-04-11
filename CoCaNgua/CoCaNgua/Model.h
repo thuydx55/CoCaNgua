@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include <cstring>
+#include <vector>
 
 #include "Timer.h"
 
@@ -23,6 +24,12 @@ enum ModelState
   IDLE,
   MOVE,
   JUMP
+};
+
+enum JumpState
+{
+  JUMP_MOVE,
+  JUMP_ATTACK
 };
 
 typedef std::map<std::string, GLuint> ModelTextures;
@@ -52,11 +59,11 @@ class Model : public ModelOBJ
   Timer mTimer;
   Timer mStepTimer;
 
-  int mJumps;
+  vector<int> mJumps;
   float mHeight;
-  float mDuration;
+  vector<float> mDuration;
   Vector3 mStartPos;
-  Vector3 mTarget;
+  vector<Vector3> mTarget;
   
 
   void draw();
@@ -81,7 +88,7 @@ public:
 
   void moveTo(Vector3 pTarget, float pDuration);
 
-  void jumpTo(Vector3 pStart, Vector3 pTarget, int pJumps, float pDuration);
+  void jumpTo(Vector3 pStart, vector<Vector3> pTarget, JumpState j);
 
   void update();
 

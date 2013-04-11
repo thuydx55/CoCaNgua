@@ -1,5 +1,6 @@
 #include "Model.h"
 
+int ind = 0;
 
 Model::Model(void)
 {
@@ -330,7 +331,7 @@ void Model::moveTo( Vector3 pTarget, float pDuration )
   }
 }
 
-void Model::jumpTo( Vector3 pStart, Vector3 pTarget, int pJumps, float pDuration )
+void Model::jumpTo( Vector3 pStart, vector<Vector3> pTarget, JumpState j )
 {
   if (mState == IDLE)
   {
@@ -339,8 +340,21 @@ void Model::jumpTo( Vector3 pStart, Vector3 pTarget, int pJumps, float pDuration
     mStartPos = pStart;
     mTarget = pTarget;
     mHeight = 5;
-    mJumps = pJumps;
-    mDuration = mJumps * 0.25;
+
+    if (j == JUMP_MOVE)
+    {
+       Vector3 delta = (pTarget[0] - pStart)/4;
+       mJumps.push_back(delta.magnitude());
+       mDuration.push_back(delta.magnitude() * 0.25);
+
+       for (int i = 1; i < pTarget.size(); i++)
+       {
+         delta = (pTarget[i] - pTarget[i-1])/4;
+         mJumps.push_back(delta.magnitude());
+         mDuration.push_back(delta.magnitude() * 0.25);
+       }
+    }
+
     /*cout << "X: " << mTarget.x << "Y: " << mTarget.y << "Z: " << mTarget.z << endl;*/
     mTimer.start();
   }
@@ -348,21 +362,42 @@ void Model::jumpTo( Vector3 pStart, Vector3 pTarget, int pJumps, float pDuration
 
 void Model::update(  )
 {
-  if (mTimer.elapsed() > mDuration)
-  {
-    mState = IDLE;
-  }
+  double tEnlapse = mTimer.elapsed();
+
   if (mState == JUMP)
   {
-    float frac = fmodf((mTimer.elapsed() / mDuration) * mJumps, 1);
+    Vector3 target = mTarget[ind];
+
+    float frac = fmodf((tEnlapse / mDuration[ind]) * mJumps[ind], 1);
     //cout << frac << endl;
     float y = (mHeight * 4 * frac * (1 - frac));
-    y += mTarget.y * mTimer.elapsed();
-    float x = (mTarget - mStartPos).x * (mTimer.elapsed() / mDuration);
-    float z = (mTarget - mStartPos).z * (mTimer.elapsed() / mDuration);
+    y += target.y * tEnlapse;
+    float x = (target - mStartPos).x * (tEnlapse / mDuration[ind]);
+    float z = (target - mStartPos).z * (tEnlapse / mDuration[ind]);
 
     //cout << "X: " << x << "Y: " << y << "Z: " << z << endl;
     setPosition(Vector3(mStartPos.x + x, mStartPos.y + y, mStartPos.z + z));
+    
+    if (tEnlapse > mDuration[ind])
+    {
+      ind++;
+      if (ind >= mTarget.size())
+      {
+        ind = 0;
+        mTarget.clear();
+        mJumps.clear();
+        mDuration.clear();
+      }
+      //mState = IDLE;
+      setPosition(target);
+      mStartPos = target;
+      mTimer.start();
+    }
+
+    if (mTarget.empty())
+    {
+      mState = IDLE;
+    }
   }
   else if (mState == MOVE)
   {
