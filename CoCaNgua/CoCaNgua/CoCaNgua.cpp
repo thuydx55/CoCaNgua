@@ -54,23 +54,6 @@ const float CAMERA_DISTANCE = 10.0f;
 const int   TEXT_WIDTH      = 8;
 const int   TEXT_HEIGHT     = 13;
 const float DELTA_TIME      = 33;
-
-int index = 0;
-Vector3 wayPoints[] = {Vector3(-20, 0, -4), 
-                        Vector3(-16, 0, -4), 
-                        Vector3(-12, 0, -4), 
-                        Vector3(-8, 0, -4), 
-                        Vector3(-4, 0, -4), 
-                        Vector3(-4, 0, -8), 
-                        Vector3(-4, 0, -12), 
-                        Vector3(-4, 0, -16), 
-                        Vector3(-4, 0, -20), 
-                        Vector3(0, 0, -20), 
-                        Vector3(4, 0, -20), 
-                        Vector3(4, 0, -16), 
-                        Vector3(4, 0, -12), 
-                        Vector3(4, 0, -8), 
-                        Vector3(4, 0, -4)};
 /* -- DATA STRUCTURES ---------------------------------------------------- */
 
 enum army
@@ -449,12 +432,7 @@ void keyboardCB(unsigned char key,int x,int y)
     cameraAngleX = cameraAngleY = 0;
     break;
   case 'm':
-    if (index > 14)
-    {
-      index = 0;
-    }
-    //red[1]->moveTo(wayPoints[index], 0.5);
-    index++;
+    Game::inst().demoMove();
     break;
 
   default:

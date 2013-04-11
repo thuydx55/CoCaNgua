@@ -17,6 +17,14 @@
 
 using namespace std;
 
+
+enum ModelState
+{
+  IDLE,
+  MOVE,
+  JUMP
+};
+
 typedef std::map<std::string, GLuint> ModelTextures;
 
 class Model : public ModelOBJ
@@ -31,18 +39,24 @@ class Model : public ModelOBJ
   GLSYNTHESIZE(GLfloat, mHighlightThickness, HighLightThickness);
 
   GLSYNTHESIZE(Vector3, mMedDis, MediateDistance);
+  GLSYNTHESIZE(ModelState, mState, State);
 
-  float mSteps;
-  float mStepCounter;
+  int mSteps;
+  int mStepCounter;
 
   bool mHighlight;
-  bool mMoving;
   GLfloat mHighlightColor[4];
   GLfloat mColorTint[3];
   ModelTextures       g_modelTextures;
 
-  //Timer mMoveTimer;
+  Timer mTimer;
   Timer mStepTimer;
+
+  int mJumps;
+  float mHeight;
+  float mDuration;
+  Vector3 mStartPos;
+  Vector3 mTarget;
   
 
   void draw();
@@ -65,9 +79,9 @@ public:
 
   Vector3 getCenterLocation();
 
-  bool isMoving();
-
   void moveTo(Vector3 pTarget, float pDuration);
+
+  void jumpTo(Vector3 pStart, Vector3 pTarget, int pJumps, float pDuration);
 
   void update();
 

@@ -1,4 +1,23 @@
 #include "Game.h"
+#include <ctime>
+
+/* -- GLOBAL VARIABLES --------------------------------------------------- */
+int index = 0;
+Vector3 wayPoints[] = {Vector3(-20, 0, -4), 
+  Vector3(-16, 0, -4), 
+  Vector3(-12, 0, -4), 
+  Vector3(-8, 0, -4), 
+  Vector3(-4, 0, -4), 
+  Vector3(-4, 0, -8), 
+  Vector3(-4, 0, -12), 
+  Vector3(-4, 0, -16), 
+  Vector3(-4, 0, -20), 
+  Vector3(0, 0, -20), 
+  Vector3(4, 0, -20), 
+  Vector3(4, 0, -16), 
+  Vector3(4, 0, -12), 
+  Vector3(4, 0, -8), 
+  Vector3(4, 0, -4)};
 
 
 Game::Game(void)
@@ -48,6 +67,8 @@ void Game::initModel()
     yellow[i] = new Model(red[0]);
     yellow[i]->setColorTint(1, 1, 0);    // YELLOW
   }
+
+  red[1]->setPosition(Vector3(-20, 0, -4));
 }
 
 void Game::draw()
@@ -128,7 +149,26 @@ void Game::loop()
 
 }
 
+void Game::demoMove()
+{
+  if (red[1]->getState() == IDLE)
+  {
+    srand(time(NULL));
+    int diceNum = rand() % 6 + 1;
 
+    int tmp = index + diceNum;
+    if (index > 14 || tmp > 14)
+    {
+      tmp = 0;
+      index = 0;
+    }
+
+    cout << "Dice: " << diceNum << " Temp: " << tmp << endl;
+
+    red[1]->jumpTo(wayPoints[index], wayPoints[tmp], tmp - index, 1.5);
+    index = tmp;
+  }
+}
 
 Game::~Game(void)
 {

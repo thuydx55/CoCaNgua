@@ -34,6 +34,8 @@ public:
   static Game& inst();
 
   void loop();
+
+  void demoMove();
 };
 
 #endif // !_GAME_H

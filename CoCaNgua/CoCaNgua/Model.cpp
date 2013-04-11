@@ -19,7 +19,7 @@ Model::Model(void)
   mRotate = Vector3(0, 1, 0);
   mAngle = 0;
 
-  mMoving = false;
+  mState = IDLE;
 
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_DEPTH_TEST);
@@ -280,11 +280,6 @@ bool Model::isHighlight()
   return mHighlight;
 }
 
-bool Model::isMoving()
-{
-  return mMoving;
-}
-
 void Model::setHighLightColor( GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha )
 {
   mHighlightColor[0] = red;
@@ -315,37 +310,75 @@ Model::~Model(void)
 
 void Model::moveTo( Vector3 pTarget, float pDuration )
 {
-  mSteps = pDuration / 0.025;
+  if (mState == IDLE)
+  {
+    mState = MOVE;
+    mStepCounter = 0;
 
-  mMedDis.x = (pTarget.x - mPos.x) / mSteps;
-  mMedDis.y = (pTarget.y - mPos.y) / mSteps;
-  mMedDis.z = (pTarget.z - mPos.z) / mSteps;
+    mSteps = (int)(pDuration / 0.025);
 
-  //mMoveTimer.start();
-  mStepTimer.start();
+    mMedDis.x = (pTarget.x - mPos.x) / mSteps;
+    mMedDis.y = (pTarget.y - mPos.y) / mSteps;
+    mMedDis.z = (pTarget.z - mPos.z) / mSteps;
 
-  mStepCounter = 0;
-  mMoving = true;
+    //mMoveTimer.start();
+    mStepTimer.start();
+  }
+}
+
+void Model::jumpTo( Vector3 pStart, Vector3 pTarget, int pJumps, float pDuration )
+{
+  if (mState == IDLE)
+  {
+    mState = JUMP;
+
+    mStartPos = pStart;
+    mTarget = pTarget;
+    mHeight = 5;
+    mJumps = pJumps;
+    mDuration = mJumps * 0.25;
+    /*cout << "X: " << mTarget.x << "Y: " << mTarget.y << "Z: " << mTarget.z << endl;*/
+    mTimer.start();
+  }
 }
 
 void Model::update(  )
 {
-  if (mStepCounter < mSteps )
+  if (mTimer.elapsed() > mDuration)
   {
-    if (mStepTimer.elapsed() > 0.025)
-    {
-      mPos.x += mMedDis.x;
-      mPos.y += mMedDis.y;
-      mPos.z += mMedDis.z;
-
-      mStepTimer.start();
-
-      mStepCounter ++;
-      /*cout << mMoveTimer.elapsed() << endl;*/
-    }
+    mState = IDLE;
   }
-  else
+  if (mState == JUMP)
   {
-    mMoving = false;
+    float frac = fmodf((mTimer.elapsed() / mDuration) * mJumps, 1);
+    //cout << frac << endl;
+    float y = (mHeight * 4 * frac * (1 - frac));
+    y += mTarget.y * mTimer.elapsed();
+    float x = (mTarget - mStartPos).x * (mTimer.elapsed() / mDuration);
+    float z = (mTarget - mStartPos).z * (mTimer.elapsed() / mDuration);
+
+    //cout << "X: " << x << "Y: " << y << "Z: " << z << endl;
+    setPosition(Vector3(mStartPos.x + x, mStartPos.y + y, mStartPos.z + z));
+  }
+  else if (mState == MOVE)
+  {
+    if (mStepCounter < mSteps )
+    {
+      if (mStepTimer.elapsed() > 0.025)
+      {
+        mPos.x += mMedDis.x;
+        mPos.y += mMedDis.y;
+        mPos.z += mMedDis.z;
+
+        mStepTimer.start();
+
+        mStepCounter ++;
+        /*cout << mMoveTimer.elapsed() << endl;*/
+      }
+    }
+    else
+    {
+      mState = IDLE;
+    }
   }
 }
