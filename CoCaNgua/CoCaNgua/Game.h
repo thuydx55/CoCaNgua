@@ -45,6 +45,7 @@ class Game
   Model*              dice;
 
   Vector3 redStartPos[4], blueStartPos[4], yellowStartPos[4], greenStartPos[4];
+  Vector3 road[40];
 
   void draw();
 

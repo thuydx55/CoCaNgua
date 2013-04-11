@@ -36,6 +36,71 @@ Game::Game(void)
                            Vector3(-20, 0, 16)};
   memcpy(yellowStartPos, yellowStart, sizeof(yellowStart));
 
+  /* ROAD
+                x  x  G
+                x     x
+                x     x
+                x     x
+    B  x  x  x  x     x  x  x  x  x
+    x                             x
+    x  x  x  x  x     x  x  x  x  Y
+                x     x
+                x     x
+                x     x
+                R  x  x
+  */
+
+  Vector3 r[] = {Vector3(-20, 0, -4),
+
+    Vector3(-16, 0, -4),
+    Vector3(-12, 0, -4),
+    Vector3(-8, 0, -4),
+    Vector3(-4, 0, -4),
+    Vector3(-4, 0, -8),
+    Vector3(-4, 0, -12),
+    Vector3(-4, 0, -16),
+
+    Vector3(-4, 0, -20),
+    Vector3(0, 0, -20),
+    Vector3(4, 0, -20),
+
+    Vector3(4, 0, -16),
+    Vector3(4, 0, -12),
+    Vector3(4, 0, -8),
+    Vector3(4, 0, -4),
+    Vector3(8, 0, -4),
+    Vector3(12, 0, -4),
+    Vector3(16, 0, -4),
+
+    Vector3(20, 0, -4),
+    Vector3(20, 0, 0),
+    Vector3(20, 0, 4),
+
+    Vector3(16, 0, 4),
+    Vector3(12, 0, 4),
+    Vector3(8, 0, 4),
+    Vector3(4, 0, 4),
+    Vector3(4, 0, 8),
+    Vector3(4, 0, 12),
+    Vector3(4, 0, 16),
+
+    Vector3(4, 0, 20),
+    Vector3(0, 0, 20),
+    Vector3(-4, 0, 20),
+
+    Vector3(-4, 0, 16),
+    Vector3(-4, 0, 12),
+    Vector3(-4, 0, 8),
+    Vector3(-4, 0, 4),
+    Vector3(-8, 0, 4),
+    Vector3(-12, 0, 4),
+    Vector3(-16, 0, 4),
+
+    Vector3(-20, 0, 4),
+    Vector3(-20, 0, 0)
+  };
+
+  memcpy(road, r, sizeof(r));
 }
 
 Game& Game::inst()
@@ -140,8 +205,8 @@ void Game::draw()
     yellow[i]->drawModel();
   }
 
-  glLoadName(3);
-  dice->drawModel();
+  /*glLoadName(3);
+  dice->drawModel();*/
 
   glEnable(GL_COLOR_MATERIAL);
 
