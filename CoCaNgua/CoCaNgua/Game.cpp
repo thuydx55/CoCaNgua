@@ -3,21 +3,6 @@
 
 /* -- GLOBAL VARIABLES --------------------------------------------------- */
 int index = 0;
-Vector3 wayPoints[] = {Vector3(-20, 0, -4), 
-  Vector3(-16, 0, -4), 
-  Vector3(-12, 0, -4), 
-  Vector3(-8, 0, -4), 
-  Vector3(-4, 0, -4), 
-  Vector3(-4, 0, -8), 
-  Vector3(-4, 0, -12), 
-  Vector3(-4, 0, -16), 
-  Vector3(-4, 0, -20), 
-  Vector3(0, 0, -20), 
-  Vector3(4, 0, -20), 
-  Vector3(4, 0, -16), 
-  Vector3(4, 0, -12), 
-  Vector3(4, 0, -8), 
-  Vector3(4, 0, -4)};
 
 
 Game::Game(void)
