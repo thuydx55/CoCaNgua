@@ -60,12 +60,35 @@ public:
   void initModel();
   static Game& inst();
 
+  Model** getRedFigure();
+  Model** getBlueFigure();
+  Model** getGreenFigure();
+  Model** getYellowFigure();
+
   void resetBoard();
-
   void loop();
-
   void demoMove();
 };
+
+inline Model** Game::getRedFigure()
+{
+  return red;
+}
+
+inline Model** Game::getBlueFigure()
+{
+  return blue;
+}
+
+inline Model** Game::getGreenFigure()
+{
+  return green;
+}
+
+inline Model** Game::getYellowFigure()
+{
+  return yellow;
+}
 
 #endif // !_GAME_H
 
