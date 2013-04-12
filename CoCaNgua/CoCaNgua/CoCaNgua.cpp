@@ -56,25 +56,6 @@ const int   TEXT_HEIGHT     = 13;
 const float DELTA_TIME      = 33;
 /* -- DATA STRUCTURES ---------------------------------------------------- */
 
-enum army
-{
-  ARMY_RED,
-  ARMY_BLUE,
-  ARMY_GREEN,
-  ARMY_YELLOW,
-  ARMY_NONE
-};
-
-struct BoardPoint
-{
-  float x, y;
-  army startPoint;
-
-  BoardPoint() : x(0), y(0), startPoint(ARMY_NONE) {}; 
-  BoardPoint(float _x, float _y, army _s) : x(_x), y(_y), startPoint(_s) {};
-};
-
-
 /* -- GLOBAL VARIABLES --------------------------------------------------- */
 
 int screenWidth;
@@ -154,8 +135,8 @@ void initGL()
   glEnable(GL_CULL_FACE);
 
   // track material ambient and diffuse from surface color, call it before glEnable(GL_COLOR_MATERIAL)
-  glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-  glEnable(GL_COLOR_MATERIAL);
+  //glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+  //glEnable(GL_COLOR_MATERIAL);
 
   glClearColor(0.3, 0.3, 0.3, 1);                   // background color
   glClearStencil(0);                          // clear stencil buffer

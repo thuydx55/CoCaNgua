@@ -55,6 +55,38 @@ Game::Game(void)
                            Vector3(-20, 0, 16)};
   memcpy(yellowStartPos, yellowStart, sizeof(yellowStart));
 
+  Vector3 rStable[] = {
+    Vector3(-16, 0, 0),
+    Vector3(-12, 0, 0),
+    Vector3(-8, 0, 0),
+    Vector3(-4, 0, 0)
+  };
+  memcpy(redStable, rStable, sizeof(rStable));
+
+  Vector3 gStable[] = {
+    Vector3(16, 0, 0),
+    Vector3(12, 0, 0),
+    Vector3(8, 0, 0),
+    Vector3(4, 0, 0)
+  };
+  memcpy(greenStable, gStable, sizeof(gStable));
+
+  Vector3 bStable[] = {
+    Vector3(0, 0, -16),
+    Vector3(0, 0, -12),
+    Vector3(0, 0, -8),
+    Vector3(0, 0, -4)
+  };
+  memcpy(blueStable, bStable, sizeof(bStable));
+
+  Vector3 yStable[] = {
+    Vector3(0, 0, 16),
+    Vector3(0, 0, 12),
+    Vector3(0, 0, 8),
+    Vector3(0, 0, 4)
+  };
+  memcpy(yellowStable, yStable, sizeof(yStable));
+
   /* ROAD
                 x  x  G
                 x     x
@@ -172,6 +204,7 @@ void Game::draw()
   // Save current matrix state
   glPushMatrix();
 
+  glDisable(GL_LIGHTING);
 #if SHOW_GRID
   glBegin(GL_LINES);
   glColor3f(0, 0, 0);
@@ -184,6 +217,7 @@ void Game::draw()
   glVertex3f(0, 0, 0);
   glVertex3f(0, 0, 10);
   glEnd();
+  glEnable(GL_LIGHTING);
 
   float posi[3] = {10.0f, 0.0f, 0};
   float color[4] = {1,1,1,1};
@@ -209,7 +243,7 @@ void Game::draw()
   glEnd();*/
 #endif
 
-  glDisable(GL_COLOR_MATERIAL);
+  //glDisable(GL_COLOR_MATERIAL);
 
   glLoadName(1);
   mBoard->drawModel();
@@ -232,7 +266,7 @@ void Game::draw()
   /*glLoadName(3);
   dice->drawModel();*/
 
-  glEnable(GL_COLOR_MATERIAL);
+  //glEnable(GL_COLOR_MATERIAL);
 
   /*float pos[3] = {0.0f, 5.0f, 0};
   float colorS[4] = {1,1,1,1};

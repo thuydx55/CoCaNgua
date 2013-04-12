@@ -46,6 +46,7 @@ class Game
 
   Vector3 redStartPos[4], blueStartPos[4], yellowStartPos[4], greenStartPos[4];
   Vector3 road[40];
+  Vector3 redStable[4], blueStable[4], yellowStable[4], greenStable[4];
   int connerIndex[12];
 
   void draw();
