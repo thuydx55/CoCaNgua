@@ -243,6 +243,11 @@ void list_hits(GLint hits, GLuint *names)
     }
   }
 
+  if (name == 1)
+  {
+    Game::inst().demoMove();
+  }
+
   //if (name == 3)
   //{
   //  dice->highlight(!dice->isHighlight());

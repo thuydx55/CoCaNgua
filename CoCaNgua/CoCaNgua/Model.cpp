@@ -1,6 +1,6 @@
 #include "Model.h"
 
-int ind = 0;
+int id = 0;
 
 Model::Model(void)
 {
@@ -365,22 +365,22 @@ void Model::update(  )
 
   if (mState == JUMP)
   {
-    Vector3 target = mTarget[ind];
+    Vector3 target = mTarget[id];
 
-    float frac = fmodf((tEnlapse / mDuration[ind]) * mJumps[ind], 1);
+    float frac = fmodf((tEnlapse / mDuration[id]) * mJumps[id], 1);
     float y = (mHeight * 4 * frac * (1 - frac));
     y += target.y * tEnlapse;
-    float x = (target - mStartPos).x * (tEnlapse / mDuration[ind]);
-    float z = (target - mStartPos).z * (tEnlapse / mDuration[ind]);
+    float x = (target - mStartPos).x * (tEnlapse / mDuration[id]);
+    float z = (target - mStartPos).z * (tEnlapse / mDuration[id]);
 
     setPosition(Vector3(mStartPos.x + x, mStartPos.y + y, mStartPos.z + z));
     
-    if (tEnlapse > mDuration[ind])
+    if (tEnlapse > mDuration[id])
     {
-      ind++;
-      if (ind >= mTarget.size())
+      id++;
+      if (id >= mTarget.size())
       {
-        ind = 0;
+        id = 0;
         mTarget.clear();
         mJumps.clear();
         mDuration.clear();
