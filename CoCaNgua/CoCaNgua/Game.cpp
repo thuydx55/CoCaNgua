@@ -150,6 +150,9 @@ void Game::initModel()
   }
 
   red[1]->setPosition(Vector3(-20, 0, -4));
+  blue[1]->setPosition(Vector3(4, 0, -20));
+  green[1]->setPosition(Vector3(20, 0, 4));
+  yellow[1]->setPosition(Vector3(-4, 0, 20));
 }
 
 void Game::draw()
