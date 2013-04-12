@@ -15,22 +15,9 @@
 #include <vector>
 
 #include "Timer.h"
+#include "Geometry.h"
 
 using namespace std;
-
-
-enum ModelState
-{
-  IDLE,
-  MOVE,
-  JUMP
-};
-
-enum JumpState
-{
-  JUMP_MOVE,
-  JUMP_ATTACK
-};
 
 typedef std::map<std::string, GLuint> ModelTextures;
 
@@ -45,26 +32,23 @@ class Model : public ModelOBJ
   GLSYNTHESIZE(bool, g_enableTextures, EnableTextures);
   GLSYNTHESIZE(GLfloat, mHighlightThickness, HighLightThickness);
 
-  GLSYNTHESIZE(Vector3, mMedDis, MediateDistance);
   GLSYNTHESIZE(ModelState, mState, State);
 
-  int mSteps;
-  int mStepCounter;
+  Turn mType;
+  Vector3 mDefaultStartPos;
 
-  bool mHighlight;
-  GLfloat mHighlightColor[4];
-  GLfloat mColorTint[3];
-  ModelTextures       g_modelTextures;
+  bool                mHighlight;
+  GLfloat             mHighlightColor[4];
+  GLfloat             mColorTint[3];
+  ModelTextures       mModelTextures;
 
   Timer mTimer;
-  Timer mStepTimer;
 
-  vector<int> mJumps;
-  float mHeight;
-  vector<float> mDuration;
-  Vector3 mStartPos;
-  vector<Vector3> mTarget;
-  
+  vector<int>       mJumps;
+  float             mHeight;
+  vector<float>     mDuration;
+  Vector3           mStartPos;
+  vector<Vector3>   mTarget;
 
   void draw();
   GLuint loadTexture(const char *pszFilename);
@@ -86,12 +70,43 @@ public:
 
   Vector3 getCenterLocation();
 
-  void moveTo(Vector3 pTarget, float pDuration);
+  Turn getType();
+  void setType(Turn pType);
+  Vector3 getDefaultStartPos();
 
   void jumpTo(Vector3 pStart, vector<Vector3> pTarget, JumpState j);
 
   void update();
 
 };
+
+inline Turn Model::getType()
+{
+  return mType;
+}
+
+inline void Model::setType(Turn pType)
+{
+  mType = pType;
+  switch (mType) {
+  case RED:
+    mDefaultStartPos = Vector3(-20, 0, -4);
+    break;
+  case BLUE:
+    mDefaultStartPos = Vector3(4, 0, -20);
+    break;
+  case GREEN:
+    mDefaultStartPos = Vector3(20, 0, 4);
+    break;
+  case YELLOW:
+    mDefaultStartPos = Vector3(-4, 0, 20);
+    break;
+  }
+}
+
+inline Vector3 Model::getDefaultStartPos()
+{
+  return mDefaultStartPos;
+}
 
 #endif // !_MODEL_H_

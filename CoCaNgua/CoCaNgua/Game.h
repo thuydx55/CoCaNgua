@@ -8,33 +8,10 @@
 #include "Model.h"
 #include "Light.h"
 #include "Graphic.h"
+#include "Geometry.h"
 
 #define SHOW_GRID 1
 #define SHOW_LIGHT_SOURCE 1
-
-enum PIECE_NAME
-{
-  RED_1 = 100,
-  RED_2,
-  RED_3,
-  RED_4,
-
-  BLUE_1,
-  BLUE_2,
-  BLUE_3,
-  BLUE_4,
-
-  GREEN_1,
-  GREEN_2,
-  GREEN_3,
-  GREEN_4,
-
-  YELLOW_1,
-  YELLOW_2,
-  YELLOW_3,
-  YELLOW_4
-};
-
 
 class Game
 {
@@ -50,10 +27,15 @@ class Game
   int connerIndex[12];
 
   void draw();
+  Model* getModelByName(int name);
+  int getModelPositionIndex(Vector3 pPos);
+  bool checkAllModelIdle();
 
 public:
   GLfloat lightPosition[4];
   float lightAngle, lightHeight;
+
+  Turn playerTurn;
 
   Game(void);
   ~Game(void);
@@ -68,7 +50,7 @@ public:
 
   void resetBoard();
   void loop();
-  void demoMove();
+  void demoMove(int name);
 };
 
 inline Model** Game::getRedFigure()

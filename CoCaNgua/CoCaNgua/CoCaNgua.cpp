@@ -204,8 +204,7 @@ void list_hits(GLint hits, GLuint *names)
 
   printf("%d hits:\n", hits);
 
-  GLubyte maxMinZ = 0;
-  GLubyte maxMaxZ = 0;
+  GLubyte max= 0;
   int name = -1;
 
   for (i = 0; i < hits; i++) {
@@ -219,17 +218,13 @@ void list_hits(GLint hits, GLuint *names)
       (GLubyte)names[i * 4 + 3]
     );
 
-    if ((GLubyte)names[i*4+1] >= maxMinZ && (GLubyte)names[i*4+2] >= maxMaxZ) {
-      maxMinZ = (GLubyte)names[i*4+1];
-      maxMaxZ = (GLubyte)names[i*4+2];
+    if ((GLubyte)names[i*4+1] + (GLubyte)names[i*4+2] >= max) {
+      max = (GLubyte)names[i*4+1] + (GLubyte)names[i*4+2];
       name = (int)names[i*4+3];
     }
   }
 
-  if (name == RED_1 + 1)
-  {
-    Game::inst().demoMove();
-  }
+  Game::inst().demoMove(name);
 
   //if (name == 3)
   //{
@@ -404,7 +399,7 @@ void keyboardCB(unsigned char key,int x,int y)
     //cameraAngleX = cameraAngleY = 0;
     break;
   case 'm':
-    Game::inst().demoMove();
+    Game::inst().demoMove(RED_1);
     break;
 
   default:

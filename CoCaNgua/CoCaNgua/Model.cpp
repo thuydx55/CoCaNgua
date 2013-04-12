@@ -69,9 +69,9 @@ void Model::draw()
 
     if (g_enableTextures)
     {
-      iter = g_modelTextures.find(pMaterial->colorMapFilename);
+      iter = mModelTextures.find(pMaterial->colorMapFilename);
 
-      if (iter == g_modelTextures.end())
+      if (iter == mModelTextures.end())
       {
         glDisable(GL_TEXTURE_2D);
       }
@@ -166,7 +166,7 @@ void Model::loadModel(const char *pszFilename)
     }
 
     if (textureId)
-      g_modelTextures[pMaterial->colorMapFilename] = textureId;
+      mModelTextures[pMaterial->colorMapFilename] = textureId;
 
     // Look for and load any normal map textures.
 
@@ -190,7 +190,7 @@ void Model::loadModel(const char *pszFilename)
     }
 
     if (textureId)
-      g_modelTextures[pMaterial->bumpMapFilename] = textureId;
+      mModelTextures[pMaterial->bumpMapFilename] = textureId;
   }
 }
 
@@ -309,28 +309,6 @@ Vector3 Model::getCenterLocation()
   return Vector3(centerX, centerY, centerZ);
 }
 
-Model::~Model(void)
-{
-}
-
-void Model::moveTo( Vector3 pTarget, float pDuration )
-{
-  if (mState == IDLE)
-  {
-    mState = MOVE;
-    mStepCounter = 0;
-
-    mSteps = (int)(pDuration / 0.025);
-
-    mMedDis.x = (pTarget.x - mPos.x) / mSteps;
-    mMedDis.y = (pTarget.y - mPos.y) / mSteps;
-    mMedDis.z = (pTarget.z - mPos.z) / mSteps;
-
-    //mMoveTimer.start();
-    mStepTimer.start();
-  }
-}
-
 void Model::jumpTo( Vector3 pStart, vector<Vector3> pTarget, JumpState j )
 {
   if (mState == IDLE)
@@ -353,6 +331,12 @@ void Model::jumpTo( Vector3 pStart, vector<Vector3> pTarget, JumpState j )
          mJumps.push_back(delta.magnitude());
          mDuration.push_back(delta.magnitude() * 0.25);
        }
+    }
+    else if (j == JUMP_ATTACK)
+    {
+      mHeight = 10;
+      mJumps.push_back(1);
+      mDuration.push_back(0.5);
     }
 
     mTimer.start();
@@ -396,25 +380,8 @@ void Model::update(  )
       mState = IDLE;
     }
   }
-  else if (mState == MOVE)
-  {
-    if (mStepCounter < mSteps )
-    {
-      if (mStepTimer.elapsed() > 0.025)
-      {
-        mPos.x += mMedDis.x;
-        mPos.y += mMedDis.y;
-        mPos.z += mMedDis.z;
+}
 
-        mStepTimer.start();
-
-        mStepCounter ++;
-        /*cout << mMoveTimer.elapsed() << endl;*/
-      }
-    }
-    else
-    {
-      mState = IDLE;
-    }
-  }
+Model::~Model(void)
+{
 }

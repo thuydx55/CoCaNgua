@@ -1,10 +1,6 @@
 #include "Game.h"
 #include <ctime>
 
-/* -- GLOBAL VARIABLES --------------------------------------------------- */
-int index = 0;
-
-
 Game::Game(void)
 {
   lightPosition[0] = 50;
@@ -15,6 +11,8 @@ Game::Game(void)
   lightHeight = 20;
 
   font = GLUT_BITMAP_8_BY_13;
+
+  playerTurn = RED;
 
   Vector3 redStart[] = {Vector3(-16, 0, -16),
                         Vector3(-16, 0, -20),
@@ -167,18 +165,22 @@ void Game::initModel()
     red[i] = new Model(horse);
     red[i]->setColorTint(0.8, 0, 0);    // RED
     red[i]->setPosition(redStartPos[i]);
+    red[i]->setType(RED);
 
     green[i] = new Model(horse);
     green[i]->setColorTint(0, 0.8, 0);    // GREEN
     green[i]->setPosition(greenStartPos[i]);
+    green[i]->setType(GREEN);
 
     blue[i] = new Model(horse);
     blue[i]->setColorTint(0, 0, 0.8);    // BLUE
     blue[i]->setPosition(blueStartPos[i]);
+    blue[i]->setType(BLUE);
 
     yellow[i] = new Model(horse);
     yellow[i]->setColorTint(0.8, 0.8, 0);    // YELLOW
     yellow[i]->setPosition(yellowStartPos[i]);
+    yellow[i]->setType(YELLOW);
   }
 
   red[1]->setPosition(Vector3(-20, 0, -4));
@@ -279,39 +281,93 @@ void Game::loop()
 
 }
 
-void Game::demoMove()
+bool Game::checkAllModelIdle()
 {
-  if (red[1]->getState() == IDLE)
+  for (int i = 0; i < 4; i++)
+  {
+    if (red[i]->getState() != IDLE)
+      return false;
+    if (green[i]->getState() != IDLE)
+      return false;
+    if (blue[i]->getState() != IDLE)
+      return false;
+    if (yellow[i]->getState() != IDLE)
+      return false;
+  }
+  return true;
+}
+
+int Game::getModelPositionIndex( Vector3 pPos )
+{
+  for (int i = 0; i < 40; i++)
+    if (pPos == road[i])
+      return i;
+
+  return -1;
+}
+
+Model* Game::getModelByName( int name )
+{
+  int delta = name - RED_1;
+  if (delta < 0)
+    return NULL;
+
+  if (delta < 4)
+    return red[delta];
+  if (delta < 8)
+    return green[delta-4];
+  if (delta < 12)
+    return blue[delta-8];
+  if (delta < 16)
+    return yellow[delta-12];
+
+  return NULL;
+}
+
+
+void Game::demoMove(int name)
+{
+  Model* mod = getModelByName(name);
+  if (mod != NULL && checkAllModelIdle())
   {
     srand(time(NULL));
     int diceNum = rand() % 6 + 1;
-
-    int tmp = index + diceNum;
-
-    index = index >= 40 ? index-40 : index;
-    tmp = tmp >= 40 ? tmp-40 : tmp;
-
-    cout << "Dice: " << diceNum << " Temp: " << tmp << endl;
-
     vector<Vector3> target;
 
-    if (tmp > index)
+    int index = getModelPositionIndex(mod->getPosition());
+
+    if (index == -1)
     {
-      for (int i = 0; i < 12; i++)
-        if (index < connerIndex[i] && connerIndex[i] < tmp )
-          target.push_back(road[connerIndex[i]]);
+      target.push_back(mod->getDefaultStartPos());
+      mod->jumpTo(mod->getPosition(), target, JUMP_ATTACK);
     }
     else
     {
-      if (index < connerIndex[11])
-        target.push_back(road[connerIndex[11]]);
-      if (tmp > connerIndex[0])
-        target.push_back(road[connerIndex[0]]);
-    }
-    target.push_back(road[tmp]);
+      int tmp = index + diceNum;
 
-    red[1]->jumpTo(road[index], target, JUMP_MOVE);
-    index = tmp;
+      //index = index >= 40 ? index-40 : index;
+      tmp = tmp >= 40 ? tmp-40 : tmp;
+
+      cout << "Dice: " << diceNum << " Temp: " << tmp << endl;
+
+      if (tmp > index)
+      {
+        for (int i = 0; i < 12; i++)
+          if (index < connerIndex[i] && connerIndex[i] < tmp )
+            target.push_back(road[connerIndex[i]]);
+      }
+      else
+      {
+        if (index < connerIndex[11])
+          target.push_back(road[connerIndex[11]]);
+        if (tmp > connerIndex[0])
+          target.push_back(road[connerIndex[0]]);
+      }
+      target.push_back(road[tmp]);
+
+      mod->jumpTo(road[index], target, JUMP_MOVE);
+      index = tmp;
+    }
   }
 }
 
