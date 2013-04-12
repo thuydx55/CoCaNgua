@@ -1,6 +1,6 @@
 #include "Model.h"
 
-int ind = 0;
+int id = 0;
 
 Model::Model(void)
 {
@@ -339,13 +339,13 @@ void Model::jumpTo( Vector3 pStart, vector<Vector3> pTarget, JumpState j )
 
     mStartPos = pStart;
     mTarget = pTarget;
-    mHeight = 5;
 
     if (j == JUMP_MOVE)
     {
        Vector3 delta = (pTarget[0] - pStart)/4;
        mJumps.push_back(delta.magnitude());
        mDuration.push_back(delta.magnitude() * 0.25);
+       mHeight = 5;
 
        for (int i = 1; i < pTarget.size(); i++)
        {
@@ -355,7 +355,6 @@ void Model::jumpTo( Vector3 pStart, vector<Vector3> pTarget, JumpState j )
        }
     }
 
-    /*cout << "X: " << mTarget.x << "Y: " << mTarget.y << "Z: " << mTarget.z << endl;*/
     mTimer.start();
   }
 }
@@ -366,24 +365,22 @@ void Model::update(  )
 
   if (mState == JUMP)
   {
-    Vector3 target = mTarget[ind];
+    Vector3 target = mTarget[id];
 
-    float frac = fmodf((tEnlapse / mDuration[ind]) * mJumps[ind], 1);
-    //cout << frac << endl;
+    float frac = fmodf((tEnlapse / mDuration[id]) * mJumps[id], 1);
     float y = (mHeight * 4 * frac * (1 - frac));
     y += target.y * tEnlapse;
-    float x = (target - mStartPos).x * (tEnlapse / mDuration[ind]);
-    float z = (target - mStartPos).z * (tEnlapse / mDuration[ind]);
+    float x = (target - mStartPos).x * (tEnlapse / mDuration[id]);
+    float z = (target - mStartPos).z * (tEnlapse / mDuration[id]);
 
-    //cout << "X: " << x << "Y: " << y << "Z: " << z << endl;
     setPosition(Vector3(mStartPos.x + x, mStartPos.y + y, mStartPos.z + z));
     
-    if (tEnlapse > mDuration[ind])
+    if (tEnlapse > mDuration[id])
     {
-      ind++;
-      if (ind >= mTarget.size())
+      id++;
+      if (id >= mTarget.size())
       {
-        ind = 0;
+        id = 0;
         mTarget.clear();
         mJumps.clear();
         mDuration.clear();

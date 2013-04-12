@@ -204,7 +204,8 @@ void list_hits(GLint hits, GLuint *names)
 
   printf("%d hits:\n", hits);
 
-  GLubyte max = 0;
+  GLubyte maxMinZ = 0;
+  GLubyte maxMaxZ = 0;
   int name = -1;
 
   for (i = 0; i < hits; i++) {
@@ -218,10 +219,16 @@ void list_hits(GLint hits, GLuint *names)
       (GLubyte)names[i * 4 + 3]
     );
 
-    if ((GLubyte)names[i*4+1] > max) {
-      max = (GLubyte)names[i*4+1];
+    if ((GLubyte)names[i*4+1] >= maxMinZ && (GLubyte)names[i*4+2] >= maxMaxZ) {
+      maxMinZ = (GLubyte)names[i*4+1];
+      maxMaxZ = (GLubyte)names[i*4+2];
       name = (int)names[i*4+3];
     }
+  }
+
+  if (name == RED_1 + 1)
+  {
+    Game::inst().demoMove();
   }
 
   //if (name == 3)
