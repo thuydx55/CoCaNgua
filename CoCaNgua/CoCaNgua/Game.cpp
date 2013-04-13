@@ -351,9 +351,31 @@ void Game::demoMove(int name)
     return;
 
   Model* mod = getModelByName(name);
-  if (mod != NULL && checkAllModelIdle())
+  if (mod != NULL && mod->getType() == playerTurn && checkAllModelIdle())
   {
     mDiceIsThrown = false;
+    switch (playerTurn)
+    {
+    case RED:
+      //cout << "Red Turn" << endl;
+      playerTurn = BLUE;
+      break;
+    case BLUE:
+      //cout << "Blue Turn" << endl;
+      playerTurn = GREEN;
+      break;
+    case GREEN:
+      //cout << "Green Turn" << endl;
+      playerTurn = YELLOW;
+      break;
+    case YELLOW:
+      //cout << "Yellow Turn" << endl;
+      playerTurn = RED;
+      break;
+    default:
+      break;
+    }
+
     vector<Vector3> target;
 
     int index = getModelPositionIndex(mod->getPosition());

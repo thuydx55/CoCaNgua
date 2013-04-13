@@ -35,8 +35,8 @@ enum PIECE_NAME
 enum Turn
 {
   RED,
-  GREEN,
   BLUE,
+  GREEN,
   YELLOW
 };
 
