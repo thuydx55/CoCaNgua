@@ -30,6 +30,7 @@ class Game
   Model* getModelByName(int name);
   int getModelPositionIndex(Vector3 pPos);
   bool checkAllModelIdle();
+  int nextPosition(int pIndexCurPos, int pDiceNumber, Model* pModel);
 
 public:
   GLfloat lightPosition[4];

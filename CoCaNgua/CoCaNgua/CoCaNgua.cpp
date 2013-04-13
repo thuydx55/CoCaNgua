@@ -202,21 +202,21 @@ void list_hits(GLint hits, GLuint *names)
   4. Name of the hit (glLoadName)
   */
 
-  printf("%d hits:\n", hits);
+  //printf("%d hits:\n", hits);
 
   GLubyte max= 0;
   int name = -1;
 
   for (i = 0; i < hits; i++) {
-    printf(	"Number: %d\n"
-      "Min Z: %d\n"
-      "Max Z: %d\n"
-      "Name on stack: %d\n",
-      (GLubyte)names[i * 4],
-      (GLubyte)names[i * 4 + 1],
-      (GLubyte)names[i * 4 + 2],
-      (GLubyte)names[i * 4 + 3]
-    );
+    //printf(	"Number: %d\n"
+    //  "Min Z: %d\n"
+    //  "Max Z: %d\n"
+    //  "Name on stack: %d\n",
+    //  (GLubyte)names[i * 4],
+    //  (GLubyte)names[i * 4 + 1],
+    //  (GLubyte)names[i * 4 + 2],
+    //  (GLubyte)names[i * 4 + 3]
+    //);
 
     if ((GLubyte)names[i*4+1] + (GLubyte)names[i*4+2] >= max) {
       max = (GLubyte)names[i*4+1] + (GLubyte)names[i*4+2];
@@ -280,7 +280,7 @@ void gl_select(int x, int y)
   restrict the draw to an area around the cursor
   */
   gluPickMatrix(x, y, 1.0, 1.0, view);
-  gluPerspective(60.0f, (float)(screenWidth)/screenHeight, 1.0f, 1000.0f); // FOV, AspectRatio, NearClip, FarClip
+  gluPerspective(60.0f, (float)(screenWidth)/screenHeight, 10.0f, 1000.0f); // FOV, AspectRatio, NearClip, FarClip
 
   /*
   Draw the objects onto the screen
@@ -321,7 +321,7 @@ void gl_select(int x, int y)
 
 void mousedw(int x, int y, int but)
 {
-  printf("Mouse button %d pressed at %d %d\n", but, x, y);
+  //printf("Mouse button %d pressed at %d %d\n", but, x, y);
   gl_select(x,screenHeight-y); //Important: gl (0,0) ist bottom left but window coords (0,0) are top left so we have to change this!
 }
 

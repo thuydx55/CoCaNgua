@@ -281,6 +281,24 @@ void Game::loop()
 
 }
 
+int Game::nextPosition( int pIndexCurPos, int pDiceNumber, Model* pModel )
+{
+  int indexFirstPos = pModel->getIndexFirstPos();
+
+  int indexNextPos = pIndexCurPos + pDiceNumber;
+  if (indexNextPos >= 40)
+    indexNextPos -= 40;
+
+  // checking for GREEN, BLUE & YELLOW
+  if (indexFirstPos > pIndexCurPos && indexFirstPos <= indexNextPos)
+    return -1;
+  // checking for RED
+  if (indexFirstPos == 0 && indexNextPos < pDiceNumber)
+    return -1;
+
+  return indexNextPos;
+}
+
 bool Game::checkAllModelIdle()
 {
   for (int i = 0; i < 4; i++)
@@ -324,7 +342,6 @@ Model* Game::getModelByName( int name )
   return NULL;
 }
 
-
 void Game::demoMove(int name)
 {
   Model* mod = getModelByName(name);
@@ -336,27 +353,34 @@ void Game::demoMove(int name)
 
     int index = getModelPositionIndex(mod->getPosition());
 
+    // From init position
     if (index == -1)
     {
-      target.push_back(mod->getDefaultStartPos());
+      target.push_back(road[mod->getIndexFirstPos()]);
       mod->jumpTo(mod->getPosition(), target, JUMP_ATTACK);
     }
     else
     {
-      int tmp = index + diceNum;
-
-      //index = index >= 40 ? index-40 : index;
-      tmp = tmp >= 40 ? tmp-40 : tmp;
+      int tmp = nextPosition(index, diceNum, mod);
 
       cout << "Dice: " << diceNum << " Temp: " << tmp << endl;
 
+      if (tmp < 0 && (index == mod->getIndexFirstPos()-1 || index == mod->getIndexFirstPos()-1+40))
+      {
+        cout << "abc"; 
+        return;
+      } 
+      else if (tmp < 0)
+        return;
+
+      // Normal Move
       if (tmp > index)
       {
         for (int i = 0; i < 12; i++)
           if (index < connerIndex[i] && connerIndex[i] < tmp )
             target.push_back(road[connerIndex[i]]);
       }
-      else
+      else // Move with corner
       {
         if (index < connerIndex[11])
           target.push_back(road[connerIndex[11]]);

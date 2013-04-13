@@ -35,7 +35,7 @@ class Model : public ModelOBJ
   GLSYNTHESIZE(ModelState, mState, State);
 
   Turn mType;
-  Vector3 mDefaultStartPos;
+  int mIndexFirstPos;
 
   bool                mHighlight;
   GLfloat             mHighlightColor[4];
@@ -72,7 +72,7 @@ public:
 
   Turn getType();
   void setType(Turn pType);
-  Vector3 getDefaultStartPos();
+  int getIndexFirstPos();
 
   void jumpTo(Vector3 pStart, vector<Vector3> pTarget, JumpState j);
 
@@ -90,23 +90,23 @@ inline void Model::setType(Turn pType)
   mType = pType;
   switch (mType) {
   case RED:
-    mDefaultStartPos = Vector3(-20, 0, -4);
+    mIndexFirstPos = 0;
     break;
   case BLUE:
-    mDefaultStartPos = Vector3(4, 0, -20);
+    mIndexFirstPos = 10;
     break;
   case GREEN:
-    mDefaultStartPos = Vector3(20, 0, 4);
+    mIndexFirstPos = 20;
     break;
   case YELLOW:
-    mDefaultStartPos = Vector3(-4, 0, 20);
+    mIndexFirstPos = 30;
     break;
   }
 }
 
-inline Vector3 Model::getDefaultStartPos()
+inline int Model::getIndexFirstPos()
 {
-  return mDefaultStartPos;
+  return mIndexFirstPos;
 }
 
 #endif // !_MODEL_H_
