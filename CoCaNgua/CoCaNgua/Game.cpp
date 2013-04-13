@@ -272,24 +272,6 @@ void Game::loop()
 
 }
 
-int Game::nextPosition( int pIndexCurPos, int pDiceNumber, Model* pModel )
-{
-  int indexFirstPos = pModel->getIndexFirstPos();
-
-  int indexNextPos = pIndexCurPos + pDiceNumber;
-  if (indexNextPos >= 40)
-    indexNextPos -= 40;
-
-  // checking for GREEN, BLUE & YELLOW
-  if (indexFirstPos > pIndexCurPos && indexFirstPos <= indexNextPos)
-    return -1;
-  // checking for RED
-  if (indexFirstPos == 0 && indexNextPos < pDiceNumber)
-    return -1;
-
-  return indexNextPos;
-}
-
 bool Game::checkAllModelIdle()
 {
   for (int i = 0; i < 16; i++)
@@ -300,10 +282,10 @@ bool Game::checkAllModelIdle()
   return true;
 }
 
-int Game::getModelPositionIndex( Vector3 pPos )
+int Game::getModelPositionIndex( Vector3 pPos , Vector3 pArray[], int pSize)
 {
-  for (int i = 0; i < 40; i++)
-    if (pPos == mRoad[i])
+  for (int i = 0; i < pSize; i++)
+    if (pPos == pArray[i])
       return i;
 
   return -1;
@@ -351,27 +333,22 @@ void Game::demoMove(int name)
 
     vector<Vector3> target;
 
-    int index = getModelPositionIndex(mod->getPosition());
+    int k = (name - PIECE_RED_1) % 4;
 
-    // From init position
-    if (index == -1)
+    if (mPredictMoveState[k] == MOVE_ILLEGAL)
+      return;
+    else if (mPredictMoveState[k] == MOVE_START 
+      || mPredictMoveState[k] == MOVE_ATTACK
+      || mPredictMoveState[k] == MOVE_STABLE)
     {
-      target.push_back(mRoad[mod->getIndexFirstPos()]);
-      mod->jumpTo(mod->getPosition(), target, MOVE_ATTACK);
+      target.push_back(mPredictPosition[k]);
+      mod->jumpTo(target, mPredictMoveState[k]);
+
     }
-    else
+    else if (mPredictMoveState[k] == MOVE_NORMAL)
     {
-      int tmp = nextPosition(index, mDiceNumber, mod);
-
-      cout << "Dice: " << mDiceNumber << " Temp: " << tmp << endl;
-
-      if (tmp < 0 && (index == mod->getIndexFirstPos()-1 || index == mod->getIndexFirstPos()-1+40))
-      {
-        cout << "abc"; 
-        return;
-      } 
-      else if (tmp < 0)
-        return;
+      int index = getModelPositionIndex(mod->getPosition(), mRoad, 40);
+      int tmp = getModelPositionIndex(mPredictPosition[k], mRoad, 40);
 
       // Move with corner
       if (tmp > index)
@@ -389,8 +366,12 @@ void Game::demoMove(int name)
       }
       target.push_back(mRoad[tmp]);
 
-      mod->jumpTo(mRoad[index], target, MOVE_NORMAL);
-      index = tmp;
+      mod->jumpTo(target, MOVE_NORMAL);
+    }
+
+    for (int i = 0; i < 16; i++)
+    {
+      mPiece[i]->highlight(false);
     }
   }
 }
@@ -406,26 +387,49 @@ void Game::throwDice()
 
   for (int i = 0; i < 4; i++)
   {
+    mPiece[playerTurn*4+i]->highlight(true);
     int indexFirstPos = mPiece[playerTurn*4+i]->getIndexFirstPos();
-    int indexCur = getModelPositionIndex(mPiece[playerTurn*4+i]->getPosition());
-    if (indexCur == -1 && mDiceNumber == 6)
+    int indexCurRoad = getModelPositionIndex(mPiece[playerTurn*4+i]->getPosition(), mRoad, 40);
+    if (indexCurRoad == -1)
     {
-      predictIndexPos[i] = indexFirstPos;
+      int indexCurStable = getModelPositionIndex(mPiece[playerTurn*4+i]->getPosition(), mStable, 16);
+      if (indexCurStable != -1)
+      {
+        if (mDiceNumber <= 3 - indexCurStable%4)
+        {
+          mPredictPosition[i] = mStable[indexCurStable + mDiceNumber];
+          mPredictMoveState[i] = MOVE_STABLE;
+        }
+        continue;
+      }
+      if (mDiceNumber == 6)
+      {
+        predictIndexPos[i] = indexFirstPos;
+        mPredictMoveState[i] = MOVE_START;
+      }
       continue;
     }
 
-    int indexNext = indexCur + mDiceNumber;
+    int indexNext = indexCurRoad + mDiceNumber;
     if (indexNext >= 40)
       indexNext -= 40;
 
-    // checking for GREEN, BLUE & YELLOW
-    if (indexFirstPos > indexCur && indexFirstPos <= indexNext)
+    // check reaching finish
+    if ((indexFirstPos > indexCurRoad && indexFirstPos <= indexNext)
+      || (indexFirstPos == 0 && indexNext < mDiceNumber))
+    {
+      // From road to Stable
+      if ((indexCurRoad == indexFirstPos-1 || indexCurRoad == indexFirstPos-1+40) 
+        && mDiceNumber <= 4)
+      {
+        mPredictMoveState[i] = MOVE_STABLE;
+        mPredictPosition[i] = mStable[playerTurn*4 + mDiceNumber-1];
+      }
       continue;
-    // checking for RED
-    if (indexFirstPos == 0 && indexNext < mDiceNumber)
-      continue;
+    }
 
     predictIndexPos[i] = indexNext;
+    mPredictMoveState[i] = MOVE_NORMAL;
   }
 
   for (int i = 0; i < 4; i++)
@@ -435,7 +439,11 @@ void Game::throwDice()
     mPredictPosition[i] = mRoad[predictIndexPos[i]];
   }
 
-  //cout << "Dice Number: " << mDiceNumber << endl;
+  cout << "Dice Number: " << mDiceNumber << endl;
+  for (int i = 0; i < 4; i++)
+  {
+    cout << mPredictMoveState[i] << endl;
+  }
 }
 
 Game::~Game(void)

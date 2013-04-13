@@ -45,6 +45,7 @@ enum MoveState
   MOVE_START,
   MOVE_NORMAL,
   MOVE_ATTACK,
+  MOVE_STABLE,
   MOVE_ILLEGAL
 };
 

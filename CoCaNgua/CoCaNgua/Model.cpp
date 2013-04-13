@@ -309,18 +309,18 @@ Vector3 Model::getCenterLocation()
   return Vector3(centerX, centerY, centerZ);
 }
 
-void Model::jumpTo( Vector3 pStart, vector<Vector3> pTarget, MoveState pMoveState )
+void Model::jumpTo( vector<Vector3> pTarget, MoveState pMoveState )
 {
   if (mState == MODEL_IDLE)
   {
     mState = MODEL_JUMP;
 
-    mStartPos = pStart;
+    mStartPos = getPosition();
     mTarget = pTarget;
 
-    if (pMoveState == MOVE_NORMAL)
+    if (pMoveState == MOVE_NORMAL || pMoveState == MOVE_STABLE)
     {
-       Vector3 delta = (pTarget[0] - pStart)/4;
+       Vector3 delta = (pTarget[0] - mStartPos)/4;
        mJumps.push_back(delta.magnitude());
        mDuration.push_back(delta.magnitude() * 0.25);
        mHeight = 5;

@@ -74,7 +74,7 @@ public:
   void setType(Turn pType);
   int getIndexFirstPos();
 
-  void jumpTo(Vector3 pStart, vector<Vector3> pTarget, MoveState pMoveState);
+  void jumpTo(vector<Vector3> pTarget, MoveState pMoveState);
 
   void update();
 
