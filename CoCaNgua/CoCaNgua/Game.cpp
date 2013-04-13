@@ -3,6 +3,9 @@
 
 Game::Game(void)
 {
+  srand(time(NULL));
+  mDiceIsThrown = false;
+
   lightPosition[0] = 50;
   lightPosition[1] = 50;
   lightPosition[2] = 50;
@@ -344,11 +347,13 @@ Model* Game::getModelByName( int name )
 
 void Game::demoMove(int name)
 {
+  if (!mDiceIsThrown)
+    return;
+
   Model* mod = getModelByName(name);
   if (mod != NULL && checkAllModelIdle())
   {
-    srand(time(NULL));
-    int diceNum = rand() % 6 + 1;
+    mDiceIsThrown = false;
     vector<Vector3> target;
 
     int index = getModelPositionIndex(mod->getPosition());
@@ -361,9 +366,9 @@ void Game::demoMove(int name)
     }
     else
     {
-      int tmp = nextPosition(index, diceNum, mod);
+      int tmp = nextPosition(index, mDiceNumber, mod);
 
-      cout << "Dice: " << diceNum << " Temp: " << tmp << endl;
+      //cout << "Dice: " << mDiceNumber << " Temp: " << tmp << endl;
 
       if (tmp < 0 && (index == mod->getIndexFirstPos()-1 || index == mod->getIndexFirstPos()-1+40))
       {
@@ -373,14 +378,14 @@ void Game::demoMove(int name)
       else if (tmp < 0)
         return;
 
-      // Normal Move
+      // Move with corner
       if (tmp > index)
       {
         for (int i = 0; i < 12; i++)
           if (index < connerIndex[i] && connerIndex[i] < tmp )
             target.push_back(road[connerIndex[i]]);
       }
-      else // Move with corner
+      else // corner at index 38 & 0
       {
         if (index < connerIndex[11])
           target.push_back(road[connerIndex[11]]);
@@ -393,6 +398,13 @@ void Game::demoMove(int name)
       index = tmp;
     }
   }
+}
+
+void Game::throwDice()
+{
+  mDiceNumber = rand() % 6 + 1;
+  mDiceIsThrown = true;
+  //cout << "Dice Number: " << mDiceNumber << endl;
 }
 
 Game::~Game(void)

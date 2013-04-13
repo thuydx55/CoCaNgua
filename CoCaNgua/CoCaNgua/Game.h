@@ -26,6 +26,9 @@ class Game
   Vector3 redStable[4], blueStable[4], yellowStable[4], greenStable[4];
   int connerIndex[12];
 
+  int mDiceNumber;
+  bool mDiceIsThrown;
+
   void draw();
   Model* getModelByName(int name);
   int getModelPositionIndex(Vector3 pPos);
@@ -52,6 +55,7 @@ public:
   void resetBoard();
   void loop();
   void demoMove(int name);
+  void throwDice();
 };
 
 inline Model** Game::getRedFigure()

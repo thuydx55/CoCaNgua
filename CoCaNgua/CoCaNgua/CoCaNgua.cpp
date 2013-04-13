@@ -235,7 +235,7 @@ void list_hits(GLint hits, GLuint *names)
   //  red[1]->highlight(!red[1]->isHighlight());
   //}
 
-  printf("\n");
+  //printf("\n");
 }
 
 void gl_select(int x, int y)
@@ -399,7 +399,7 @@ void keyboardCB(unsigned char key,int x,int y)
     //cameraAngleX = cameraAngleY = 0;
     break;
   case 'm':
-    Game::inst().demoMove(RED_1);
+    Game::inst().throwDice();
     break;
 
   default:
