@@ -74,7 +74,7 @@ public:
   void setType(Turn pType);
   int getIndexFirstPos();
 
-  void jumpTo(Vector3 pStart, vector<Vector3> pTarget, JumpState j);
+  void jumpTo(Vector3 pStart, vector<Vector3> pTarget, MoveState pMoveState);
 
   void update();
 
@@ -88,20 +88,7 @@ inline Turn Model::getType()
 inline void Model::setType(Turn pType)
 {
   mType = pType;
-  switch (mType) {
-  case RED:
-    mIndexFirstPos = 0;
-    break;
-  case BLUE:
-    mIndexFirstPos = 10;
-    break;
-  case GREEN:
-    mIndexFirstPos = 20;
-    break;
-  case YELLOW:
-    mIndexFirstPos = 30;
-    break;
-  }
+  mIndexFirstPos = mType*10;
 }
 
 inline int Model::getIndexFirstPos()

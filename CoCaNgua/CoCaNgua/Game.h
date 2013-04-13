@@ -18,13 +18,16 @@ class Game
   void *font;
 
   Model*              mBoard;
-  Model               *red[4], *blue[4], *green[4], *yellow[4];
-  Model*              dice;
+  Model*              mPiece[16]; // 0:3 RED, 4:7 BLUE, 8:11 GREEN, 12:16 YELLOW
+  Model*              mDice;
 
-  Vector3 redStartPos[4], blueStartPos[4], yellowStartPos[4], greenStartPos[4];
-  Vector3 road[40];
-  Vector3 redStable[4], blueStable[4], yellowStable[4], greenStable[4];
+  Vector3 mStartPos[16];
+  Vector3 mRoad[40];
+  Vector3 mStable[16];
   int connerIndex[12];
+
+  Vector3 mPredictPosition[4];
+  MoveState mPredictMoveState[4];
 
   int mDiceNumber;
   bool mDiceIsThrown;
@@ -47,10 +50,7 @@ public:
   void initModel();
   static Game& inst();
 
-  Model** getRedFigure();
-  Model** getBlueFigure();
-  Model** getGreenFigure();
-  Model** getYellowFigure();
+  Model** getFigureArray();
 
   void resetBoard();
   void loop();
@@ -58,24 +58,9 @@ public:
   void throwDice();
 };
 
-inline Model** Game::getRedFigure()
+inline Model** Game::getFigureArray()
 {
-  return red;
-}
-
-inline Model** Game::getBlueFigure()
-{
-  return blue;
-}
-
-inline Model** Game::getGreenFigure()
-{
-  return green;
-}
-
-inline Model** Game::getYellowFigure()
-{
-  return yellow;
+  return mPiece;
 }
 
 #endif // !_GAME_H

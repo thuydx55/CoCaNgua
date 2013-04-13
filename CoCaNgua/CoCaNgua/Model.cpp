@@ -20,7 +20,7 @@ Model::Model(void)
   mRotate = Vector3(0, 1, 0);
   mAngle = 0;
 
-  mState = IDLE;
+  mState = MODEL_IDLE;
 
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_DEPTH_TEST);
@@ -309,16 +309,16 @@ Vector3 Model::getCenterLocation()
   return Vector3(centerX, centerY, centerZ);
 }
 
-void Model::jumpTo( Vector3 pStart, vector<Vector3> pTarget, JumpState j )
+void Model::jumpTo( Vector3 pStart, vector<Vector3> pTarget, MoveState pMoveState )
 {
-  if (mState == IDLE)
+  if (mState == MODEL_IDLE)
   {
-    mState = JUMP;
+    mState = MODEL_JUMP;
 
     mStartPos = pStart;
     mTarget = pTarget;
 
-    if (j == JUMP_MOVE)
+    if (pMoveState == MOVE_NORMAL)
     {
        Vector3 delta = (pTarget[0] - pStart)/4;
        mJumps.push_back(delta.magnitude());
@@ -332,7 +332,7 @@ void Model::jumpTo( Vector3 pStart, vector<Vector3> pTarget, JumpState j )
          mDuration.push_back(delta.magnitude() * 0.25);
        }
     }
-    else if (j == JUMP_ATTACK)
+    else if (pMoveState == MOVE_ATTACK || pMoveState == MOVE_START)
     {
       mHeight = 10;
       mJumps.push_back(1);
@@ -347,7 +347,7 @@ void Model::update(  )
 {
   double tEnlapse = mTimer.elapsed();
 
-  if (mState == JUMP)
+  if (mState == MODEL_JUMP)
   {
     Vector3 target = mTarget[id];
 
@@ -377,7 +377,7 @@ void Model::update(  )
 
     if (mTarget.empty())
     {
-      mState = IDLE;
+      mState = MODEL_IDLE;
     }
   }
 }
