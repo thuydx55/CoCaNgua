@@ -101,6 +101,7 @@
     <ClInclude Include="mathlib.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelOBJ.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="SOIL\image_DXT.h" />
     <ClInclude Include="SOIL\image_helper.h" />
     <ClInclude Include="SOIL\SOIL.h" />
@@ -108,6 +109,13 @@
     <ClInclude Include="SOIL\stbi_DDS_aug_c.h" />
     <ClInclude Include="SOIL\stb_image_aug.h" />
     <ClInclude Include="Timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CoCaNgua.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\dice.ico" />
+    <Image Include="icon1.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
