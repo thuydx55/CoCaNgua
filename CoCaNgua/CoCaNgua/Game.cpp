@@ -587,6 +587,10 @@ void Game::throwDice(int number)
     }
   }
 
+  bool startFieldMustMove = false;
+  int startPieceID;
+  int indexFirstPos = mPieces[playerTurn*4]->getIndexFirstPos();
+
   for (int i = 0; i < 4; i++)
   {
     // Mapping index to position
@@ -594,9 +598,21 @@ void Game::throwDice(int number)
       continue;
     mPredictPosition[i] = mFields[predictIndexPos[i]].position;
 
+    // Must be start
     if (mustBeStart && mPredictMoveState[i] != MOVE_START && mPredictMoveState[i] != MOVE_START_ATTACK)
     {
       mPredictMoveState[i] = MOVE_ILLEGAL;
+    }
+
+    // Checking if start field has piece
+    if (mFields[indexFirstPos].piece != NULL && !startFieldMustMove)
+    {
+      int indexCurField = getModelPositionIndex(mPieces[playerTurn*4+i]->getPosition(), mFields, 40);
+      if (indexCurField == indexFirstPos && mPredictMoveState[i] != MOVE_ILLEGAL)
+      {
+        startFieldMustMove = true;
+        startPieceID = i;
+      }
     }
   }
 
@@ -606,13 +622,20 @@ void Game::throwDice(int number)
   {
     cout << mPredictMoveState[i] << endl;
   }
-  cout << "Must be start: " << mustBeStart << endl;
 
   bool allMoveIllegal = true;
 
   // Checking if pieces can move
   for (int i = 0; i < 4; i++)
   {
+    if (startFieldMustMove)
+    {
+      if (mPredictMoveState[i] != MOVE_ILLEGAL && i != startPieceID)
+      {
+        mPredictMoveState[i] = MOVE_ILLEGAL;
+      }
+    }
+
     if (mPredictMoveState[i] != MOVE_ILLEGAL)
     {
       mPieces[playerTurn*4+i]->highlight(true);
