@@ -346,7 +346,7 @@ Model* Game::getModelByName( int name )
   return mPieces[delta];
 }
 
-void Game::demoMove(int name)
+void Game::Move(int name)
 {
   if (!mDieIsThrown)
     return;
@@ -448,6 +448,7 @@ void Game::throwDice(int number)
 {
   //mDiceNumber = rand() % 6 + 1;
   mDieIsThrown = true;
+  mustBeStart = false;
   mDieNumber = number;
 
   mPredictPosition[0] = mPredictPosition[1] = mPredictPosition[2] = mPredictPosition[3] = Vector3();
@@ -493,16 +494,18 @@ void Game::throwDice(int number)
         }
       }
 
+      /*---------------- DICE 6 -------------------*/
       // Piece move to start field
       if (mDieNumber == 6)
       {
+        mustBeStart = true;
         // Other piece on start field already
         if (mFields[indexFirstPos].piece != NULL)
         {
-
           // Other piece is the same
           if (mFields[indexFirstPos].piece->getType() == playerTurn)
           {
+            mustBeStart = false;
             continue;
           }
           // Start && Attack
@@ -559,6 +562,7 @@ void Game::throwDice(int number)
       continue;
     }
 
+    /*---------------- ATTACK && NORMAL -------------------*/
     // Checking if target field is not empty
     if (mFields[indexNext].piece != NULL)
     {
@@ -589,6 +593,11 @@ void Game::throwDice(int number)
     if (predictIndexPos[i] == -1)
       continue;
     mPredictPosition[i] = mFields[predictIndexPos[i]].position;
+
+    if (mustBeStart && mPredictMoveState[i] != MOVE_START && mPredictMoveState[i] != MOVE_START_ATTACK)
+    {
+      mPredictMoveState[i] = MOVE_ILLEGAL;
+    }
   }
 
   cout << "Player: " << playerTurn << endl;
@@ -597,6 +606,7 @@ void Game::throwDice(int number)
   {
     cout << mPredictMoveState[i] << endl;
   }
+  cout << "Must be start: " << mustBeStart << endl;
 
   bool allMoveIllegal = true;
 

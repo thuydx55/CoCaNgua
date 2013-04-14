@@ -224,7 +224,7 @@ void list_hits(GLint hits, GLuint *names)
     }
   }
 
-  Game::inst().demoMove(name);
+  Game::inst().Move(name);
 
   //if (name == 3)
   //{
@@ -405,6 +405,9 @@ void keyboardCB(unsigned char key,int x,int y)
   case '5':
   case '6':
     Game::inst().throwDice(key-48);
+    break;
+  case 'm':
+    Game::inst().throwDice(rand() % 6 +1);
     break;
 
   default:

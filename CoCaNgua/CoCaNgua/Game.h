@@ -55,6 +55,7 @@ class Game
 
   int mDieNumber;
   bool mDieIsThrown;
+  bool mustBeStart;
 
   void draw();
   Model* getModelByName(int name);
@@ -78,7 +79,7 @@ public:
 
   void resetBoard();
   void loop();
-  void demoMove(int name);
+  void Move(int name);
   void throwDice(int number);
 };
 
