@@ -4,7 +4,7 @@
 Game::Game(void)
 {
   srand(time(NULL));
-  mDiceIsThrown = false;
+  mDieIsThrown = false;
 
   lightPosition[0] = 50;
   lightPosition[1] = 50;
@@ -282,7 +282,7 @@ void Game::loop()
 
 void Game::nextTurn()
 {
-  mDiceIsThrown = false;
+  mDieIsThrown = false;
 
   for (int i = 0; i < 4; i++)
   {
@@ -341,7 +341,7 @@ Model* Game::getModelByName( int name )
 
 void Game::demoMove(int name)
 {
-  if (!mDiceIsThrown)
+  if (!mDieIsThrown)
     return;
 
   Model* mod = getModelByName(name);
@@ -391,7 +391,7 @@ void Game::demoMove(int name)
 void Game::throwDice()
 {
   mDiceNumber = rand() % 6 + 1;
-  mDiceIsThrown = true;
+  mDieIsThrown = true;
 
   mPredictPosition[0] = mPredictPosition[1] = mPredictPosition[2] = mPredictPosition[3] = Vector3();
   mPredictMoveState[0] = mPredictMoveState[1] = mPredictMoveState[2] = mPredictMoveState[3] = MOVE_ILLEGAL;

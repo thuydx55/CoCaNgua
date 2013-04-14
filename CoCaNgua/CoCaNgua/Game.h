@@ -48,13 +48,13 @@ class Game
   Vector3 mStartPos[16];
   Field mFields[40];
   Field mHome[16];
-  int connerIndex[12];
+  int mConnerIndex[12];
 
   Vector3 mPredictPosition[4];
   MoveState mPredictMoveState[4];
 
   int mDiceNumber;
-  bool mDiceIsThrown;
+  bool mDieIsThrown;
 
   void draw();
   Model* getModelByName(int name);
