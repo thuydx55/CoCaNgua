@@ -318,7 +318,7 @@ void Model::jumpTo( vector<Vector3> pTarget, MoveState pMoveState )
     mStartPos = getPosition();
     mTarget = pTarget;
 
-    if (pMoveState == MOVE_NORMAL || pMoveState == MOVE_STABLE)
+    if (pMoveState == MOVE_NORMAL || pMoveState == MOVE_HOME_INSIDE || pMoveState == MOVE_HOME_OUTSIDE)
     {
        Vector3 delta = (pTarget[0] - mStartPos)/4;
        mJumps.push_back(delta.magnitude());
@@ -332,7 +332,7 @@ void Model::jumpTo( vector<Vector3> pTarget, MoveState pMoveState )
          mDuration.push_back(delta.magnitude() * 0.25);
        }
     }
-    else if (pMoveState == MOVE_ATTACK || pMoveState == MOVE_START)
+    else if (pMoveState == MOVE_ATTACK || pMoveState == MOVE_START || pMoveState == MOVE_START_ATTACK)
     {
       mHeight = 10;
       mJumps.push_back(1);

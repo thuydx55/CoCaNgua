@@ -33,6 +33,7 @@ class Model : public ModelOBJ
   GLSYNTHESIZE(GLfloat, mHighlightThickness, HighLightThickness);
 
   GLSYNTHESIZE(ModelState, mState, State);
+  GLSYNTHESIZE(Vector3, mInitPos, InitPosition);
 
   Turn mType;
   int mIndexFirstPos;

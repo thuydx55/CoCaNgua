@@ -39,7 +39,7 @@ Game::Game(void)
   };
   memcpy(mStartPos, start, sizeof(start));
 
-  Vector3 stable[] = {Vector3(-16, 0, 0),
+  Vector3 home[] = {Vector3(-16, 0, 0),
                       Vector3(-12, 0, 0),
                       Vector3(-8, 0, 0),
                       Vector3(-4, 0, 0),        // RED
@@ -62,7 +62,7 @@ Game::Game(void)
   //memcpy(mHome, stable, sizeof(stable));
   for (int i = 0; i < 16; i++)
   {
-    mHome[i] = Field(stable[i]);
+    mHome[i] = Field(home[i]);
   }
 
   /* ROAD
@@ -164,25 +164,32 @@ void Game::initModel()
     mPieces[i] = new Model(horse);
     mPieces[i]->setColorTint(0.8, 0, 0);         // RED
     mPieces[i]->setPosition(mStartPos[i]);
+    mPieces[i]->setInitPosition(mStartPos[i]);
     mPieces[i]->setType(TURN_RED);
 
     mPieces[4+i] = new Model(horse);
     mPieces[4+i]->setColorTint(0, 0, 0.8);        // BLUE
     mPieces[4+i]->setPosition(mStartPos[4+i]);
+    mPieces[4+i]->setInitPosition(mStartPos[4+i]);
     mPieces[4+i]->setType(TURN_BLUE);
 
     mPieces[8+i] = new Model(horse);
     mPieces[8+i]->setColorTint(0, 0.8, 0);        // GREEN
     mPieces[8+i]->setPosition(mStartPos[8+i]);
+    mPieces[8+i]->setInitPosition(mStartPos[8+i]);
     mPieces[8+i]->setType(TURN_GREEN);
 
     mPieces[12+i] = new Model(horse);
     mPieces[12+i]->setColorTint(0.8, 0.8, 0);     // YELLOW
     mPieces[12+i]->setPosition(mStartPos[12+i]);
+    mPieces[12+i]->setInitPosition(mStartPos[12+i]);
     mPieces[12+i]->setType(TURN_YELLOW);
   }
 
-  //red[1]->setPosition(Vector3(-20, 0, -4));
+  mPieces[1]->setPosition(mFields[10].position);
+  mPieces[5]->setPosition(mFields[0].position);
+  mFields[0].piece = mPieces[5];
+  mFields[10].piece = mPieces[1];
   //blue[1]->setPosition(Vector3(4, 0, -20));
   //green[1]->setPosition(Vector3(20, 0, 4));
   //yellow[1]->setPosition(Vector3(-4, 0, 20));
@@ -355,9 +362,55 @@ void Game::demoMove(int name)
       return;
     else if (mPredictMoveState[k] == MOVE_START 
       || mPredictMoveState[k] == MOVE_ATTACK
-      || mPredictMoveState[k] == MOVE_STABLE)
+      || mPredictMoveState[k] == MOVE_HOME_INSIDE
+      || mPredictMoveState[k] == MOVE_HOME_OUTSIDE
+      || mPredictMoveState[k] == MOVE_START_ATTACK)
     {
       target.push_back(mPredictPosition[k]);
+
+      if (mPredictMoveState[k] == MOVE_ATTACK)
+      {
+        int index = getModelPositionIndex(mod->getPosition(), mFields, 40);
+        int tmp = getModelPositionIndex(mPredictPosition[k], mFields, 40);
+
+        mFields[tmp].piece->setPosition(mFields[tmp].piece->getInitPosition());
+        mFields[index].piece = NULL;
+        mFields[tmp].piece = mod;
+      }
+
+      if (mPredictMoveState[k] == MOVE_START_ATTACK)
+      {
+        int tmp = getModelPositionIndex(mPredictPosition[k], mFields, 40);
+
+        mFields[tmp].piece->setPosition(mFields[tmp].piece->getInitPosition());
+        mFields[tmp].piece = mod;
+      }
+
+      if (mPredictMoveState[k] == MOVE_START)
+      {
+        int tmp = getModelPositionIndex(mPredictPosition[k], mFields, 40);
+
+        mFields[tmp].piece = mod;
+      }
+
+      if (mPredictMoveState[k] == MOVE_HOME_INSIDE)
+      {
+        int index = getModelPositionIndex(mod->getPosition(), mHome, 16);
+        int tmp = getModelPositionIndex(mPredictPosition[k], mHome, 16);
+
+        mHome[index].piece = NULL;
+        mHome[tmp].piece = mod;
+      }
+
+      if (mPredictMoveState[k] == MOVE_HOME_OUTSIDE)
+      {
+        int index = getModelPositionIndex(mod->getPosition(), mFields, 40);
+        int tmp = getModelPositionIndex(mPredictPosition[k], mHome, 16);
+
+        mFields[index].piece = NULL;
+        mHome[tmp].piece = mod;
+      }
+
       mod->jumpTo(target, mPredictMoveState[k]);
       nextTurn();
     }
@@ -382,16 +435,20 @@ void Game::demoMove(int name)
       }
       target.push_back(mFields[tmp].position);
 
+      mFields[index].piece = NULL;
+      mFields[tmp].piece = mod;
+
       mod->jumpTo(target, MOVE_NORMAL);
       nextTurn();
     }
   }
 }
 
-void Game::throwDice()
+void Game::throwDice(int number)
 {
-  mDiceNumber = rand() % 6 + 1;
+  //mDiceNumber = rand() % 6 + 1;
   mDiceIsThrown = true;
+  mDiceNumber = number;
 
   mPredictPosition[0] = mPredictPosition[1] = mPredictPosition[2] = mPredictPosition[3] = Vector3();
   mPredictMoveState[0] = mPredictMoveState[1] = mPredictMoveState[2] = mPredictMoveState[3] = MOVE_ILLEGAL;
@@ -401,26 +458,72 @@ void Game::throwDice()
   {
     int indexFirstPos = mPieces[playerTurn*4+i]->getIndexFirstPos();
     int indexCurRoad = getModelPositionIndex(mPieces[playerTurn*4+i]->getPosition(), mFields, 40);
+    
+    // Piece not on the road
     if (indexCurRoad == -1)
     {
-      int indexCurStable = getModelPositionIndex(mPieces[playerTurn*4+i]->getPosition(), mHome, 16);
-      if (indexCurStable != -1)
+      int indexCurHome = getModelPositionIndex(mPieces[playerTurn*4+i]->getPosition(), mHome, 16);
+
+      // Piece in the home
+      if (indexCurHome != -1)
       {
-        if (mDiceNumber <= 3 - indexCurStable%4)
+        if (mDiceNumber <= 3 - indexCurHome%4)
         {
-          mPredictPosition[i] = mHome[indexCurStable + mDiceNumber].position;
-          mPredictMoveState[i] = MOVE_STABLE;
+          bool blocked = false;
+          // Checking if no piece on the way to target field
+          for (int j = indexCurHome+1; j <= indexCurHome + mDiceNumber; j++)
+          {
+            if (mHome[j].piece != NULL)
+            {
+              // There is
+              blocked = true;
+              break;
+            }
+          }
+
+          // Piece move if the way is cleared
+          if (!blocked)
+          {
+            mPredictPosition[i] = mHome[indexCurHome + mDiceNumber].position;
+            mPredictMoveState[i] = MOVE_HOME_INSIDE;
+          }
+
+          // Dice Number is too big, piece can't move
+          continue; 
         }
-        continue;
       }
+
+      // Piece move to start field
       if (mDiceNumber == 6)
       {
-        predictIndexPos[i] = indexFirstPos;
-        mPredictMoveState[i] = MOVE_START;
+        // Other piece on start field already
+        if (mFields[indexFirstPos].piece != NULL)
+        {
+
+          // Other piece is the same
+          if (mFields[indexFirstPos].piece->getType() == playerTurn)
+          {
+            continue;
+          }
+          // Start && Attack
+          else
+          {
+            predictIndexPos[i] = indexFirstPos;
+            mPredictMoveState[i] = MOVE_START_ATTACK;
+          }
+        }
+        // Start field is empty
+        else
+        {
+          predictIndexPos[i] = indexFirstPos;
+          mPredictMoveState[i] = MOVE_START;
+        }
       }
+      // Piece is on Init position, die number < 6, can't start
       continue;
     }
 
+    // Piece is on the road
     int indexNext = indexCurRoad + mDiceNumber;
     if (indexNext >= 40)
       indexNext -= 40;
@@ -429,13 +532,30 @@ void Game::throwDice()
     if ((indexFirstPos > indexCurRoad && indexFirstPos <= indexNext)
       || (indexFirstPos == 0 && indexNext < mDiceNumber))
     {
-      // From road to Stable
+      // From road to Home
       if ((indexCurRoad == indexFirstPos-1 || indexCurRoad == indexFirstPos-1+40) 
         && mDiceNumber <= 4)
       {
-        mPredictMoveState[i] = MOVE_STABLE;
-        mPredictPosition[i] = mHome[playerTurn*4 + mDiceNumber-1].position;
+        bool blocked = false;
+        // Checking if no piece on the way to target field
+        for (int j = 0; j < playerTurn*4 + mDiceNumber; j++)
+        {
+          if (mHome[j].piece != NULL)
+          {
+            // There is
+            blocked = true;
+            break;
+          }
+        }
+
+        // Piece move if the way is cleared
+        if (!blocked)
+        {
+          mPredictPosition[i] = mHome[playerTurn*4 + mDiceNumber-1].position;
+          mPredictMoveState[i] = MOVE_HOME_OUTSIDE; 
+        }
       }
+      // Dice > 4, can not move
       continue;
     }
 
@@ -445,6 +565,7 @@ void Game::throwDice()
 
   for (int i = 0; i < 4; i++)
   {
+    // Mapping index to position
     if (predictIndexPos[i] == -1)
       continue;
     mPredictPosition[i] = mFields[predictIndexPos[i]].position;
@@ -458,6 +579,8 @@ void Game::throwDice()
   }
 
   bool allMoveIllegal = true;
+
+  // Checking if pieces can move
   for (int i = 0; i < 4; i++)
   {
     if (mPredictMoveState[i] != MOVE_ILLEGAL)
@@ -467,6 +590,7 @@ void Game::throwDice()
     }
   }
 
+  // No piece can move?
   if (allMoveIllegal)
     nextTurn();
 }

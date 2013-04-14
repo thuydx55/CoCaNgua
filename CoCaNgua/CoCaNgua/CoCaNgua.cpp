@@ -398,8 +398,13 @@ void keyboardCB(unsigned char key,int x,int y)
   case 'r':
     //cameraAngleX = cameraAngleY = 0;
     break;
-  case 'm':
-    Game::inst().throwDice();
+  case '1':
+  case '2':
+  case '3':
+  case '4':
+  case '5':
+  case '6':
+    Game::inst().throwDice(key-48);
     break;
 
   default:

@@ -79,7 +79,7 @@ public:
   void resetBoard();
   void loop();
   void demoMove(int name);
-  void throwDice();
+  void throwDice(int number);
 };
 
 inline Model** Game::getFigureArray()
