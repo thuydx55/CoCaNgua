@@ -1,12 +1,17 @@
 Cờ Cá Ngựa
 ==========
 
-Yêu cầu
--------
+Requirement
+-----------
 
 * Mô phỏng bàn cá ngựa cho 2 - 4 người chơi
 * Mô phỏng chuyển động nước đi và ăn quân
 * Thay đổi được góc nhìn tùy ý.
+
+Game Rule
+---------
+
+* [Wikipedia](http://en.wikipedia.org/wiki/Mensch_%C3%A4rgere_dich_nicht)
 
 Project's Member
 --------------
