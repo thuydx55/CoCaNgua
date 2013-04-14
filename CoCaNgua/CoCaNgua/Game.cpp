@@ -559,8 +559,28 @@ void Game::throwDice(int number)
       continue;
     }
 
-    predictIndexPos[i] = indexNext;
-    mPredictMoveState[i] = MOVE_NORMAL;
+    // Checking if target field is not empty
+    if (mFields[indexNext].piece != NULL)
+    {
+      // Target piece is the same
+      if (mFields[indexNext].piece->getType() == playerTurn)
+      {
+        // There is
+        continue;
+      }
+      // Attack
+      else
+      {
+        predictIndexPos[i] = indexNext;
+        mPredictMoveState[i] = MOVE_ATTACK;
+      }
+    }
+    // Target field is empty, normal move
+    else
+    {
+      predictIndexPos[i] = indexNext;
+      mPredictMoveState[i] = MOVE_NORMAL;
+    }
   }
 
   for (int i = 0; i < 4; i++)
