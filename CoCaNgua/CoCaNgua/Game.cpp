@@ -4,7 +4,7 @@
 Game::Game(void)
 {
   srand(time(NULL));
-  mDiceIsThrown = false;
+  mDieIsThrown = false;
 
   lightPosition[0] = 50;
   lightPosition[1] = 50;
@@ -136,7 +136,7 @@ Game::Game(void)
   }
 
   int c[] = { 0, 4, 8, 10, 14, 18, 20, 24, 28, 30, 34, 38 };
-  memcpy(connerIndex, c, sizeof(c));
+  memcpy(mConnerIndex, c, sizeof(c));
 }
 
 Game& Game::inst()
@@ -186,10 +186,10 @@ void Game::initModel()
     mPieces[12+i]->setType(TURN_YELLOW);
   }
 
-  mPieces[1]->setPosition(mFields[10].position);
+  /*mPieces[1]->setPosition(mFields[10].position);
   mPieces[5]->setPosition(mFields[0].position);
   mFields[0].piece = mPieces[5];
-  mFields[10].piece = mPieces[1];
+  mFields[10].piece = mPieces[1];*/
   //blue[1]->setPosition(Vector3(4, 0, -20));
   //green[1]->setPosition(Vector3(20, 0, 4));
   //yellow[1]->setPosition(Vector3(-4, 0, 20));
@@ -289,14 +289,14 @@ void Game::loop()
 
 void Game::nextTurn()
 {
-  mDiceIsThrown = false;
+  mDieIsThrown = false;
 
   for (int i = 0; i < 4; i++)
   {
     mPieces[playerTurn*4 + i]->highlight(false);
   }
 
-  if (mDiceNumber != 6)
+  if (mDieNumber != 6)
   {
     switch (playerTurn)
     {
@@ -348,7 +348,7 @@ Model* Game::getModelByName( int name )
 
 void Game::demoMove(int name)
 {
-  if (!mDiceIsThrown)
+  if (!mDieIsThrown)
     return;
 
   Model* mod = getModelByName(name);
@@ -423,15 +423,15 @@ void Game::demoMove(int name)
       if (tmp > index)
       {
         for (int i = 0; i < 12; i++)
-          if (index < connerIndex[i] && connerIndex[i] < tmp )
-            target.push_back(mFields[connerIndex[i]].position);
+          if (index < mConnerIndex[i] && mConnerIndex[i] < tmp )
+            target.push_back(mFields[mConnerIndex[i]].position);
       }
       else // corner at index 38 & 0
       {
-        if (index < connerIndex[11])
-          target.push_back(mFields[connerIndex[11]].position);
-        if (tmp > connerIndex[0])
-          target.push_back(mFields[connerIndex[0]].position);
+        if (index < mConnerIndex[11])
+          target.push_back(mFields[mConnerIndex[11]].position);
+        if (tmp > mConnerIndex[0])
+          target.push_back(mFields[mConnerIndex[0]].position);
       }
       target.push_back(mFields[tmp].position);
 
@@ -447,8 +447,8 @@ void Game::demoMove(int name)
 void Game::throwDice(int number)
 {
   //mDiceNumber = rand() % 6 + 1;
-  mDiceIsThrown = true;
-  mDiceNumber = number;
+  mDieIsThrown = true;
+  mDieNumber = number;
 
   mPredictPosition[0] = mPredictPosition[1] = mPredictPosition[2] = mPredictPosition[3] = Vector3();
   mPredictMoveState[0] = mPredictMoveState[1] = mPredictMoveState[2] = mPredictMoveState[3] = MOVE_ILLEGAL;
@@ -467,11 +467,11 @@ void Game::throwDice(int number)
       // Piece in the home
       if (indexCurHome != -1)
       {
-        if (mDiceNumber <= 3 - indexCurHome%4)
+        if (mDieNumber <= 3 - indexCurHome%4)
         {
           bool blocked = false;
           // Checking if no piece on the way to target field
-          for (int j = indexCurHome+1; j <= indexCurHome + mDiceNumber; j++)
+          for (int j = indexCurHome+1; j <= indexCurHome + mDieNumber; j++)
           {
             if (mHome[j].piece != NULL)
             {
@@ -484,7 +484,7 @@ void Game::throwDice(int number)
           // Piece move if the way is cleared
           if (!blocked)
           {
-            mPredictPosition[i] = mHome[indexCurHome + mDiceNumber].position;
+            mPredictPosition[i] = mHome[indexCurHome + mDieNumber].position;
             mPredictMoveState[i] = MOVE_HOME_INSIDE;
           }
 
@@ -494,7 +494,7 @@ void Game::throwDice(int number)
       }
 
       // Piece move to start field
-      if (mDiceNumber == 6)
+      if (mDieNumber == 6)
       {
         // Other piece on start field already
         if (mFields[indexFirstPos].piece != NULL)
@@ -524,21 +524,21 @@ void Game::throwDice(int number)
     }
 
     // Piece is on the road
-    int indexNext = indexCurRoad + mDiceNumber;
+    int indexNext = indexCurRoad + mDieNumber;
     if (indexNext >= 40)
       indexNext -= 40;
 
     // check reaching finish
     if ((indexFirstPos > indexCurRoad && indexFirstPos <= indexNext)
-      || (indexFirstPos == 0 && indexNext < mDiceNumber))
+      || (indexFirstPos == 0 && indexNext < mDieNumber))
     {
       // From road to Home
       if ((indexCurRoad == indexFirstPos-1 || indexCurRoad == indexFirstPos-1+40) 
-        && mDiceNumber <= 4)
+        && mDieNumber <= 4)
       {
         bool blocked = false;
         // Checking if no piece on the way to target field
-        for (int j = 0; j < playerTurn*4 + mDiceNumber; j++)
+        for (int j = 0; j < playerTurn*4 + mDieNumber; j++)
         {
           if (mHome[j].piece != NULL)
           {
@@ -551,7 +551,7 @@ void Game::throwDice(int number)
         // Piece move if the way is cleared
         if (!blocked)
         {
-          mPredictPosition[i] = mHome[playerTurn*4 + mDiceNumber-1].position;
+          mPredictPosition[i] = mHome[playerTurn*4 + mDieNumber-1].position;
           mPredictMoveState[i] = MOVE_HOME_OUTSIDE; 
         }
       }
@@ -572,7 +572,7 @@ void Game::throwDice(int number)
   }
 
   cout << "Player: " << playerTurn << endl;
-  cout << "Dice Number: " << mDiceNumber << endl;
+  cout << "Dice Number: " << mDieNumber << endl;
   for (int i = 0; i < 4; i++)
   {
     cout << mPredictMoveState[i] << endl;
