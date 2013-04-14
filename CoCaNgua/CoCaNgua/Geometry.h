@@ -3,6 +3,7 @@
 #define _GEOMETRY_H_
 
 #include <gl/glut.h>
+#include "mathlib.h"
 
 #define GLSYNTHESIZE(varType, varName, funName)\
 protected: varType varName;\

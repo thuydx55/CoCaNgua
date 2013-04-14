@@ -59,7 +59,11 @@ Game::Game(void)
                       Vector3(0, 0, 8),
                       Vector3(0, 0, 4)          // YELLOW
   };
-  memcpy(mStable, stable, sizeof(stable));
+  //memcpy(mHome, stable, sizeof(stable));
+  for (int i = 0; i < 16; i++)
+  {
+    mHome[i] = Field(stable[i]);
+  }
 
   /* ROAD
                 x  x  G
@@ -125,7 +129,11 @@ Game::Game(void)
                   Vector3(-20, 0, 0)
   };
 
-  memcpy(mRoad, r, sizeof(r));
+  //memcpy(mFields, r, sizeof(r));
+  for (int i = 0; i < 40; i++)
+  {
+    mFields[i] = Field(r[i]);
+  }
 
   int c[] = { 0, 4, 8, 10, 14, 18, 20, 24, 28, 30, 34, 38 };
   memcpy(connerIndex, c, sizeof(c));
@@ -153,25 +161,25 @@ void Game::initModel()
 
   for (int i = 0; i < 4; i++)
   {
-    mPiece[i] = new Model(horse);
-    mPiece[i]->setColorTint(0.8, 0, 0);         // RED
-    mPiece[i]->setPosition(mStartPos[i]);
-    mPiece[i]->setType(TURN_RED);
+    mPieces[i] = new Model(horse);
+    mPieces[i]->setColorTint(0.8, 0, 0);         // RED
+    mPieces[i]->setPosition(mStartPos[i]);
+    mPieces[i]->setType(TURN_RED);
 
-    mPiece[4+i] = new Model(horse);
-    mPiece[4+i]->setColorTint(0, 0, 0.8);        // BLUE
-    mPiece[4+i]->setPosition(mStartPos[4+i]);
-    mPiece[4+i]->setType(TURN_BLUE);
+    mPieces[4+i] = new Model(horse);
+    mPieces[4+i]->setColorTint(0, 0, 0.8);        // BLUE
+    mPieces[4+i]->setPosition(mStartPos[4+i]);
+    mPieces[4+i]->setType(TURN_BLUE);
 
-    mPiece[8+i] = new Model(horse);
-    mPiece[8+i]->setColorTint(0, 0.8, 0);        // GREEN
-    mPiece[8+i]->setPosition(mStartPos[8+i]);
-    mPiece[8+i]->setType(TURN_GREEN);
+    mPieces[8+i] = new Model(horse);
+    mPieces[8+i]->setColorTint(0, 0.8, 0);        // GREEN
+    mPieces[8+i]->setPosition(mStartPos[8+i]);
+    mPieces[8+i]->setType(TURN_GREEN);
 
-    mPiece[12+i] = new Model(horse);
-    mPiece[12+i]->setColorTint(0.8, 0.8, 0);     // YELLOW
-    mPiece[12+i]->setPosition(mStartPos[12+i]);
-    mPiece[12+i]->setType(TURN_YELLOW);
+    mPieces[12+i] = new Model(horse);
+    mPieces[12+i]->setColorTint(0.8, 0.8, 0);     // YELLOW
+    mPieces[12+i]->setPosition(mStartPos[12+i]);
+    mPieces[12+i]->setType(TURN_YELLOW);
   }
 
   //red[1]->setPosition(Vector3(-20, 0, -4));
@@ -232,16 +240,16 @@ void Game::draw()
   for (int i = 0; i < 4; i++)
   {
     glLoadName(PIECE_RED_1 + i);
-    mPiece[i]->drawModel();
+    mPieces[i]->drawModel();
 
     glLoadName(PIECE_BLUE_1 + i);
-    mPiece[4+i]->drawModel();
+    mPieces[4+i]->drawModel();
 
     glLoadName(PIECE_GREEN_1 + i);
-    mPiece[8+i]->drawModel();
+    mPieces[8+i]->drawModel();
 
     glLoadName(PIECE_YELLOW_1 + i);
-    mPiece[12+i]->drawModel();
+    mPieces[12+i]->drawModel();
   }
 
   /*glLoadName(3);
@@ -278,7 +286,7 @@ void Game::nextTurn()
 
   for (int i = 0; i < 4; i++)
   {
-    mPiece[playerTurn*4 + i]->highlight(false);
+    mPieces[playerTurn*4 + i]->highlight(false);
   }
 
   if (mDiceNumber != 6)
@@ -307,16 +315,16 @@ bool Game::checkAllModelIdle()
 {
   for (int i = 0; i < 16; i++)
   {
-    if (mPiece[i]->getState() != MODEL_IDLE)
+    if (mPieces[i]->getState() != MODEL_IDLE)
       return false;
   }
   return true;
 }
 
-int Game::getModelPositionIndex( Vector3 pPos , Vector3 pArray[], int pSize)
+int Game::getModelPositionIndex( Vector3 pPos , Field pArray[], int pSize)
 {
   for (int i = 0; i < pSize; i++)
-    if (pPos == pArray[i])
+    if (pPos == pArray[i].position)
       return i;
 
   return -1;
@@ -328,7 +336,7 @@ Model* Game::getModelByName( int name )
   if (delta < 0 || delta > 15)
     return NULL;
 
-  return mPiece[delta];
+  return mPieces[delta];
 }
 
 void Game::demoMove(int name)
@@ -355,24 +363,24 @@ void Game::demoMove(int name)
     }
     else if (mPredictMoveState[k] == MOVE_NORMAL)
     {
-      int index = getModelPositionIndex(mod->getPosition(), mRoad, 40);
-      int tmp = getModelPositionIndex(mPredictPosition[k], mRoad, 40);
+      int index = getModelPositionIndex(mod->getPosition(), mFields, 40);
+      int tmp = getModelPositionIndex(mPredictPosition[k], mFields, 40);
 
       // Move with corner
       if (tmp > index)
       {
         for (int i = 0; i < 12; i++)
           if (index < connerIndex[i] && connerIndex[i] < tmp )
-            target.push_back(mRoad[connerIndex[i]]);
+            target.push_back(mFields[connerIndex[i]].position);
       }
       else // corner at index 38 & 0
       {
         if (index < connerIndex[11])
-          target.push_back(mRoad[connerIndex[11]]);
+          target.push_back(mFields[connerIndex[11]].position);
         if (tmp > connerIndex[0])
-          target.push_back(mRoad[connerIndex[0]]);
+          target.push_back(mFields[connerIndex[0]].position);
       }
-      target.push_back(mRoad[tmp]);
+      target.push_back(mFields[tmp].position);
 
       mod->jumpTo(target, MOVE_NORMAL);
       nextTurn();
@@ -391,16 +399,16 @@ void Game::throwDice()
 
   for (int i = 0; i < 4; i++)
   {
-    int indexFirstPos = mPiece[playerTurn*4+i]->getIndexFirstPos();
-    int indexCurRoad = getModelPositionIndex(mPiece[playerTurn*4+i]->getPosition(), mRoad, 40);
+    int indexFirstPos = mPieces[playerTurn*4+i]->getIndexFirstPos();
+    int indexCurRoad = getModelPositionIndex(mPieces[playerTurn*4+i]->getPosition(), mFields, 40);
     if (indexCurRoad == -1)
     {
-      int indexCurStable = getModelPositionIndex(mPiece[playerTurn*4+i]->getPosition(), mStable, 16);
+      int indexCurStable = getModelPositionIndex(mPieces[playerTurn*4+i]->getPosition(), mHome, 16);
       if (indexCurStable != -1)
       {
         if (mDiceNumber <= 3 - indexCurStable%4)
         {
-          mPredictPosition[i] = mStable[indexCurStable + mDiceNumber];
+          mPredictPosition[i] = mHome[indexCurStable + mDiceNumber].position;
           mPredictMoveState[i] = MOVE_STABLE;
         }
         continue;
@@ -426,7 +434,7 @@ void Game::throwDice()
         && mDiceNumber <= 4)
       {
         mPredictMoveState[i] = MOVE_STABLE;
-        mPredictPosition[i] = mStable[playerTurn*4 + mDiceNumber-1];
+        mPredictPosition[i] = mHome[playerTurn*4 + mDiceNumber-1].position;
       }
       continue;
     }
@@ -439,7 +447,7 @@ void Game::throwDice()
   {
     if (predictIndexPos[i] == -1)
       continue;
-    mPredictPosition[i] = mRoad[predictIndexPos[i]];
+    mPredictPosition[i] = mFields[predictIndexPos[i]].position;
   }
 
   cout << "Player: " << playerTurn << endl;
@@ -454,7 +462,7 @@ void Game::throwDice()
   {
     if (mPredictMoveState[i] != MOVE_ILLEGAL)
     {
-      mPiece[playerTurn*4+i]->highlight(true);
+      mPieces[playerTurn*4+i]->highlight(true);
       allMoveIllegal = false;
     }
   }
