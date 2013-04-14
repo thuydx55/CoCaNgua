@@ -81,7 +81,6 @@
     <ClInclude Include="Game.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -93,12 +92,5 @@
     <Filter Include="Classes">
       <UniqueIdentifier>{c51d09ed-c2fa-4b31-96f9-50f3623dec26}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="CoCaNgua.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="icon1.ico" />
-    <Image Include="..\dice.ico" />
   </ItemGroup>
 </Project>

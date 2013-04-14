@@ -272,6 +272,37 @@ void Game::loop()
 
 }
 
+void Game::nextTurn()
+{
+  mDiceIsThrown = false;
+
+  for (int i = 0; i < 4; i++)
+  {
+    mPiece[playerTurn*4 + i]->highlight(false);
+  }
+
+  if (mDiceNumber != 6)
+  {
+    switch (playerTurn)
+    {
+    case TURN_RED:
+      playerTurn = TURN_BLUE;
+      break;
+    case TURN_BLUE:
+      playerTurn = TURN_GREEN;
+      break;
+    case TURN_GREEN:
+      playerTurn = TURN_YELLOW;
+      break;
+    case TURN_YELLOW:
+      playerTurn = TURN_RED;
+      break;
+    default:
+      break;
+    } 
+  }
+}
+
 bool Game::checkAllModelIdle()
 {
   for (int i = 0; i < 16; i++)
@@ -308,29 +339,6 @@ void Game::demoMove(int name)
   Model* mod = getModelByName(name);
   if (mod != NULL && mod->getType() == playerTurn && checkAllModelIdle())
   {
-    mDiceIsThrown = false;
-    switch (playerTurn)
-    {
-    case TURN_RED:
-      cout << "Red Turn" << endl;
-      playerTurn = TURN_BLUE;
-      break;
-    case TURN_BLUE:
-      cout << "Blue Turn" << endl;
-      playerTurn = TURN_GREEN;
-      break;
-    case TURN_GREEN:
-      cout << "Green Turn" << endl;
-      playerTurn = TURN_YELLOW;
-      break;
-    case TURN_YELLOW:
-      cout << "Yellow Turn" << endl;
-      playerTurn = TURN_RED;
-      break;
-    default:
-      break;
-    }
-
     vector<Vector3> target;
 
     int k = (name - PIECE_RED_1) % 4;
@@ -343,7 +351,7 @@ void Game::demoMove(int name)
     {
       target.push_back(mPredictPosition[k]);
       mod->jumpTo(target, mPredictMoveState[k]);
-
+      nextTurn();
     }
     else if (mPredictMoveState[k] == MOVE_NORMAL)
     {
@@ -367,11 +375,7 @@ void Game::demoMove(int name)
       target.push_back(mRoad[tmp]);
 
       mod->jumpTo(target, MOVE_NORMAL);
-    }
-
-    for (int i = 0; i < 16; i++)
-    {
-      mPiece[i]->highlight(false);
+      nextTurn();
     }
   }
 }
@@ -387,7 +391,6 @@ void Game::throwDice()
 
   for (int i = 0; i < 4; i++)
   {
-    mPiece[playerTurn*4+i]->highlight(true);
     int indexFirstPos = mPiece[playerTurn*4+i]->getIndexFirstPos();
     int indexCurRoad = getModelPositionIndex(mPiece[playerTurn*4+i]->getPosition(), mRoad, 40);
     if (indexCurRoad == -1)
@@ -439,11 +442,25 @@ void Game::throwDice()
     mPredictPosition[i] = mRoad[predictIndexPos[i]];
   }
 
+  cout << "Player: " << playerTurn << endl;
   cout << "Dice Number: " << mDiceNumber << endl;
   for (int i = 0; i < 4; i++)
   {
     cout << mPredictMoveState[i] << endl;
   }
+
+  bool allMoveIllegal = true;
+  for (int i = 0; i < 4; i++)
+  {
+    if (mPredictMoveState[i] != MOVE_ILLEGAL)
+    {
+      mPiece[playerTurn*4+i]->highlight(true);
+      allMoveIllegal = false;
+    }
+  }
+
+  if (allMoveIllegal)
+    nextTurn();
 }
 
 Game::~Game(void)
