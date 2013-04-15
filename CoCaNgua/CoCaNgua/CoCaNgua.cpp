@@ -92,7 +92,7 @@ int initGLUT(int argc, char **argv)
   // it is called before any other GLUT routine
   glutInit(&argc, argv);
 
-  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_STENCIL);   // display mode
+  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_STENCIL | GLUT_MULTISAMPLE);   // display mode
 
   //   glutGameModeString("800x600:16@60");
   //   glutEnterGameMode();
@@ -160,6 +160,8 @@ void initGL()
 
 void displayCB( void )  {
 
+  glStencilMask(0xffffffff);
+  glClearStencil(0x4);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
   Game::inst().loop();
@@ -408,6 +410,9 @@ void keyboardCB(unsigned char key,int x,int y)
     break;
   case 'm':
     Game::inst().throwDice(rand() % 6 +1);
+    break;
+  case 'p':
+    cout << Light::inst().getPosition()[0] << ' ' << Light::inst().getPosition()[1] << ' ' << Light::inst().getPosition()[2] << ' ' << Light::inst().getPosition()[3] << endl;
     break;
 
   default:

@@ -16,10 +16,18 @@
 
 #include "Timer.h"
 #include "Geometry.h"
+#include "Light.h"
 
 using namespace std;
 
 typedef std::map<std::string, GLuint> ModelTextures;
+
+enum {
+  X, Y, Z, W
+};
+enum {
+  A, B, C, D
+};
 
 class Model : public ModelOBJ
 {
@@ -43,6 +51,10 @@ class Model : public ModelOBJ
   GLfloat             mColorTint[3];
   ModelTextures       mModelTextures;
 
+  bool				  mShadow;
+  //float				  lightAngle;
+  float floorShadow[4][4];
+
   Timer mTimer;
 
   vector<int>       mJumps;
@@ -53,6 +65,7 @@ class Model : public ModelOBJ
 
   void draw();
   GLuint loadTexture(const char *pszFilename);
+  void shadowMatrix(GLfloat shadowMat[4][4], GLfloat groundplane[4], GLfloat lightpos[4]);
 
 public:
   Model(void);
@@ -68,6 +81,9 @@ public:
   void setColorTint(GLfloat red, GLfloat green, GLfloat blue);
 
   bool isHighlight();
+
+  void shadow(bool value);
+  bool isShadow();
 
   Vector3 getCenterLocation();
 

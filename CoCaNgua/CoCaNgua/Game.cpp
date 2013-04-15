@@ -6,9 +6,9 @@ Game::Game(void)
   srand(time(NULL));
   mDieIsThrown = false;
 
-  lightPosition[0] = 50;
+  lightPosition[0] = 0;
   lightPosition[1] = 50;
-  lightPosition[2] = 50;
+  lightPosition[2] = 0;
   lightPosition[3] = 1;
   lightAngle = 0.0;
   lightHeight = 20;
@@ -153,6 +153,7 @@ void Game::initModel()
 
   mBoard->loadModel("Models/board.obj");
   mBoard->setAnchorPoint(Vector3(0, 0.5, 0));
+  mBoard->shadow(false);
 
   mDice->loadModel("Models/dice.obj");
 

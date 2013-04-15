@@ -44,6 +44,11 @@ public:
     glLightfv(GL_LIGHT0, GL_POSITION, _position);
   }
 
+  float* getPosition()
+  {
+    return _position;
+  }
+
   void setAmbient(float r, float g, float b, float a)
   {
     _ambient[0] = r;

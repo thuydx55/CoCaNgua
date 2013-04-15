@@ -1,12 +1,16 @@
 #include "Model.h"
 
 int id = 0;
+GLfloat floorPlane[4] = {
+  0, 1, 0, 0
+};
 
 Model::Model(void)
 {
   g_enableTextures = true;
 
   mHighlight = false;
+  mShadow = true;
   mHighlightThickness =  1;
   mHighlightColor[0] = 0.8;
   mHighlightColor[1] = 0.8;
@@ -271,9 +275,82 @@ void Model::drawModel()
         glEnable(GL_LIGHTING);
       }
 
+      if(mShadow)
+      {
+        glEnable(GL_STENCIL_TEST);
+        glStencilFunc(GL_EQUAL, 0x4, 0x4);
+        glStencilMask(0x4);
+        glStencilOp(GL_KEEP, GL_KEEP, GL_INVERT);
+
+
+        shadowMatrix(floorShadow, floorPlane, Light::inst().getPosition());
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDisable(GL_LIGHTING);  /* Force the 50% black. */
+        glColor4f(0.0, 0.0, 0.0, 0.5);
+
+        glPushMatrix();
+          /* Project the shadow. */
+          glMultMatrixf((GLfloat *) floorShadow);
+          glPushMatrix();
+            //glTranslatef(0, 8.01, 0);
+            draw();
+          glPopMatrix();
+        glPopMatrix();
+
+        glDisable(GL_BLEND);
+        glDisable(GL_STENCIL_TEST);
+        glEnable(GL_LIGHTING);
+      }
+
     glPopMatrix();
   glPopMatrix();
 }
+
+// shadow
+void Model::shadow(bool value)
+{
+  mShadow = value;
+}
+/////////////////////////////////////////////////////////
+bool Model::isShadow()
+{
+  return mShadow;
+}
+/////////////////////////////////////////////////////////
+void Model::shadowMatrix(GLfloat shadowMat[4][4], GLfloat groundplane[4], GLfloat lightpos[4])
+{
+  GLfloat dot;
+
+  /* Find dot product between light position vector and ground plane normal. */
+  dot = groundplane[X] * lightpos[X] +
+    groundplane[Y] * lightpos[Y] +
+    groundplane[Z] * lightpos[Z] +
+    groundplane[W] * lightpos[W];
+
+  shadowMat[0][0] = dot - lightpos[X] * groundplane[X];
+  shadowMat[1][0] = 0.f - lightpos[X] * groundplane[Y];
+  shadowMat[2][0] = 0.f - lightpos[X] * groundplane[Z];
+  shadowMat[3][0] = 0.f - lightpos[X] * groundplane[W];
+
+  shadowMat[X][1] = 0.f - lightpos[Y] * groundplane[X];
+  shadowMat[1][1] = dot - lightpos[Y] * groundplane[Y];
+  shadowMat[2][1] = 0.f - lightpos[Y] * groundplane[Z];
+  shadowMat[3][1] = 0.f - lightpos[Y] * groundplane[W];
+
+  shadowMat[X][2] = 0.f - lightpos[Z] * groundplane[X];
+  shadowMat[1][2] = 0.f - lightpos[Z] * groundplane[Y];
+  shadowMat[2][2] = dot - lightpos[Z] * groundplane[Z];
+  shadowMat[3][2] = 0.f - lightpos[Z] * groundplane[W];
+
+  shadowMat[X][3] = 0.f - lightpos[W] * groundplane[X];
+  shadowMat[1][3] = 0.f - lightpos[W] * groundplane[Y];
+  shadowMat[2][3] = 0.f - lightpos[W] * groundplane[Z];
+  shadowMat[3][3] = dot - lightpos[W] * groundplane[W];
+
+}
+/******************************************************/
 
 void Model::highlight(bool value)
 {
