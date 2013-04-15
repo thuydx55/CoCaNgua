@@ -148,12 +148,11 @@ Game& Game::inst()
 void Game::initModel()
 {
   mBoard       = new Model();
-  Model* horse = new Model();
+  Piece* horse = new Piece();
   mDice         = new Model();
 
   mBoard->loadModel("Models/board.obj");
   mBoard->setAnchorPoint(Vector3(0, 0.5, 0));
-  mBoard->shadow(false);
 
   mDice->loadModel("Models/dice.obj");
 
@@ -162,25 +161,25 @@ void Game::initModel()
 
   for (int i = 0; i < 4; i++)
   {
-    mPieces[i] = new Model(horse);
+    mPieces[i] = new Piece(horse);
     mPieces[i]->setColorTint(0.8, 0, 0);         // RED
     mPieces[i]->setPosition(mStartPos[i]);
     mPieces[i]->setInitPosition(mStartPos[i]);
     mPieces[i]->setType(TURN_RED);
 
-    mPieces[4+i] = new Model(horse);
+    mPieces[4+i] = new Piece(horse);
     mPieces[4+i]->setColorTint(0, 0, 0.8);        // BLUE
     mPieces[4+i]->setPosition(mStartPos[4+i]);
     mPieces[4+i]->setInitPosition(mStartPos[4+i]);
     mPieces[4+i]->setType(TURN_BLUE);
 
-    mPieces[8+i] = new Model(horse);
+    mPieces[8+i] = new Piece(horse);
     mPieces[8+i]->setColorTint(0, 0.8, 0);        // GREEN
     mPieces[8+i]->setPosition(mStartPos[8+i]);
     mPieces[8+i]->setInitPosition(mStartPos[8+i]);
     mPieces[8+i]->setType(TURN_GREEN);
 
-    mPieces[12+i] = new Model(horse);
+    mPieces[12+i] = new Piece(horse);
     mPieces[12+i]->setColorTint(0.8, 0.8, 0);     // YELLOW
     mPieces[12+i]->setPosition(mStartPos[12+i]);
     mPieces[12+i]->setInitPosition(mStartPos[12+i]);
@@ -196,7 +195,7 @@ void Game::initModel()
   //yellow[1]->setPosition(Vector3(-4, 0, 20));
 }
 
-void Game::draw()
+void Game::drawSence()
 {
   // Save current matrix state
   glPushMatrix();
@@ -283,7 +282,7 @@ void Game::draw()
 
 void Game::loop()
 {
-  draw();
+  drawSence();
 
 
 }
@@ -338,7 +337,7 @@ int Game::getModelPositionIndex( Vector3 pPos , Field pArray[], int pSize)
   return -1;
 }
 
-Model* Game::getModelByName( int name )
+Piece* Game::getModelByName( int name )
 {
   int delta = name - PIECE_RED_1;
   if (delta < 0 || delta > 15)
@@ -352,7 +351,7 @@ void Game::Move(int name)
   if (!mDieIsThrown)
     return;
 
-  Model* mod = getModelByName(name);
+  Piece* mod = getModelByName(name);
   if (mod != NULL && mod->getType() == playerTurn && checkAllModelIdle())
   {
     vector<Vector3> target;

@@ -87,6 +87,7 @@
     <ClCompile Include="mathlib.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelOBJ.cpp" />
+    <ClCompile Include="Piece.cpp" />
     <ClCompile Include="SOIL\image_DXT.c" />
     <ClCompile Include="SOIL\image_helper.c" />
     <ClCompile Include="SOIL\SOIL.c" />
@@ -101,6 +102,7 @@
     <ClInclude Include="mathlib.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelOBJ.h" />
+    <ClInclude Include="Piece.h" />
     <ClInclude Include="SOIL\image_DXT.h" />
     <ClInclude Include="SOIL\image_helper.h" />
     <ClInclude Include="SOIL\SOIL.h" />

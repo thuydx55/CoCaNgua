@@ -5,7 +5,7 @@
 
 #include <string>
 
-#include "Model.h"
+#include "Piece.h"
 #include "Light.h"
 #include "Graphic.h"
 #include "Geometry.h"
@@ -16,7 +16,7 @@
 struct Field
 {
   Vector3 position;
-  Model* piece;
+  Piece* piece;
 
   Field()
   {
@@ -30,7 +30,7 @@ struct Field
     piece = NULL;
   }
 
-  Field(Vector3 pPos, Model* pPiece)
+  Field(Vector3 pPos, Piece* pPiece)
   {
     position = pPos;
     piece = pPiece;
@@ -42,7 +42,7 @@ class Game
   void *font;
 
   Model*              mBoard;
-  Model*              mPieces[16]; // 0:3 RED, 4:7 BLUE, 8:11 GREEN, 12:16 YELLOW
+  Piece*              mPieces[16]; // 0:3 RED, 4:7 BLUE, 8:11 GREEN, 12:16 YELLOW
   Model*              mDice;
 
   Vector3 mStartPos[16];
@@ -57,8 +57,8 @@ class Game
   bool mDieIsThrown;
   bool mustBeStart;
 
-  void draw();
-  Model* getModelByName(int name);
+  void drawSence();
+  Piece* getModelByName(int name);
   int getModelPositionIndex(Vector3 pPos, Field pArray[], int pSize);
   bool checkAllModelIdle();
   void nextTurn();
@@ -75,7 +75,7 @@ public:
   void initModel();
   static Game& inst();
 
-  Model** getFigureArray();
+  Piece** getPiecesArray();
 
   void resetBoard();
   void loop();
@@ -83,7 +83,7 @@ public:
   void throwDice(int number);
 };
 
-inline Model** Game::getFigureArray()
+inline Piece** Game::getPiecesArray()
 {
   return mPieces;
 }
