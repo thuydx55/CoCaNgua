@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _GEOMETRY_H_
-#define _GEOMETRY_H_
+#ifndef _CONSTANTS_H_
+#define _CONSTANTS_H_
 
 #include <gl/glut.h>
 #include "mathlib.h"
@@ -59,4 +59,4 @@ enum ModelState
   MODEL_JUMP
 };
 
-#endif // !_GEOMETRY_H_
+#endif // !_CONSTANTS_H_
