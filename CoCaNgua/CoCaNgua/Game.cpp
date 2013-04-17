@@ -5,6 +5,10 @@ Game::Game(void)
 {
   srand(time(NULL));
   mDieIsThrown = false;
+  mIsDrawDie = false;
+
+  mScreenWidth = 600;
+  mScreenHeight = 800;
 
   lightPosition[0] = 0;
   lightPosition[1] = 50;
@@ -149,7 +153,7 @@ void Game::initModel()
 {
   mBoard       = new Model();
   Piece* horse = new Piece();
-  mDice        = new Model();
+  mDice        = new Die();
 
   mBoard->loadModel("Models/board.obj");
   mBoard->setAnchorPoint(Vector3(0, 0.5, 0));
@@ -284,6 +288,32 @@ void Game::loop()
 {
   drawSence();
 
+  if (mIsDrawDie)
+  {
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    {
+      glLoadIdentity();
+      glOrtho(-7*mScreenWidth/mScreenHeight, 7*mScreenWidth/mScreenHeight, -7, 7, -1.0, 10.0);
+      glMatrixMode(GL_MODELVIEW);
+      glPushMatrix();
+      {
+        glLoadIdentity();
+        glDisable(GL_CULL_FACE);
+
+        glClear(GL_DEPTH_BUFFER_BIT);
+
+        mDice->drawModel();
+      }
+      glPopMatrix();
+
+      // Making sure we can render 3d again
+      glMatrixMode(GL_PROJECTION);
+    }
+
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW); 
+  }
 
 }
 

@@ -11,13 +11,17 @@ using namespace std;
 class Light
 {
 public:
+  float mDiffuseOffset;
+
   Light()
   {
     setPosition(10, 10, 10, 1);
     setAmbient(0.2, 0.2, 0.2, 1.0);
     setDiffuse(0.7, 0.7, 0.7, 1.0);
     setSpecular(1.0, 1.0, 1.0, 1.0);
-    glEnable(GL_LIGHT0);  
+    glEnable(GL_LIGHT0);
+
+    mDiffuseOffset = 0;
   }
 
   Light(float px, float py, float pz, float pw)
@@ -27,6 +31,8 @@ public:
     setDiffuse(0.7, 0.7, 0.7, 1.0);
     setSpecular(1.0, 1.0, 1.0, 1.0);
     glEnable(GL_LIGHT0);  
+
+    mDiffuseOffset = 0;
   }
 
   static Light& inst()

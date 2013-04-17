@@ -9,6 +9,8 @@ class Die : public Model
 public:
   Die(void);
   ~Die(void);
+
+  virtual void drawModel();
 };  
 
 #endif // !_DIE_H_

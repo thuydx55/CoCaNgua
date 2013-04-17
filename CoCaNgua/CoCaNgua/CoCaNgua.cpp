@@ -172,6 +172,8 @@ void displayCB( void )  {
 void reshapeCB(int width, int height) {
   screenWidth = width;
   screenHeight = height;
+  Game::inst().mScreenWidth = width;
+  Game::inst().mScreenHeight = height;
   // set viewport to be the entire window
   glViewport(0, 0, (GLsizei)screenWidth, (GLsizei)screenHeight);
 
