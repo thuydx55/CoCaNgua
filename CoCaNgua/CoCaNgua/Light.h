@@ -47,7 +47,6 @@ public:
     _position[1] = y;
     _position[2] = z;
     _position[3] = w;
-    glLightfv(GL_LIGHT0, GL_POSITION, _position);
   }
 
   float* getPosition()
@@ -61,7 +60,6 @@ public:
     _ambient[1] = g;
     _ambient[2] = b;
     _ambient[3] = a;
-    glLightfv(GL_LIGHT0, GL_AMBIENT,  _ambient);
   }
 
   void setDiffuse(float r, float g, float b, float a)
@@ -70,7 +68,6 @@ public:
     _diffuse[1] = g;
     _diffuse[2] = b;
     _diffuse[3] = a;
-    glLightfv(GL_LIGHT0, GL_DIFFUSE,  _diffuse);
   }
 
   void setSpecular(float r, float g, float b, float a)
@@ -79,6 +76,19 @@ public:
     _specular[1] = g;
     _specular[2] = b;
     _specular[3] = a;
+  }
+
+  void updateLight()
+  {
+    float _diff[4];
+    for (int i = 0; i < 4; i++)
+    {
+      _diff[i] = _diffuse[i] - mDiffuseOffset;
+    }
+
+    glLightfv(GL_LIGHT0, GL_POSITION, _position);
+    glLightfv(GL_LIGHT0, GL_AMBIENT,  _ambient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE,  _diff);
     glLightfv(GL_LIGHT0, GL_SPECULAR, _specular);
   }
 
