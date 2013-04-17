@@ -96,7 +96,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Geometry.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="mathlib.h" />

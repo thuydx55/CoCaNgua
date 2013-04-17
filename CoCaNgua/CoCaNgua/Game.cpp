@@ -149,7 +149,7 @@ void Game::initModel()
 {
   mBoard       = new Model();
   Piece* horse = new Piece();
-  mDice         = new Model();
+  mDice        = new Model();
 
   mBoard->loadModel("Models/board.obj");
   mBoard->setAnchorPoint(Vector3(0, 0.5, 0));
@@ -186,8 +186,8 @@ void Game::initModel()
     mPieces[12+i]->setType(TURN_YELLOW);
   }
 
-  /*mPieces[1]->setPosition(mFields[10].position);
-  mPieces[5]->setPosition(mFields[0].position);
+  mPieces[1]->setPosition(Vector3(0, 5, 0));
+  /*mPieces[5]->setPosition(mFields[0].position);
   mFields[0].piece = mPieces[5];
   mFields[10].piece = mPieces[1];*/
   //blue[1]->setPosition(Vector3(4, 0, -20));

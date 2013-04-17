@@ -34,7 +34,9 @@
     <ClCompile Include="Graphic.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Piece.cpp" />
+    <ClCompile Include="Piece.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOIL\SOIL.h">
@@ -58,9 +60,6 @@
     <ClInclude Include="Camera.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Geometry.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Light.h">
       <Filter>Classes</Filter>
     </ClInclude>
@@ -82,7 +81,12 @@
     <ClInclude Include="Game.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Piece.h" />
+    <ClInclude Include="Piece.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

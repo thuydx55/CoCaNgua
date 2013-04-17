@@ -8,7 +8,7 @@
 #include "Piece.h"
 #include "Light.h"
 #include "Graphic.h"
-#include "Geometry.h"
+#include "Constants.h"
 
 #define SHOW_GRID 1
 #define SHOW_LIGHT_SOURCE 1

@@ -205,6 +205,11 @@ GLuint Model::loadTexture(const char *pszFilename)
 
 void Model::drawModel()
 {
+  glEnable(GL_STENCIL_TEST);
+  glStencilFunc(GL_ALWAYS, 0x2, 0x2);
+  glStencilMask(0x2);
+  glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
   float x, y, z;
   getCenter(x, y, z);
 
@@ -219,6 +224,8 @@ void Model::drawModel()
       draw();
     glPopMatrix();
   glPopMatrix();
+
+  glDisable(GL_STENCIL_TEST);
 }
 
 Vector3 Model::getCenterLocation()

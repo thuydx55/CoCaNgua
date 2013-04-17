@@ -59,11 +59,4 @@ enum ModelState
   MODEL_JUMP
 };
 
-enum {
-  X, Y, Z, W
-};
-enum {
-  A, B, C, D
-};
-
 #endif // !_GEOMETRY_H_

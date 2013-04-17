@@ -3,7 +3,7 @@
 #define _MODEL_H_
 
 #include "ModelOBJ.h"
-#include "Geometry.h"
+#include "Constants.h"
 #include "mathlib.h"
 
 #include "SOIL/SOIL.h"
@@ -15,7 +15,6 @@
 #include <vector>
 
 #include "Timer.h"
-#include "Geometry.h"
 #include "Light.h"
 
 using namespace std;
