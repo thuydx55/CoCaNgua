@@ -7,7 +7,7 @@
 class Piece : public Model
 {
   GLSYNTHESIZE(GLfloat, mHighlightThickness, HighLightThickness);
-  GLSYNTHESIZE(ModelState, mState, State);
+  GLSYNTHESIZE(PieceState, mState, State);
   GLSYNTHESIZE(Vector3, mInitPos, InitPosition);
 
   Turn mType;

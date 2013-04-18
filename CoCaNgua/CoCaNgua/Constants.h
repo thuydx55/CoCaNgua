@@ -52,7 +52,7 @@ enum MoveState
   MOVE_ILLEGAL
 };
 
-enum ModelState
+enum PieceState
 {
   MODEL_IDLE,
   MODEL_MOVE,
