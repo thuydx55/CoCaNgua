@@ -4,11 +4,14 @@
 #define _PIECE_H_
 
 #include "Model.h"
+#include "Constants.h"
+
 class Piece : public Model
 {
   GLSYNTHESIZE(GLfloat, mHighlightThickness, HighLightThickness);
   GLSYNTHESIZE(PieceState, mState, State);
   GLSYNTHESIZE(Vector3, mInitPos, InitPosition);
+  GLSYNTHESIZE(Area, mArea, Area);
 
   Turn mType;
   int mIndexFirstPos;

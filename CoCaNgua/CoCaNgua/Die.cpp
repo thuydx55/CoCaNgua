@@ -110,56 +110,56 @@ int Die::rollDie()
 {
   mState = DIE_ROLLING;
 
-   srand(time(0));
-   float randPhi = rand()%(2*DIE_ROLL_NUMBER*180) - DIE_ROLL_NUMBER*180;
-   float randTheta = rand()%(2*DIE_ROLL_NUMBER*180) - DIE_ROLL_NUMBER*180;
- 
-   int roundPhi = round(randPhi/90);
-   int roundTheta = round(randTheta/90);
- 
-   phiTarget = roundPhi*90;
-   thetaTarget = roundTheta*90;
- 
-   phiOld = phi;
-   thetaOld = theta;
- 
-   int face = 6;
-   roundPhi %= 4;
-   roundTheta %= 4;
+  srand(time(0));
+  float randPhi = rand()%(2*DIE_ROLL_NUMBER*180) - DIE_ROLL_NUMBER*180;
+  float randTheta = rand()%(2*DIE_ROLL_NUMBER*180) - DIE_ROLL_NUMBER*180;
 
-   roundPhi = roundPhi < 0 ? roundPhi + 4 : roundPhi;
-   roundTheta = roundTheta < 0 ? roundTheta + 4 : roundTheta;
-   
-   switch (roundTheta)
-   {
-   case 0:
-     face = 6;
-     break;
-   case 1:
-     face = 2;
-     break;
-   case 2:
-     face = 1;
-     break;
-   case 3:
-     face = 5;
-     break;
-   }
- 
-   switch (roundPhi)
-   {
-   case 0:
-     break;
-   case 1:
-     face = roundTheta%2 ? 3 : 4;
-     break;
-   case 2:
-     face = 7-face;
-     break;
-   case 3:
-     face = roundTheta%2 ? 4 : 3;
-     break;
-   }
+  int roundPhi = round(randPhi/90);
+  int roundTheta = round(randTheta/90);
+
+  phiTarget = roundPhi*90;
+  thetaTarget = roundTheta*90;
+
+  phiOld = phi;
+  thetaOld = theta;
+
+  int face = 6;
+  roundPhi %= 4;
+  roundTheta %= 4;
+
+  roundPhi = roundPhi < 0 ? roundPhi + 4 : roundPhi;
+  roundTheta = roundTheta < 0 ? roundTheta + 4 : roundTheta;
+
+  switch (roundTheta)
+  {
+  case 0:
+    face = 6;
+    break;
+  case 1:
+    face = 2;
+    break;
+  case 2:
+    face = 1;
+    break;
+  case 3:
+    face = 5;
+    break;
+  }
+
+  switch (roundPhi)
+  {
+  case 0:
+    break;
+  case 1:
+    face = roundTheta%2 ? 3 : 4;
+    break;
+  case 2:
+    face = 7-face;
+    break;
+  case 3:
+    face = roundTheta%2 ? 4 : 3;
+    break;
+  }
   mTimer.start();
 
   cout << "FACE: " << face << endl;
@@ -170,6 +170,23 @@ int Die::rollDie()
 
   return face;
 }
+
+//int Die::rollDie()
+//{
+//  mState = DIE_ROLLING;
+//
+//  srand(time(0));
+//  int face = rand()%6 + 1;
+//
+//  return face;
+//
+//  switch (face)
+//  {
+//
+//  default:
+//    break;
+//  }
+//}
 
 Die::~Die(void)
 {

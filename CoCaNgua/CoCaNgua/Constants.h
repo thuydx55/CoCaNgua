@@ -71,4 +71,11 @@ enum DieState
   DIE_STOP
 };
 
+enum Area
+{
+  AREA_OUT,
+  AREA_ROAD,
+  AREA_HOME
+};
+
 #endif // !_CONSTANTS_H_
