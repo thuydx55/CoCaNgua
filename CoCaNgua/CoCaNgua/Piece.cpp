@@ -17,6 +17,7 @@ Piece::Piece(void)
   mHighlightColor[3] = 0.5;
 
   mState = MODEL_IDLE;
+  mArea = AREA_OUT;
 }
 
 Piece::Piece( const Piece* other )

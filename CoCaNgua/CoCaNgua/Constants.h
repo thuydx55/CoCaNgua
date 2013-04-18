@@ -59,4 +59,11 @@ enum ModelState
   MODEL_JUMP
 };
 
+enum Area
+{
+  AREA_OUT,
+  AREA_ROAD,
+  AREA_HOME
+};
+
 #endif // !_CONSTANTS_H_

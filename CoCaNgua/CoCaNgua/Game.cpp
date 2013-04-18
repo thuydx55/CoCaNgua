@@ -374,6 +374,7 @@ void Game::Move(int name)
         int tmp = getModelPositionIndex(mPredictPosition[k], mFields, 40);
 
         mFields[tmp].piece->setPosition(mFields[tmp].piece->getInitPosition());
+
         mFields[index].piece = NULL;
         mFields[tmp].piece = mod;
       }
@@ -384,6 +385,7 @@ void Game::Move(int name)
 
         mFields[tmp].piece->setPosition(mFields[tmp].piece->getInitPosition());
         mFields[tmp].piece = mod;
+        mFields[tmp].piece->setArea(AREA_ROAD);
       }
 
       if (mPredictMoveState[k] == MOVE_START)
@@ -391,6 +393,7 @@ void Game::Move(int name)
         int tmp = getModelPositionIndex(mPredictPosition[k], mFields, 40);
 
         mFields[tmp].piece = mod;
+        mFields[tmp].piece->setArea(AREA_ROAD);
       }
 
       if (mPredictMoveState[k] == MOVE_HOME_INSIDE)
@@ -409,6 +412,7 @@ void Game::Move(int name)
 
         mFields[index].piece = NULL;
         mHome[tmp].piece = mod;
+        mHome[tmp].piece->setArea(AREA_HOME);
       }
 
       mod->jumpTo(target, mPredictMoveState[k]);
@@ -496,7 +500,7 @@ void Game::throwDice(int number)
 
       /*---------------- DICE 6 -------------------*/
       // Piece move to start field
-      if (mDieNumber == 6)
+      if (mDieNumber == 6 && mPieces[playerTurn*4+i]->getArea() == AREA_OUT)
       {
         mustBeStart = true;
         // Other piece on start field already
