@@ -24,6 +24,21 @@ Model::Model( const Model* other )
   memcpy(this, other, sizeof(*other));
 }
 
+Vector3 Model::getCenterLocation()
+{
+  float centerX = mPos.x - mAnchor.x*getWidth();
+  float centerY = mPos.y - mAnchor.y*getHeight();
+  float centerZ = mPos.z - mAnchor.z*getLength();
+
+  return Vector3(centerX, centerY, centerZ);
+}
+
+void Model::setColorTint( GLfloat red, GLfloat green, GLfloat blue)
+{
+  mColorTint[0] = red;
+  mColorTint[1] = green;
+  mColorTint[2] = blue;
+}
 
 void Model::draw()
 {
@@ -205,43 +220,12 @@ GLuint Model::loadTexture(const char *pszFilename)
 
 void Model::drawModel()
 {
-  glEnable(GL_STENCIL_TEST);
-  glStencilFunc(GL_ALWAYS, 0x2, 0x2);
-  glStencilMask(0x2);
-  glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-
-  float x, y, z;
-  getCenter(x, y, z);
-
-  glPushMatrix();
-    // Move Object to coordinate origin
-    glTranslatef(-x, -y, -z);
-    glPushMatrix();
-      glTranslated(mPos.x - mAnchor.x*getWidth(), 
-        mPos.y - mAnchor.y*getHeight(),
-        mPos.z - mAnchor.z*getLength());
-
-      draw();
-    glPopMatrix();
-  glPopMatrix();
-
-  glDisable(GL_STENCIL_TEST);
+  update();
 }
 
-Vector3 Model::getCenterLocation()
+void Model::update()
 {
-  float centerX = mPos.x - mAnchor.x*getWidth();
-  float centerY = mPos.y - mAnchor.y*getHeight();
-  float centerZ = mPos.z - mAnchor.z*getLength();
 
-  return Vector3(centerX, centerY, centerZ);
-}
-
-void Model::setColorTint( GLfloat red, GLfloat green, GLfloat blue)
-{
-  mColorTint[0] = red;
-  mColorTint[1] = green;
-  mColorTint[2] = blue;
 }
 
 Model::~Model(void)

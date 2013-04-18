@@ -145,6 +145,7 @@ void initGL()
 
   Light::inst().setPosition(Game::inst().lightPosition[0], Game::inst().lightPosition[1], 
     Game::inst().lightPosition[2], Game::inst().lightPosition[3]);
+  Light::inst().updateLight();
 }
 
 /* ----------------------------------------------------------------------- */
@@ -172,6 +173,8 @@ void displayCB( void )  {
 void reshapeCB(int width, int height) {
   screenWidth = width;
   screenHeight = height;
+  Game::inst().mScreenWidth = width;
+  Game::inst().mScreenHeight = height;
   // set viewport to be the entire window
   glViewport(0, 0, (GLsizei)screenWidth, (GLsizei)screenHeight);
 
@@ -413,6 +416,14 @@ void keyboardCB(unsigned char key,int x,int y)
     break;
   case 'p':
     cout << Light::inst().getPosition()[0] << ' ' << Light::inst().getPosition()[1] << ' ' << Light::inst().getPosition()[2] << ' ' << Light::inst().getPosition()[3] << endl;
+    break;
+  case 'd':
+    Game::inst().mIsDrawDie = !Game::inst().mIsDrawDie;
+    if (Game::inst().mIsDrawDie)
+      Light::inst().mDiffuseOffset = 0.5;
+    else
+      Light::inst().mDiffuseOffset = 0.0;
+    Light::inst().updateLight();
     break;
 
   default:

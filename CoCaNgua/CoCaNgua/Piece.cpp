@@ -27,6 +27,8 @@ Piece::Piece( const Piece* other )
 
 void Piece::drawModel()
 {
+  Model::drawModel();
+
   float x, y, z;
   getCenter(x, y, z);
 
@@ -118,8 +120,6 @@ void Piece::drawModel()
     glPopMatrix();
   }
   glPopMatrix();
-
-  update();
 }
 
 // shadow
