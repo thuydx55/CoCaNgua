@@ -5,6 +5,11 @@
 #include <gl/glut.h>
 #include "mathlib.h"
 
+#define DIE_ROLL_NUMBER 5
+#define DIE_WAITING_RANGE 15
+#define DIE_WAITING_SPEED 5
+#define DIE_TIME_ROLLING 3
+
 #define GLSYNTHESIZE(varType, varName, funName)\
 protected: varType varName;\
 public: virtual varType get##funName(void) const { return varName; }\
@@ -57,6 +62,13 @@ enum PieceState
   MODEL_IDLE,
   MODEL_MOVE,
   MODEL_JUMP
+};
+
+enum DieState
+{
+  DIE_WAITING,
+  DIE_ROLLING,
+  DIE_STOP
 };
 
 #endif // !_CONSTANTS_H_

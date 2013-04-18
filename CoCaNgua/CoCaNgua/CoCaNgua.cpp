@@ -399,10 +399,6 @@ void keyboardCB(unsigned char key,int x,int y)
       0, 0, screenWidth, screenHeight
       );
     break;
-
-  case 'r':
-    //cameraAngleX = cameraAngleY = 0;
-    break;
   case '1':
   case '2':
   case '3':
@@ -425,6 +421,12 @@ void keyboardCB(unsigned char key,int x,int y)
       Light::inst().mDiffuseOffset = 0.0;
     Light::inst().updateLight();
     break;
+
+  case 'r':
+    Game::inst().mDice->rollDie();
+    break;
+  case 't':
+    Game::inst().mDice->setState(DIE_WAITING);
 
   default:
     break;

@@ -907,6 +907,7 @@ public:
             float m21, float m22, float m23, float m24,
             float m31, float m32, float m33, float m34,
             float m41, float m42, float m43, float m44);
+    Matrix4(float m[16]);
     ~Matrix4() {}
 
     float *operator[](int row);
@@ -967,6 +968,13 @@ inline Matrix4::Matrix4(float m11, float m12, float m13, float m14,
     mtx[1][0] = m21, mtx[1][1] = m22, mtx[1][2] = m23, mtx[1][3] = m24;
     mtx[2][0] = m31, mtx[2][1] = m32, mtx[2][2] = m33, mtx[2][3] = m34;
     mtx[3][0] = m41, mtx[3][1] = m42, mtx[3][2] = m43, mtx[3][3] = m44;
+}
+
+inline Matrix4::Matrix4(float m[16])
+{
+  for(int i = 0; i < 4; i++)
+    for (int j = 0; j < 4; j++)
+      mtx[i][j] = m[4*i+j];
 }
 
 inline float *Matrix4::operator[](int row)

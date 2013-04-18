@@ -7,17 +7,24 @@
 
 class Die : public Model
 {
+  GLSYNTHESIZE(DieState, mState, State);
+
   bool mIsRolling;
   Timer mTimer;
 
+  float phi, theta;
+  float phiTarget, thetaTarget;
+  float phiOld, thetaOld;
+
 public:
-  float mRollX, mRollY, mRollZ;
 
   Die(void);
   ~Die(void);
 
   virtual void drawModel();
   virtual void update();
+
+  int rollDie();
 
   bool isRolling();
 };  
