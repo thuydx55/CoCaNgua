@@ -40,6 +40,9 @@
     <ClCompile Include="Die.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOIL\SOIL.h">
@@ -91,6 +94,9 @@
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="Die.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Board.h">
       <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,6 +7,7 @@
 
 #include "Piece.h"
 #include "Die.h"
+#include "Board.h"
 #include "Light.h"
 #include "Graphic.h"
 #include "Constants.h"
@@ -42,7 +43,7 @@ class Game
 {
   void *font;
 
-  Model*              mBoard;
+  Board*              mBoard;
   Piece*              mPieces[16]; // 0:3 RED, 4:7 BLUE, 8:11 GREEN, 12:16 YELLOW
   Die*                mDice;
 

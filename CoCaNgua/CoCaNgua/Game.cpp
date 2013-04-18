@@ -151,7 +151,7 @@ Game& Game::inst()
 
 void Game::initModel()
 {
-  mBoard       = new Model();
+  mBoard       = new Board();
   Piece* horse = new Piece();
   mDice        = new Die();
 
@@ -294,7 +294,7 @@ void Game::loop()
     glPushMatrix();
     {
       glLoadIdentity();
-      glOrtho(-7*mScreenWidth/mScreenHeight, 7*mScreenWidth/mScreenHeight, -7, 7, -1.0, 10.0);
+      glOrtho(-7*mScreenWidth/mScreenHeight, 7*mScreenWidth/mScreenHeight, -7, 7, -10.0, 10.0);
       glMatrixMode(GL_MODELVIEW);
       glPushMatrix();
       {
