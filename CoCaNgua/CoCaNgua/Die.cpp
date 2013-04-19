@@ -110,7 +110,6 @@ int Die::rollDie()
 {
   mState = DIE_ROLLING;
 
-  srand(time(0));
   float randPhi = rand()%(2*DIE_ROLL_NUMBER*180) - DIE_ROLL_NUMBER*180;
   float randTheta = rand()%(2*DIE_ROLL_NUMBER*180) - DIE_ROLL_NUMBER*180;
 
@@ -129,6 +128,25 @@ int Die::rollDie()
 
   roundPhi = roundPhi < 0 ? roundPhi + 4 : roundPhi;
   roundTheta = roundTheta < 0 ? roundTheta + 4 : roundTheta;
+
+  // re-distribution probability of TOP and BOTTOM face
+  float detalPhi = phiTarget -randPhi;
+  if (roundPhi%2 == 1)
+  {
+    if (detalPhi > 30)
+    {
+      roundPhi++;
+      phiTarget+=90;
+    }
+    if (detalPhi < -30)
+    {
+      roundPhi--;
+      phiTarget-=90;
+    }
+
+    if (roundPhi == 4)
+      roundPhi = 0;
+  }
 
   switch (roundTheta)
   {
@@ -170,23 +188,6 @@ int Die::rollDie()
 
   return face;
 }
-
-//int Die::rollDie()
-//{
-//  mState = DIE_ROLLING;
-//
-//  srand(time(0));
-//  int face = rand()%6 + 1;
-//
-//  return face;
-//
-//  switch (face)
-//  {
-//
-//  default:
-//    break;
-//  }
-//}
 
 Die::~Die(void)
 {

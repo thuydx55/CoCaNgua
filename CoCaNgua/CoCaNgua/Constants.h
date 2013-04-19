@@ -5,7 +5,7 @@
 #include <gl/glut.h>
 #include "mathlib.h"
 
-#define DIE_ROLL_NUMBER 5
+#define DIE_ROLL_NUMBER 3
 #define DIE_WAITING_RANGE 15
 #define DIE_WAITING_SPEED 5
 #define DIE_TIME_ROLLING 3
