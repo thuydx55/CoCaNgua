@@ -46,7 +46,6 @@ class Game
   Board*              mBoard;
   Piece*              mPieces[16]; // 0:3 RED, 4:7 BLUE, 8:11 GREEN, 12:16 YELLOW
   
-
   Vector3 mStartPos[16];
   Field mFields[40];
   Field mHome[16];

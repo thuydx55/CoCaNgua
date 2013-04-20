@@ -75,8 +75,6 @@ void Die::drawModel()
 
 void Die::update()
 {
-  double tEnlapse = mTimer.elapsed();
-
   if (mState == DIE_WAITING)
   {
     phi = DIE_WAITING_RANGE*cosf(Math::degreesToRadians(counter));
@@ -87,6 +85,8 @@ void Die::update()
   }
   else if (mState == DIE_ROLLING)
   {
+    double tEnlapse = mTimer.elapsed();
+
     phi = phiOld+(phiTarget-phiOld)/(tEnlapse/DIE_TIME_ROLLING);
     theta = thetaOld+(thetaTarget-thetaOld)/(tEnlapse/DIE_TIME_ROLLING);
 

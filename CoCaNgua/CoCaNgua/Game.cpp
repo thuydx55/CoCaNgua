@@ -320,6 +320,7 @@ void Game::loop()
 void Game::nextTurn()
 {
   mDieIsThrown = false;
+  mDice->setState(DIE_WAITING);
 
   for (int i = 0; i < 4; i++)
   {
