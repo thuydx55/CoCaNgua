@@ -4,10 +4,11 @@
 #define _GRAPHIC_H_
 
 #include "Model.h"
-
+#include "Constants.h"
 
 class Graphic
 {
+  GLSYNTHESIZE(AppScene, mAppScene, AppScene);
 public:
   Graphic(void);
   ~Graphic(void);

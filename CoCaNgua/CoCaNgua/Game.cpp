@@ -284,10 +284,8 @@ void Game::drawSence()
   glPopMatrix();
 }
 
-void Game::loop()
+void Game::drawDie()
 {
-  drawSence();
-
   if (mIsDrawDie)
   {
     glMatrixMode(GL_PROJECTION);
@@ -314,7 +312,12 @@ void Game::loop()
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW); 
   }
+}
 
+void Game::loop()
+{
+  drawSence();
+  drawDie();
 }
 
 void Game::nextTurn()

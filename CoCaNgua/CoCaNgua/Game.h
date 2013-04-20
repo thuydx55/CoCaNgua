@@ -59,6 +59,7 @@ class Game
   bool mustBeStart;
 
   void drawSence();
+  void drawDie();
   Piece* getModelByName(int name);
   int getModelPositionIndex(Vector3 pPos, Field pArray[], int pSize);
   bool checkAllModelIdle();

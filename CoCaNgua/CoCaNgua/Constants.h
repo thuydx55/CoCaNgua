@@ -78,4 +78,12 @@ enum Area
   AREA_HOME
 };
 
+enum AppScene
+{
+  APP_GAME,
+  APP_MENU,
+  APP_OPTION,
+  APP_ABOUT
+};
+
 #endif // !_CONSTANTS_H_

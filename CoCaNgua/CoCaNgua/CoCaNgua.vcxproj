@@ -95,6 +95,7 @@
     <ClCompile Include="SOIL\image_helper.c" />
     <ClCompile Include="SOIL\SOIL.c" />
     <ClCompile Include="SOIL\stb_image_aug.c" />
+    <ClCompile Include="Sprite2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
@@ -115,6 +116,7 @@
     <ClInclude Include="SOIL\stbi_DDS_aug.h" />
     <ClInclude Include="SOIL\stbi_DDS_aug_c.h" />
     <ClInclude Include="SOIL\stb_image_aug.h" />
+    <ClInclude Include="Sprite2D.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

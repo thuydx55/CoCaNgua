@@ -3,6 +3,7 @@
 
 Graphic::Graphic(void)
 {
+  mAppScene = APP_GAME;
 }
 
 Graphic& Graphic::inst()

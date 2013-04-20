@@ -1,22 +1,4 @@
-﻿/* Module      : MainFile.cpp
-* Author      : 
-* Email       : 
-* Course      : Computer Graphics
-*
-* Description : 
-*
-*
-* Date        : 
-*
-* History:
-* Revision      Date          Changed By
-* --------      ----------    ----------
-* 01.00         ?????          ???
-* First release.
-*
-*/
-
-/* -- INCLUDE FILES ------------------------------------------------------ */
+﻿
 #include <windows.h>
 #include <gl/gl.h>
 #include <gl/glu.h>
@@ -24,12 +6,14 @@
 
 #include <iostream>
 
+#include "Sprite2D.h"
 #include "Model.h"
 #include "Light.h"
 #include "mathlib.h"
 #include "Camera.h"
 #include "Game.h"
 #include "InputManager.h"
+#include "Graphic.h"
 
 #define SHOW_GRID 1
 #define SHOW_LIGHT_SOURCE 1
@@ -51,6 +35,8 @@ const int   TEXT_WIDTH      = 8;
 const int   TEXT_HEIGHT     = 13;
 const float DELTA_TIME      = 33;
 
+Sprite2D *a;
+
 ///////////////////////////////////////////////////////////////////////////////
 // initialize global variables
 ///////////////////////////////////////////////////////////////////////////////
@@ -58,6 +44,9 @@ bool initSharedMem()
 {
   Game::inst().mScreenWidth = SCREEN_WIDTH;
   Game::inst().mScreenHeight = SCREEN_HEIGHT;
+
+  //Graphic::inst().setAppScene(APP_GAME);
+
   return true;
 }
 
@@ -144,8 +133,21 @@ void displayCB( void )  {
   glStencilMask(0xffffffff);
   glClearStencil(0x4);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-  Game::inst().loop();
+  
+  switch (Graphic::inst().getAppScene())
+  {
+  case APP_GAME:
+    Game::inst().loop();
+    break;
+  case APP_MENU:
+    break;
+  case APP_OPTION:
+    break;
+  case APP_ABOUT:
+    break;
+  default:
+    break;
+  }
 
   glutSwapBuffers();
 }
@@ -192,7 +194,7 @@ void mouseMotionCB(int x, int y) {
 
 void mousePassiveMotionCB(int x, int y)
 {
-  Mouse::
+  //Mouse::inst().processMousePassiveMotion(x, y);
 }
 
 void keyboardCB(unsigned char key,int x,int y)
@@ -216,7 +218,9 @@ int main( int argc, char *argv[] )  {
   initGLUT(argc, argv);
   initGL();
 
-  Game::inst().initModel();
+  //Game::inst().initModel();
+
+  a = new Sprite2D("img_test.png");
 
   glutMainLoop( );
 }

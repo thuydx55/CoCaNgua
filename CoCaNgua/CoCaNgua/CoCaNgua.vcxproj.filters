@@ -46,6 +46,9 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Sprite2D.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOIL\SOIL.h">
@@ -103,6 +106,9 @@
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite2D.h">
       <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>
