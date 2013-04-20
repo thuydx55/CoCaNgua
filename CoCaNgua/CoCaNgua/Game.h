@@ -87,7 +87,7 @@ public:
   void resetBoard();
   void loop();
   void Move(int name);
-  void throwDice(int number);
+  void rollDice(int number);
 };
 
 inline Piece** Game::getPiecesArray()

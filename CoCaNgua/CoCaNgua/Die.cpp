@@ -60,17 +60,10 @@ void Die::drawModel()
 
       Vector3 crossVector = Vector3::cross(Vector3(0, 1, 0), afterTransformed);
 
-//       cout << afterTransformed.toString();
-//       cout << crossVector.toString();
-
       glRotatef(theta, 0, 1, 0);
       glRotatef(phi, crossVector.x, crossVector.y, crossVector.z);
 
       draw();
-      glBegin(GL_LINES);
-        glVertex3f(0, 0, 0);
-        glVertex3f(0, 0, 10);
-      glEnd();
     }
     glPopMatrix();
   }
@@ -129,11 +122,15 @@ int Die::rollDie()
   roundPhi = roundPhi < 0 ? roundPhi + 4 : roundPhi;
   roundTheta = roundTheta < 0 ? roundTheta + 4 : roundTheta;
 
-  // re-distribution probability of TOP and BOTTOM face
+  /* re-distribution probability of TOP and BOTTOM face
+   * TOP and BOTTOM face are only depended to 'roundPhi'
+   * 360 = 90*4, so TOP and BOTTOM face has 1/4 probability to be rolled
+   * Decrease from 1/4 to 1/6, so 4 others has 2/3 probability to be rolled
+   */
   float detalPhi = phiTarget -randPhi;
   if (roundPhi%2 == 1)
   {
-    if (detalPhi > 30)
+    if (detalPhi >= 30)
     {
       roundPhi++;
       phiTarget+=90;
@@ -148,6 +145,7 @@ int Die::rollDie()
       roundPhi = 0;
   }
 
+  // Identify face user seen
   switch (roundTheta)
   {
   case 0:

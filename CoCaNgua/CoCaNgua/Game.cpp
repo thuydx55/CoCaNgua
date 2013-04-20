@@ -478,7 +478,7 @@ void Game::Move(int name)
   }
 }
 
-void Game::throwDice(int number)
+void Game::rollDice(int number)
 {
   //mDiceNumber = rand() % 6 + 1;
   mDieIsThrown = true;

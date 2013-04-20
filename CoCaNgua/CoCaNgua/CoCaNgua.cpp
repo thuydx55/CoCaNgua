@@ -405,10 +405,10 @@ void keyboardCB(unsigned char key,int x,int y)
   case '4':
   case '5':
   case '6':
-    Game::inst().throwDice(key-48);
+    Game::inst().rollDice(key-48);
     break;
   case 'm':
-    Game::inst().throwDice(rand() % 6 +1);
+    Game::inst().rollDice(rand() % 6 +1);
     break;
   case 'p':
     cout << Light::inst().getPosition()[0] << ' ' << Light::inst().getPosition()[1] << ' ' << Light::inst().getPosition()[2] << ' ' << Light::inst().getPosition()[3] << endl;

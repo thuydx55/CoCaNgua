@@ -106,9 +106,12 @@
   <ItemGroup>
     <Filter Include="SOIL">
       <UniqueIdentifier>{1ab4aa36-710f-4186-b917-2e17a499e8a4}</UniqueIdentifier>
+      <Extensions>SOIL/*.*</Extensions>
     </Filter>
     <Filter Include="Classes">
       <UniqueIdentifier>{c51d09ed-c2fa-4b31-96f9-50f3623dec26}</UniqueIdentifier>
+      <Extensions>
+      </Extensions>
     </Filter>
   </ItemGroup>
 </Project>
