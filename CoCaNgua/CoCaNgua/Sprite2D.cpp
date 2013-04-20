@@ -45,22 +45,15 @@ void Sprite2D::loadTexture(const char *pszFilename)
 
 void Sprite2D::drawImg()
 {
-  Vector2 botLeft (mPos.x-mAnchor.x*width, mPos.y-mAnchor.y*height);
-  Vector2 botRight(mPos.x+(1-mAnchor.x)*width, mPos.y-mAnchor.y*height);
-  Vector2 topLeft (mPos.x-mAnchor.x*width, mPos.y+(1-mAnchor.y)*height);
-  Vector2 topRight(mPos.x+(1-mAnchor.x)*width, mPos.y+(1-mAnchor.y)*height);
-
-  //cout << botLeft.toString() << botRight.toString() << topLeft.toString() << topRight.toString();
-
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   glBindTexture(GL_TEXTURE_2D,texID);
   glBegin(GL_QUADS); 
-  glTexCoord2f(0.0f, 0.0f); glVertex2f(botLeft.x,  botLeft.y ); 
-  glTexCoord2f(1.0f, 0.0f); glVertex2f(botRight.x, botRight.y); 
-  glTexCoord2f(1.0f, 1.0f); glVertex2f(topRight.x, topRight.y); 
-  glTexCoord2f(0.0f, 1.0f); glVertex2f(topLeft.x,  topLeft.y );
+  glTexCoord2f(0.0f, 0.0f); glVertex2f(-width/2, -height/2); 
+  glTexCoord2f(1.0f, 0.0f); glVertex2f(width/2 , -height/2); 
+  glTexCoord2f(1.0f, 1.0f); glVertex2f(width/2 ,  height/2); 
+  glTexCoord2f(0.0f, 1.0f); glVertex2f(-width/2,  height/2);
   glEnd(); 
 
   glDisable(GL_BLEND);

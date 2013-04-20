@@ -49,7 +49,12 @@
     <ClCompile Include="Sprite2D.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOIL\SOIL.h">
@@ -112,7 +117,12 @@
     <ClInclude Include="Sprite2D.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="MainMenu.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
