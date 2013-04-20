@@ -86,4 +86,12 @@ enum AppScene
   APP_ABOUT
 };
 
+enum ButtonState
+{
+  BUTTON_NORMAL,
+  BUTTON_HOVER,
+  BUTTON_PRESSED,
+  BUTTON_DISABLE
+};
+
 #endif // !_CONSTANTS_H_
