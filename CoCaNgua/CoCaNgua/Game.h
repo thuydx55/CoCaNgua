@@ -57,6 +57,9 @@ class Game
   int mDieNumber;
   bool mDieIsThrown;
   bool mustBeStart;
+  bool mFullHome;
+
+  Turn mWinner;
 
   void drawSence();
   Piece* getModelByName(int name);
@@ -73,7 +76,7 @@ public:
   float mScreenWidth, mScreenHeight;
   bool mIsDrawDie;
 
-  Turn playerTurn;
+  Turn mPlayerTurn;
 
   Game(void);
   ~Game(void);
