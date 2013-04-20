@@ -127,6 +127,11 @@ void Mouse::processMouseMotion( int x, int y )
   }
 }
 
+void Mouse::processMousePassiveMotion( int x, int y )
+{
+
+}
+
 Mouse::~Mouse( void )
 {
 

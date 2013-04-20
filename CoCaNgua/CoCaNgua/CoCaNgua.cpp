@@ -42,6 +42,7 @@ void timerCB(int millisec);
 void keyboardCB(unsigned char key, int x, int y);
 void mouseCB(int button, int stat, int x, int y);
 void mouseMotionCB(int x, int y);
+void mousePassiveMotionCB(int x, int y);
 
 const int   SCREEN_WIDTH    = 800;
 const int   SCREEN_HEIGHT   = 600;
@@ -90,6 +91,7 @@ int initGLUT(int argc, char **argv)
   glutKeyboardFunc(keyboardCB);
   glutMouseFunc(mouseCB);
   glutMotionFunc(mouseMotionCB);
+  glutPassiveMotionFunc(mousePassiveMotionCB);
 
   return handle;
 }
@@ -186,6 +188,11 @@ void mouseMotionCB(int x, int y) {
   //  cameraDistance -= (y - mouseY) * 0.2f;
   //  mouseY = y;
   //}
+}
+
+void mousePassiveMotionCB(int x, int y)
+{
+  Mouse::
 }
 
 void keyboardCB(unsigned char key,int x,int y)
