@@ -403,6 +403,7 @@ void Game::Move(int name)
         int index = getModelPositionIndex(mod->getPosition(), mFields, 40);
         int tmp = getModelPositionIndex(mPredictPosition[k], mFields, 40);
 
+        mFields[tmp].piece->setArea(AREA_OUT);
         mFields[tmp].piece->setPosition(mFields[tmp].piece->getInitPosition());
 
         mFields[index].piece = NULL;
@@ -413,7 +414,9 @@ void Game::Move(int name)
       {
         int tmp = getModelPositionIndex(mPredictPosition[k], mFields, 40);
 
+        mFields[tmp].piece->setArea(AREA_OUT);
         mFields[tmp].piece->setPosition(mFields[tmp].piece->getInitPosition());
+
         mFields[tmp].piece = mod;
         mFields[tmp].piece->setArea(AREA_ROAD);
       }
@@ -565,6 +568,7 @@ void Game::throwDice(int number)
     if (indexNext >= 40)
       indexNext -= 40;
 
+    /*---------------- GO HOME FROM OUTSIDE -------------------*/
     // check reaching finish
     if ((indexFirstPos > indexCurRoad && indexFirstPos <= indexNext)
       || (indexFirstPos == 0 && indexNext < mDieNumber))
@@ -575,7 +579,7 @@ void Game::throwDice(int number)
       {
         bool blocked = false;
         // Checking if no piece on the way to target field
-        for (int j = 0; j < playerTurn*4 + mDieNumber; j++)
+        for (int j = playerTurn*4+1; j <= playerTurn*4 + mDieNumber; j++)
         {
           if (mHome[j].piece != NULL)
           {
