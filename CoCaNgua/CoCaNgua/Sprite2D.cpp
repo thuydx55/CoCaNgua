@@ -45,6 +45,9 @@ void Sprite2D::loadTexture(const char *pszFilename)
 
 void Sprite2D::drawImg()
 {
+  glPushMatrix();
+  glTranslatef(mPos.x-mAnchor.x*width, mPos.y-mAnchor.y*height, 0);
+
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -57,6 +60,7 @@ void Sprite2D::drawImg()
   glEnd(); 
 
   glDisable(GL_BLEND);
+  glPopMatrix();
 }
 
 Sprite2D::~Sprite2D(void)

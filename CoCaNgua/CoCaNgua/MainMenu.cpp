@@ -4,7 +4,7 @@
 MainMenu::MainMenu(void)
 {
   mBackground = new Sprite2D("background.png");
-  mBackground->setAnchorPoint(Vector2(0, 0));
+  mBackground->setAnchorPoint(Vector2(-0.5, -0.5));
 }
 
 MainMenu& MainMenu::inst()
