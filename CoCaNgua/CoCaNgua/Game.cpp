@@ -141,6 +141,10 @@ Game::Game(void)
 
   int c[] = { 0, 4, 8, 10, 14, 18, 20, 24, 28, 30, 34, 38 };
   memcpy(mConnerIndex, c, sizeof(c));
+
+  Light::inst().setPosition(Game::inst().lightPosition[0], Game::inst().lightPosition[1], 
+    Game::inst().lightPosition[2], Game::inst().lightPosition[3]);
+  Light::inst().updateLight();
 }
 
 Game& Game::inst()

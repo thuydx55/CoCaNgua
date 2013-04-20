@@ -87,6 +87,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="mathlib.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelOBJ.cpp" />
@@ -106,6 +107,7 @@
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="mathlib.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelOBJ.h" />

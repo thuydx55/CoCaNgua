@@ -6,14 +6,15 @@
 
 #include <iostream>
 
-#include "Sprite2D.h"
 #include "Model.h"
 #include "Light.h"
 #include "mathlib.h"
 #include "Camera.h"
-#include "Game.h"
 #include "InputManager.h"
 #include "Graphic.h"
+
+#include "Game.h"
+#include "MainMenu.h"
 
 #define SHOW_GRID 1
 #define SHOW_LIGHT_SOURCE 1
@@ -34,8 +35,6 @@ const float CAMERA_DISTANCE = 10.0f;
 const int   TEXT_WIDTH      = 8;
 const int   TEXT_HEIGHT     = 13;
 const float DELTA_TIME      = 33;
-
-Sprite2D *a;
 
 ///////////////////////////////////////////////////////////////////////////////
 // initialize global variables
@@ -66,7 +65,7 @@ int initGLUT(int argc, char **argv)
   //   glutEnterGameMode();
 
   glutInitWindowSize(Game::inst().mScreenWidth, Game::inst().mScreenHeight);  // window size
-  glutInitWindowPosition(100, 100);               // window location
+  glutInitWindowPosition(400, 100);               // window location
 
   // finally, create a window with openGL context
   // Window will not displayed until glutMainLoop() is called
@@ -111,10 +110,6 @@ void initGL()
   glClearStencil(0);                          // clear stencil buffer
   glClearDepth(1.0f);                         // 0 is near, 1 is far
   glDepthFunc(GL_LEQUAL);
-
-  Light::inst().setPosition(Game::inst().lightPosition[0], Game::inst().lightPosition[1], 
-    Game::inst().lightPosition[2], Game::inst().lightPosition[3]);
-  Light::inst().updateLight();
 }
 
 /* ----------------------------------------------------------------------- */
@@ -140,6 +135,7 @@ void displayCB( void )  {
     Game::inst().loop();
     break;
   case APP_MENU:
+    MainMenu::inst().loop();
     break;
   case APP_OPTION:
     break;
@@ -218,9 +214,7 @@ int main( int argc, char *argv[] )  {
   initGLUT(argc, argv);
   initGL();
 
-  //Game::inst().initModel();
-
-  a = new Sprite2D("img_test.png");
+  Game::inst().initModel();
 
   glutMainLoop( );
 }

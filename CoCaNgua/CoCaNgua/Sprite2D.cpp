@@ -14,9 +14,16 @@ Sprite2D::Sprite2D( const char* pFilename )
   loadTexture(pFilename);
 }
 
+void Sprite2D::initWithFile( const char* pFilename )
+{
+  loadTexture(pFilename);
+}
+
 void Sprite2D::loadTexture(const char *pszFilename)
 {
   unsigned char* img = SOIL_load_image(pszFilename, &width, &height, &channel, SOIL_LOAD_RGBA);
+
+  cout << width << ' ' << height << endl;
 
   texID = SOIL_load_OGL_texture(
     pszFilename,
@@ -39,9 +46,9 @@ void Sprite2D::loadTexture(const char *pszFilename)
 void Sprite2D::drawImg()
 {
   Vector2 botLeft (mPos.x-mAnchor.x*width, mPos.y-mAnchor.y*height);
-  Vector2 botRight(mPos.x+mAnchor.x*width, mPos.y-mAnchor.y*height);
-  Vector2 topLeft (mPos.x-mAnchor.x*width, mPos.y+mAnchor.y*height);
-  Vector2 topRight(mPos.x+mAnchor.x*width, mPos.y+mAnchor.y*height);
+  Vector2 botRight(mPos.x+(1-mAnchor.x)*width, mPos.y-mAnchor.y*height);
+  Vector2 topLeft (mPos.x-mAnchor.x*width, mPos.y+(1-mAnchor.y)*height);
+  Vector2 topRight(mPos.x+(1-mAnchor.x)*width, mPos.y+(1-mAnchor.y)*height);
 
   //cout << botLeft.toString() << botRight.toString() << topLeft.toString() << topRight.toString();
 

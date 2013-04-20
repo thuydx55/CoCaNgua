@@ -32,6 +32,8 @@ public:
   Sprite2D(const char* pFilename);
   ~Sprite2D(void);
 
+  void initWithFile(const char* pFilename);
+
   void drawImg();
 
   void setVisible(bool visible);
