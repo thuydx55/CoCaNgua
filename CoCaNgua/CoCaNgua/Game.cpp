@@ -204,8 +204,8 @@ void Game::drawSence()
   // Save current matrix state
   glPushMatrix();
 
-  glDisable(GL_LIGHTING);
 #if SHOW_GRID
+  glDisable(GL_LIGHTING);
   glBegin(GL_LINES);
   glColor3f(0, 0, 0);
   glVertex3f(0, 0, 0);
@@ -294,7 +294,7 @@ void Game::loop()
     glPushMatrix();
     {
       glLoadIdentity();
-      glOrtho(-7*mScreenWidth/mScreenHeight, 7*mScreenWidth/mScreenHeight, -7, 7, -10.0, 10.0);
+      glOrtho(-10*mScreenWidth/mScreenHeight, 10*mScreenWidth/mScreenHeight, -10, 10, -10.0, 10.0);
       glMatrixMode(GL_MODELVIEW);
       glPushMatrix();
       {
@@ -320,6 +320,7 @@ void Game::loop()
 void Game::nextTurn()
 {
   mDieIsThrown = false;
+  mDice->setState(DIE_WAITING);
 
   for (int i = 0; i < 4; i++)
   {
@@ -481,7 +482,7 @@ void Game::Move(int name)
   }
 }
 
-void Game::throwDice(int number)
+void Game::rollDice(int number)
 {
   //mDiceNumber = rand() % 6 + 1;
   mDieIsThrown = true;

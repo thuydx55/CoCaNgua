@@ -43,6 +43,9 @@
     <ClCompile Include="Board.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOIL\SOIL.h">
@@ -99,6 +102,9 @@
     <ClInclude Include="Board.h">
       <Filter>Classes</Filter>
     </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -106,9 +112,12 @@
   <ItemGroup>
     <Filter Include="SOIL">
       <UniqueIdentifier>{1ab4aa36-710f-4186-b917-2e17a499e8a4}</UniqueIdentifier>
+      <Extensions>SOIL/*.*</Extensions>
     </Filter>
     <Filter Include="Classes">
       <UniqueIdentifier>{c51d09ed-c2fa-4b31-96f9-50f3623dec26}</UniqueIdentifier>
+      <Extensions>
+      </Extensions>
     </Filter>
   </ItemGroup>
 </Project>
