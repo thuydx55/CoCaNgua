@@ -104,8 +104,22 @@ void Button::drawImg()
   default:
     break;
   }
+  /*Rect bound = mImg[mState]->boundingBox();
+  glBegin(GL_LINE_LOOP);
+    glVertex3f(bound.getMinX(), bound.getMinY(), 1);
+    glVertex3f(bound.getMinX(), bound.getMaxY(), 1);
+    glVertex3f(bound.getMaxX(), bound.getMaxY(), 1);
+    glVertex3f(bound.getMaxX(), bound.getMinY(), 1);
+  glEnd();*/
 
   glPopMatrix();
+}
+
+Rect Button::boundingbox()
+{
+  Rect bound = mImg[mState]->boundingBox();
+  bound.origin += mPos;
+  return bound;
 }
 
 Button::~Button(void)

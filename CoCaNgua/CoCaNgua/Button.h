@@ -8,11 +8,11 @@ class Button
 {
   GLSYNTHESIZE(Vector2, mPos, Position);
   GLSYNTHESIZE(Vector2, mAnchor, AnchorPoint);
+  GLSYNTHESIZE(ButtonState, mState, ButtonState)
 
   Sprite2D* mImg[4]; // Normal, Hover, Pressed, Disable
 
   bool mVisible;
-  ButtonState mState;
 
 public:
   Button(void);
@@ -35,6 +35,8 @@ public:
 
   void setDisable(bool disable);
   bool isDisable();
+
+  Rect boundingbox();
 };  
 
 inline void Button::setVisible(bool visible)

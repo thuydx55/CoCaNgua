@@ -32,7 +32,7 @@ void KeyBoard::processKey( unsigned char key )
     SOIL_save_screenshot(
       "screenshot.bmp",
       SOIL_SAVE_TYPE_BMP,
-      0, 0, Game::inst().mScreenWidth, Game::inst().mScreenHeight
+      0, 0, Graphic::inst().screenWidth, Graphic::inst().screenHeight
       );
     break;
   case '1':
@@ -120,6 +120,17 @@ void Mouse::processMouse( int button, int state, int x, int y )
       mousedw(x, y, button);
     } 
   }
+  else if (Graphic::inst().getAppScene() == APP_MENU)
+  {
+    if(button == GLUT_LEFT_BUTTON)
+    {
+      if(state == GLUT_DOWN)
+        MainMenu::inst().processMouseBegan(x, Graphic::inst().screenHeight-y);
+      else if(state == GLUT_UP)
+        MainMenu::inst().processMouseEnded(x, Graphic::inst().screenHeight-y);
+    }
+  }
+  
 }
 
 void Mouse::processMouseMotion( int x, int y )
@@ -132,7 +143,13 @@ void Mouse::processMouseMotion( int x, int y )
 
 void Mouse::processMousePassiveMotion( int x, int y )
 {
-
+  switch (Graphic::inst().getAppScene())
+  {
+  case APP_MENU:
+    MainMenu::inst().processMousePassiveMotion(x, Graphic::inst().screenHeight-y);
+  default:
+    break;
+  }
 }
 
 Mouse::~Mouse( void )
@@ -222,7 +239,7 @@ void Mouse::gl_select(int x, int y)
   restrict the draw to an area around the cursor
   */
   gluPickMatrix(x, y, 1.0, 1.0, view);
-  gluPerspective(60.0f, (float)(Game::inst().mScreenWidth)/Game::inst().mScreenHeight, 10.0f, 1000.0f); // FOV, AspectRatio, NearClip, FarClip
+  gluPerspective(60.0f, (float)Graphic::inst().screenWidth/Graphic::inst().screenHeight, 10.0f, 1000.0f); // FOV, AspectRatio, NearClip, FarClip
 
   /*
   Draw the objects onto the screen
@@ -264,5 +281,5 @@ void Mouse::gl_select(int x, int y)
 void Mouse::mousedw(int x, int y, int but)
 {
   //printf("Mouse button %d pressed at %d %d\n", but, x, y);
-  gl_select(x, Game::inst().mScreenHeight-y); //Important: gl (0,0) ist bottom left but window coords (0,0) are top left so we have to change this!
+  gl_select(x, Graphic::inst().screenHeight-y); //Important: gl (0,0) ist bottom left but window coords (0,0) are top left so we have to change this!
 }

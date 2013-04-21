@@ -80,8 +80,8 @@ Rect Sprite2D::boundingBox()
   Vector2 midPointRect(mPos.x-mAnchor.x*size.width, mPos.y-mAnchor.y*size.height);
   return Rect(midPointRect.x - size.width/2,
               midPointRect.y - size.height/2,
-              midPointRect.x + size.width/2,
-              midPointRect.y + size.height/2);
+              size.width,
+              size.height);
 }
 
 Sprite2D::~Sprite2D(void)

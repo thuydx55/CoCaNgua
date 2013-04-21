@@ -8,6 +8,8 @@ class Graphic
 {
   GLSYNTHESIZE(AppScene, mAppScene, AppScene);
 public:
+  float screenWidth, screenHeight;
+
   Graphic(void);
   ~Graphic(void);
   

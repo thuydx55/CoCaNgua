@@ -24,6 +24,7 @@ public:
   Size size;
 
   Rect() {};
+  Rect(Rect& other);
   Rect(Vector2 pOrigin, Size pSize);
   Rect(float x, float y, float width, float height);
   void setRect(float x, float y, float width, float height);
@@ -37,6 +38,11 @@ public:
   float getMidY() const; /// return the midpoint y-value of current rect
   float getMaxY() const; /// return the topmost y-value of current rect
 };
+
+inline Rect::Rect(Rect& other)
+{
+  setRect(other.origin.x, other.origin.y, other.size.width, other.size.height);
+}
 
 inline Rect::Rect(Vector2 pOrigin, Size pSize)
 {

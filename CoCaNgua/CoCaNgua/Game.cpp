@@ -7,8 +7,8 @@ Game::Game(void)
   mDieIsThrown = false;
   mIsDrawDie = false;
 
-  mScreenWidth = 600;
-  mScreenHeight = 800;
+  Graphic::inst().screenWidth = 600;
+  Graphic::inst().screenHeight = 800;
 
   lightPosition[0] = 0;
   lightPosition[1] = 50;
@@ -296,7 +296,9 @@ void Game::drawDie()
     glPushMatrix();
     {
       glLoadIdentity();
-      glOrtho(-10*mScreenWidth/mScreenHeight, 10*mScreenWidth/mScreenHeight, -10, 10, -10.0, 10.0);
+      glOrtho(-10*Graphic::inst().screenWidth/Graphic::inst().screenHeight,
+        10*Graphic::inst().screenWidth/Graphic::inst().screenHeight,
+        -10, 10, -10.0, 10.0);
       glMatrixMode(GL_MODELVIEW);
       glPushMatrix();
       {

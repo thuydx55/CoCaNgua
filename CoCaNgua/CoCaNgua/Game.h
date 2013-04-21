@@ -69,7 +69,6 @@ public:
   GLfloat lightPosition[4];
   float lightAngle, lightHeight;
 
-  float mScreenWidth, mScreenHeight;
   bool mIsDrawDie;
 
   Turn playerTurn;

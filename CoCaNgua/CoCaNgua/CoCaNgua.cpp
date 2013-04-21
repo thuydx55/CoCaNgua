@@ -41,8 +41,8 @@ const float DELTA_TIME      = 33;
 ///////////////////////////////////////////////////////////////////////////////
 bool initSharedMem()
 {
-  Game::inst().mScreenWidth = SCREEN_WIDTH;
-  Game::inst().mScreenHeight = SCREEN_HEIGHT;
+  Graphic::inst().screenWidth = SCREEN_WIDTH;
+  Graphic::inst().screenHeight = SCREEN_HEIGHT;
 
   //Graphic::inst().setAppScene(APP_GAME);
 
@@ -64,7 +64,7 @@ int initGLUT(int argc, char **argv)
   //   glutGameModeString("800x600:16@60");
   //   glutEnterGameMode();
 
-  glutInitWindowSize(Game::inst().mScreenWidth, Game::inst().mScreenHeight);  // window size
+  glutInitWindowSize(Graphic::inst().screenWidth, Graphic::inst().screenHeight);  // window size
   glutInitWindowPosition(400, 100);               // window location
 
   // finally, create a window with openGL context
@@ -132,9 +132,11 @@ void displayCB( void )  {
   switch (Graphic::inst().getAppScene())
   {
   case APP_GAME:
+    glEnable(GL_LIGHTING);
     Game::inst().loop();
     break;
   case APP_MENU:
+    glDisable(GL_LIGHTING);
     MainMenu::inst().loop();
     break;
   case APP_OPTION:
@@ -149,15 +151,15 @@ void displayCB( void )  {
 }
 
 void reshapeCB(int width, int height) {
-  Game::inst().mScreenWidth = width;
-  Game::inst().mScreenHeight = height;
+  Graphic::inst().screenWidth = width;
+  Graphic::inst().screenHeight = height;
   // set viewport to be the entire window
-  glViewport(0, 0, (GLsizei)Game::inst().mScreenWidth, (GLsizei)Game::inst().mScreenHeight);
+  glViewport(0, 0, width, height);
 
   // set perspective viewing frustum
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(60.0f, (float)(Game::inst().mScreenWidth)/Game::inst().mScreenHeight, 1.0f, 1000.0f); // FOV, AspectRatio, NearClip, FarClip
+  gluPerspective(60.0f, (float)Graphic::inst().screenWidth/Graphic::inst().screenHeight, 1.0f, 1000.0f); // FOV, AspectRatio, NearClip, FarClip
 
   // switch to modelview matrix in order to set scene
   glMatrixMode(GL_MODELVIEW);
