@@ -9,6 +9,9 @@ class MainMenu
 {
   Sprite2D* mBackground;
   Button* mStart;
+  Button* mOption;
+  Button* mAbout;
+  Button* mQuit;
 
   void drawScene();
 public:

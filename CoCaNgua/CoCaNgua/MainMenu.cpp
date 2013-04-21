@@ -19,12 +19,24 @@ void MainMenu::initSprite()
 
   mStart = new Button("img/Button_Start.png", "img/Button_Start_Hover.png", "img/Button_Start_Hover.png");
   mStart->setPosition(Vector2(478, 242));
+
+  mOption = new Button("img/Button_Option.png", "img/Button_Option_Hover.png", "img/Button_Option_Hover.png");
+  mOption->setPosition(Vector2(580, 244));
+
+  mAbout = new Button("img/Button_About.png", "img/Button_About_Hover.png", "img/Button_About_Hover.png");
+  mAbout->setPosition(Vector2(675, 249));
+
+  mQuit = new Button("img/Button_Quit.png", "img/Button_Quit_Hover.png", "img/Button_Quit_Hover.png");
+  mQuit->setPosition(Vector2(694, 104));
 }
 
 void MainMenu::drawScene()
 {
   mBackground->drawImg();
   mStart->drawImg();
+  mOption->drawImg();
+  mAbout->drawImg();
+  mQuit->drawImg();
 }
 
 void MainMenu::loop()
