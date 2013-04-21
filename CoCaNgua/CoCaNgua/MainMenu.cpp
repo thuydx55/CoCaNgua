@@ -70,26 +70,120 @@ void MainMenu::loop()
 
 void MainMenu::processMouseBegan(int x, int y )
 {
-  if (mStart->boundingbox().containsPoint(Vector2(x, y)))
-    mStart->setButtonState(BUTTON_PRESSED);
-  else
-    mStart->setButtonState(BUTTON_NORMAL);
+  // Start Button
+  if (mStart->getButtonState() != BUTTON_DISABLE)
+  {
+    if (mStart->boundingbox().containsPoint(Vector2(x, y)))
+      mStart->setButtonState(BUTTON_PRESSED);
+    else
+      mStart->setButtonState(BUTTON_NORMAL); 
+  }
+
+  // Option Button
+  if (mOption->getButtonState() != BUTTON_DISABLE)
+  {
+    if (mOption->boundingbox().containsPoint(Vector2(x, y)))
+      mOption->setButtonState(BUTTON_PRESSED);
+    else
+      mOption->setButtonState(BUTTON_NORMAL); 
+  }
+
+  // About Button
+  if (mAbout->getButtonState() != BUTTON_DISABLE)
+  {
+    if (mAbout->boundingbox().containsPoint(Vector2(x, y)))
+      mAbout->setButtonState(BUTTON_PRESSED);
+    else
+      mAbout->setButtonState(BUTTON_NORMAL); 
+  }
+
+  // Quit Button
+  if (mQuit->getButtonState() != BUTTON_DISABLE)
+  {
+    if (mQuit->boundingbox().containsPoint(Vector2(x, y)))
+      mQuit->setButtonState(BUTTON_PRESSED);
+    else
+      mQuit->setButtonState(BUTTON_NORMAL); 
+  }
 }
 
 void MainMenu::processMouseEnded( int x, int y )
 {
-  if (mStart->boundingbox().containsPoint(Vector2(x, y)))
-    Graphic::inst().setAppScene(APP_GAME);
-  else if(mStart->getButtonState() != BUTTON_DISABLE) mStart->setButtonState(BUTTON_NORMAL);
+  // Start Button
+  if (mStart->getButtonState() != BUTTON_DISABLE)
+  {
+    if (mStart->boundingbox().containsPoint(Vector2(x, y)))
+      Graphic::inst().setAppScene(APP_GAME);
+    else 
+      mStart->setButtonState(BUTTON_NORMAL); 
+  }
+
+  // Option Button
+  if (mOption->getButtonState() != BUTTON_DISABLE)
+  {
+    if (mOption->boundingbox().containsPoint(Vector2(x, y)))
+      Graphic::inst().setAppScene(APP_OPTION);
+    else  
+      mOption->setButtonState(BUTTON_NORMAL); 
+  }
+
+  // About Button
+  if (mAbout->getButtonState() != BUTTON_DISABLE)
+  {
+    if (mAbout->boundingbox().containsPoint(Vector2(x, y)))
+      Graphic::inst().setAppScene(APP_ABOUT);
+    else 
+      mAbout->setButtonState(BUTTON_NORMAL); 
+  }
+
+  // Quit Button
+  if (mQuit->getButtonState() != BUTTON_DISABLE)
+  {
+    if (mQuit->boundingbox().containsPoint(Vector2(x, y)))
+      exit(0);
+    else  
+      mQuit->setButtonState(BUTTON_NORMAL); 
+  }
 }
 
 
 void MainMenu::processMousePassiveMotion( int x, int y )
 {
-  if (mStart->boundingbox().containsPoint(Vector2(x, y)))
-    mStart->setButtonState(BUTTON_HOVER);
-  else
-    mStart->setButtonState(BUTTON_NORMAL);
+  // Start Button
+  if (mStart->getButtonState() != BUTTON_DISABLE)
+  {
+    if (mStart->boundingbox().containsPoint(Vector2(x, y)))
+      mStart->setButtonState(BUTTON_HOVER);
+    else
+      mStart->setButtonState(BUTTON_NORMAL); 
+  }
+
+  // Option Button
+  if (mOption->getButtonState() != BUTTON_DISABLE)
+  {
+    if (mOption->boundingbox().containsPoint(Vector2(x, y)))
+      mOption->setButtonState(BUTTON_HOVER);
+    else
+      mOption->setButtonState(BUTTON_NORMAL); 
+  }
+
+  // About Button
+  if (mAbout->getButtonState() != BUTTON_DISABLE)
+  {
+    if (mAbout->boundingbox().containsPoint(Vector2(x, y)))
+      mAbout->setButtonState(BUTTON_HOVER);
+    else
+      mAbout->setButtonState(BUTTON_NORMAL); 
+  }
+
+  // Quit Button
+  if (mQuit->getButtonState() != BUTTON_DISABLE)
+  {
+    if (mQuit->boundingbox().containsPoint(Vector2(x, y)))
+      mQuit->setButtonState(BUTTON_HOVER);
+    else
+      mQuit->setButtonState(BUTTON_NORMAL); 
+  }
 }
 
 MainMenu::~MainMenu(void)
