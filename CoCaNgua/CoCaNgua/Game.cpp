@@ -6,6 +6,7 @@ Game::Game(void)
   srand(time(NULL));
   mDieIsThrown = false;
   mIsDrawDie = false;
+  mFullHome = false;
 
   Graphic::inst().screenWidth = 600;
   Graphic::inst().screenHeight = 800;
@@ -19,7 +20,9 @@ Game::Game(void)
 
   font = GLUT_BITMAP_8_BY_13;
 
-  playerTurn = TURN_RED;
+  mPlayerTurn = TURN_RED;
+
+  mTries = 0;
 
   Vector3 start[] = {Vector3(-16, 0, -16),
                      Vector3(-16, 0, -20),
@@ -320,10 +323,19 @@ void Game::drawDie()
   }
 }
 
+
 void Game::loop()
 {
   drawSence();
   drawDie();
+
+  // Winnnnnnnnnnnnnnnnn
+  if (mFullHome && checkAllModelIdle())
+  {
+    cout << "WINNER: " << mWinner << endl;
+    mFullHome = false;
+  }
+
 }
 
 void Game::nextTurn()
@@ -333,24 +345,25 @@ void Game::nextTurn()
 
   for (int i = 0; i < 4; i++)
   {
-    mPieces[playerTurn*4 + i]->highlight(false);
+    mPieces[mPlayerTurn*4 + i]->highlight(false);
   }
 
   if (mDieNumber != 6)
   {
-    switch (playerTurn)
+    mTries = 0;
+    switch (mPlayerTurn)
     {
     case TURN_RED:
-      playerTurn = TURN_BLUE;
+      mPlayerTurn = TURN_BLUE;
       break;
     case TURN_BLUE:
-      playerTurn = TURN_GREEN;
+      mPlayerTurn = TURN_GREEN;
       break;
     case TURN_GREEN:
-      playerTurn = TURN_YELLOW;
+      mPlayerTurn = TURN_YELLOW;
       break;
     case TURN_YELLOW:
-      playerTurn = TURN_RED;
+      mPlayerTurn = TURN_RED;
       break;
     default:
       break;
@@ -392,7 +405,9 @@ void Game::Move(int name)
     return;
 
   Piece* mod = getModelByName(name);
-  if (mod != NULL && mod->getType() == playerTurn && checkAllModelIdle())
+  Turn playerTurn = mPlayerTurn;
+
+  if (mod != NULL && mod->getType() == mPlayerTurn && checkAllModelIdle())
   {
     vector<Vector3> target;
 
@@ -413,6 +428,7 @@ void Game::Move(int name)
         int index = getModelPositionIndex(mod->getPosition(), mFields, 40);
         int tmp = getModelPositionIndex(mPredictPosition[k], mFields, 40);
 
+        mFields[tmp].piece->setArea(AREA_OUT);
         mFields[tmp].piece->setPosition(mFields[tmp].piece->getInitPosition());
 
         mFields[index].piece = NULL;
@@ -423,9 +439,11 @@ void Game::Move(int name)
       {
         int tmp = getModelPositionIndex(mPredictPosition[k], mFields, 40);
 
+        mFields[tmp].piece->setArea(AREA_OUT);
         mFields[tmp].piece->setPosition(mFields[tmp].piece->getInitPosition());
+
         mFields[tmp].piece = mod;
-        mFields[tmp].piece->setArea(AREA_ROAD);
+        mFields[tmp].piece->setArea(AREA_GAME);
       }
 
       if (mPredictMoveState[k] == MOVE_START)
@@ -433,7 +451,7 @@ void Game::Move(int name)
         int tmp = getModelPositionIndex(mPredictPosition[k], mFields, 40);
 
         mFields[tmp].piece = mod;
-        mFields[tmp].piece->setArea(AREA_ROAD);
+        mFields[tmp].piece->setArea(AREA_GAME);
       }
 
       if (mPredictMoveState[k] == MOVE_HOME_INSIDE)
@@ -486,10 +504,28 @@ void Game::Move(int name)
       nextTurn();
     }
   }
+
+  /*---------------- FIND THE WINNER ^^ -------------------*/
+  mFullHome = true;
+  for (int i = playerTurn*4; i < playerTurn*4+4; i++)
+  {
+    if (mHome[i].piece == NULL)
+    {
+      mFullHome = false;
+      break;
+    }
+  }
+
+  if (mFullHome)
+  {
+    mWinner = playerTurn;
+  }
 }
 
 void Game::rollDice(int number)
 {
+  if (mDieIsThrown)
+    return;
   //mDiceNumber = rand() % 6 + 1;
   mDieIsThrown = true;
   mustBeStart = false;
@@ -501,13 +537,13 @@ void Game::rollDice(int number)
 
   for (int i = 0; i < 4; i++)
   {
-    int indexFirstPos = mPieces[playerTurn*4+i]->getIndexFirstPos();
-    int indexCurRoad = getModelPositionIndex(mPieces[playerTurn*4+i]->getPosition(), mFields, 40);
+    int indexFirstPos = mPieces[mPlayerTurn*4+i]->getIndexFirstPos();
+    int indexCurRoad = getModelPositionIndex(mPieces[mPlayerTurn*4+i]->getPosition(), mFields, 40);
     
     // Piece not on the road
     if (indexCurRoad == -1)
     {
-      int indexCurHome = getModelPositionIndex(mPieces[playerTurn*4+i]->getPosition(), mHome, 16);
+      int indexCurHome = getModelPositionIndex(mPieces[mPlayerTurn*4+i]->getPosition(), mHome, 16);
 
       // Piece in the home
       if (indexCurHome != -1)
@@ -540,14 +576,14 @@ void Game::rollDice(int number)
 
       /*---------------- DICE 6 -------------------*/
       // Piece move to start field
-      if (mDieNumber == 6 && mPieces[playerTurn*4+i]->getArea() == AREA_OUT)
+      if (mDieNumber == 6 && mPieces[mPlayerTurn*4+i]->getArea() == AREA_OUT)
       {
         mustBeStart = true;
         // Other piece on start field already
         if (mFields[indexFirstPos].piece != NULL)
         {
           // Other piece is the same
-          if (mFields[indexFirstPos].piece->getType() == playerTurn)
+          if (mFields[indexFirstPos].piece->getType() == mPlayerTurn)
           {
             mustBeStart = false;
             continue;
@@ -575,6 +611,7 @@ void Game::rollDice(int number)
     if (indexNext >= 40)
       indexNext -= 40;
 
+    /*---------------- GO HOME FROM OUTSIDE -------------------*/
     // check reaching finish
     if ((indexFirstPos > indexCurRoad && indexFirstPos <= indexNext)
       || (indexFirstPos == 0 && indexNext < mDieNumber))
@@ -585,7 +622,7 @@ void Game::rollDice(int number)
       {
         bool blocked = false;
         // Checking if no piece on the way to target field
-        for (int j = 0; j < playerTurn*4 + mDieNumber; j++)
+        for (int j = mPlayerTurn*4; j < mPlayerTurn*4 + mDieNumber; j++)
         {
           if (mHome[j].piece != NULL)
           {
@@ -598,7 +635,7 @@ void Game::rollDice(int number)
         // Piece move if the way is cleared
         if (!blocked)
         {
-          mPredictPosition[i] = mHome[playerTurn*4 + mDieNumber-1].position;
+          mPredictPosition[i] = mHome[mPlayerTurn*4 + mDieNumber-1].position;
           mPredictMoveState[i] = MOVE_HOME_OUTSIDE; 
         }
       }
@@ -611,7 +648,7 @@ void Game::rollDice(int number)
     if (mFields[indexNext].piece != NULL)
     {
       // Target piece is the same
-      if (mFields[indexNext].piece->getType() == playerTurn)
+      if (mFields[indexNext].piece->getType() == mPlayerTurn)
       {
         // There is
         continue;
@@ -633,7 +670,7 @@ void Game::rollDice(int number)
 
   bool startFieldMustMove = false;
   int startPieceID;
-  int indexFirstPos = mPieces[playerTurn*4]->getIndexFirstPos();
+  int indexFirstPos = mPieces[mPlayerTurn*4]->getIndexFirstPos();
 
   for (int i = 0; i < 4; i++)
   {
@@ -651,7 +688,7 @@ void Game::rollDice(int number)
     // Checking if start field has piece
     if (mFields[indexFirstPos].piece != NULL && !startFieldMustMove)
     {
-      int indexCurField = getModelPositionIndex(mPieces[playerTurn*4+i]->getPosition(), mFields, 40);
+      int indexCurField = getModelPositionIndex(mPieces[mPlayerTurn*4+i]->getPosition(), mFields, 40);
       if (indexCurField == indexFirstPos && mPredictMoveState[i] != MOVE_ILLEGAL)
       {
         startFieldMustMove = true;
@@ -660,7 +697,7 @@ void Game::rollDice(int number)
     }
   }
 
-  cout << "Player: " << playerTurn << endl;
+  cout << "Player: " << mPlayerTurn << endl;
   cout << "Dice Number: " << mDieNumber << endl;
   for (int i = 0; i < 4; i++)
   {
@@ -668,10 +705,12 @@ void Game::rollDice(int number)
   }
 
   bool allMoveIllegal = true;
+  bool noPieceInTheGame = true;
 
   // Checking if pieces can move
   for (int i = 0; i < 4; i++)
   {
+    // Start field must move first
     if (startFieldMustMove)
     {
       if (mPredictMoveState[i] != MOVE_ILLEGAL && i != startPieceID)
@@ -680,16 +719,33 @@ void Game::rollDice(int number)
       }
     }
 
+    // Checking if no piece in the game
+    if (mPieces[mPlayerTurn*4+i]->getArea() == AREA_GAME)
+    {
+      noPieceInTheGame = false;
+    }
+
+    // Checking if all move are illegal
     if (mPredictMoveState[i] != MOVE_ILLEGAL)
     {
-      mPieces[playerTurn*4+i]->highlight(true);
+      mPieces[mPlayerTurn*4+i]->highlight(true);
       allMoveIllegal = false;
     }
   }
 
   // No piece can move?
   if (allMoveIllegal)
+  {
+    if (noPieceInTheGame)
+    {
+      mDieIsThrown = false;
+      mTries ++;
+      if (mTries > 2)
+        nextTurn();
+      return;
+    }
     nextTurn();
+  }
 }
 
 Game::~Game(void)

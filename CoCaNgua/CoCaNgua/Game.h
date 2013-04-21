@@ -53,8 +53,12 @@ class Game
   MoveState mPredictMoveState[4];
 
   int mDieNumber;
+  int mTries;
   bool mDieIsThrown;
   bool mustBeStart;
+  bool mFullHome;
+
+  Turn mWinner;
 
   void drawSence();
   void drawDie();
@@ -71,7 +75,7 @@ public:
 
   bool mIsDrawDie;
 
-  Turn playerTurn;
+  Turn mPlayerTurn;
 
   Game(void);
   ~Game(void);

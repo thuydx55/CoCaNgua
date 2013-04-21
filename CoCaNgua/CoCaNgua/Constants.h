@@ -73,7 +73,7 @@ enum DieState
 enum Area
 {
   AREA_OUT,
-  AREA_ROAD,
+  AREA_GAME,
   AREA_HOME
 };
 
