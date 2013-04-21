@@ -190,7 +190,7 @@ void mouseMotionCB(int x, int y) {
 
 void mousePassiveMotionCB(int x, int y)
 {
-  //Mouse::inst().processMousePassiveMotion(x, y);
+  Mouse::inst().processMousePassiveMotion(x, y);
 }
 
 void keyboardCB(unsigned char key,int x,int y)

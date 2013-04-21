@@ -32,6 +32,9 @@ public:
   Sprite2D(const char* pFilename);
   ~Sprite2D(void);
 
+  static Sprite2D* create();
+  static Sprite2D* create(const char* pFilename);
+
   void initWithFile(const char* pFilename);
 
   void drawImg();

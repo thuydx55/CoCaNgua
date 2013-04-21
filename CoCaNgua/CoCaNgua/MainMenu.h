@@ -17,6 +17,8 @@ public:
 
   static MainMenu& inst();
   void loop();
+
+  void processMousePassiveMotion(int x, int y);
 };  
 #endif // !_MAIN_MENU_H_
 

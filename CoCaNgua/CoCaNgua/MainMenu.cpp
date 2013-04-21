@@ -7,6 +7,7 @@ MainMenu::MainMenu(void)
   mBackground->setAnchorPoint(Vector2(-0.5, -0.5));
 
   mStart = new Button("img/Button_Start.png", "img/Button_Start_Hover.png");
+  mStart->setPosition(Vector2(478, 242));
 }
 
 MainMenu& MainMenu::inst()

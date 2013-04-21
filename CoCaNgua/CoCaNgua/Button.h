@@ -15,8 +15,6 @@ class Button
   ButtonState mState;
 
 public:
-  Rect rect;
-
   Button(void);
   Button(Sprite2D* pNormalImg, Sprite2D* pHoverImg);
   Button(Sprite2D* pNormalImg, Sprite2D* pHoverImg, Sprite2D* pPressedImg);
