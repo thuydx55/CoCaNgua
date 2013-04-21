@@ -1,6 +1,5 @@
-#pragma once
-#ifndef _DIE_H_
-#define _DIE_H_
+#ifndef _CG_DIE_H_
+#define _CG_DIE_H_
 
 #include "Model.h"
 #include "Timer.h"

@@ -106,6 +106,7 @@
     <ClInclude Include="Die.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="Geometry.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Light.h" />

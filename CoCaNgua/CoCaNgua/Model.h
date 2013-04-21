@@ -1,11 +1,11 @@
-#pragma once
-#ifndef _MODEL_H_
-#define _MODEL_H_
+#ifndef _CG_MODEL_H_
+#define _CG_MODEL_H_
 
 #include "ModelOBJ.h"
 #include "Constants.h"
 #include "mathlib.h"
-
+#include "Timer.h"
+#include "Light.h"
 #include "SOIL/SOIL.h"
 
 #include <gl/glut.h>
@@ -13,9 +13,6 @@
 #include <iostream>
 #include <cstring>
 #include <vector>
-
-#include "Timer.h"
-#include "Light.h"
 
 using namespace std;
 

@@ -22,11 +22,18 @@ Button::Button( Sprite2D* pNormalImg, Sprite2D* pHoverImg, Sprite2D* pPressedImg
 
 void Button::initWithSprite( Sprite2D* pNormalImg, Sprite2D* pHoverImg, Sprite2D* pPressedImg, Sprite2D* pDisabledImg )
 {
+  for (int i = 0; i < 4; i++)
+  {
+    if (mImg[i])
+      delete mImg[i];
+    mImg[i] = NULL;
+  }
+
   mState = BUTTON_NORMAL;
-  mNormalImg = pNormalImg;
-  mHoverImg = pHoverImg;
-  mPressedImg = pPressedImg; 
-  mDisabledImg = pDisabledImg;
+  mImg[0] = pNormalImg;
+  mImg[1] = pHoverImg;
+  mImg[2] = pPressedImg; 
+  mImg[3] = pDisabledImg;
 }
 
 void Button::drawImg()
@@ -37,25 +44,25 @@ void Button::drawImg()
   switch (mState)
   {
   case BUTTON_NORMAL:
-    mNormalImg->drawImg();
+    mImg[0]->drawImg();
     break;
   case BUTTON_HOVER:
-    if (mHoverImg)
-      mHoverImg->drawImg();
+    if (mImg[1])
+      mImg[1]->drawImg();
     else
-      mNormalImg->drawImg();
+      mImg[0]->drawImg();
     break;
   case BUTTON_PRESSED:
-    if (mPressedImg)
-      mPressedImg->drawImg();
+    if (mImg[2])
+      mImg[2]->drawImg();
     else
-      mNormalImg->drawImg();
+      mImg[0]->drawImg();
     break;
   case BUTTON_DISABLE:
-    if (mDisabledImg)
-      mDisabledImg->drawImg();
+    if (mImg[3])
+      mImg[3]->drawImg();
     else
-      mNormalImg->drawImg();
+      mImg[0]->drawImg();
     break;
   default:
     break;

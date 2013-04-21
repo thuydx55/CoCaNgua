@@ -1,6 +1,5 @@
-#pragma once
-#ifndef _INPUT_MANAGER_H_
-#define _INPUT_MANAGER_H_
+#ifndef _CG_INPUT_MANAGER_H_
+#define _CG_INPUT_MANAGER_H_
 
 #include "Game.h"
 #include "Light.h"

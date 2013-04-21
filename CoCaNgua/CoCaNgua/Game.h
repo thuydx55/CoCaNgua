@@ -1,7 +1,5 @@
-#pragma once
-
-#ifndef _GAME_H
-#define _GAME_H
+#ifndef _CG_GAME_H
+#define _CG_GAME_H
 
 #include <string>
 

@@ -1,5 +1,5 @@
-#ifndef CAMERA_H_INCLUDED
-#define CAMERA_H_INCLUDED
+#ifndef _CG_CAMERA_H_INCLUDED
+#define _CG_CAMERA_H_INCLUDED
 
 #include <cmath>
 #include "mathlib.h"

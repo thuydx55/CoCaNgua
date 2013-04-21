@@ -1,7 +1,5 @@
-#pragma once
-
-#ifndef _GRAPHIC_H_
-#define _GRAPHIC_H_
+#ifndef _CG_GRAPHIC_H_
+#define _CG_GRAPHIC_H_
 
 #include "Model.h"
 #include "Constants.h"

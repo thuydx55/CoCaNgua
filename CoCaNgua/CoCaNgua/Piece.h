@@ -1,7 +1,5 @@
-#pragma once
-
-#ifndef _PIECE_H_
-#define _PIECE_H_
+#ifndef _CG_PIECE_H_
+#define _CG_PIECE_H_
 
 #include "Model.h"
 #include "Constants.h"

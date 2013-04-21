@@ -1,6 +1,5 @@
-#pragma once
-#ifndef _CONSTANTS_H_
-#define _CONSTANTS_H_
+#ifndef _CG_CONSTANTS_H_
+#define _CG_CONSTANTS_H_
 
 #include <gl/glut.h>
 #include "mathlib.h"

@@ -1,6 +1,5 @@
-
-#ifndef _TIMER_H__
-#define _TIMER_H__
+#ifndef _CG_TIMER_H__
+#define _CG_TIMER_H__
 
 #include <ctime>
 

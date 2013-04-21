@@ -123,6 +123,7 @@
     <ClInclude Include="Button.h">
       <Filter>Classes</Filter>
     </ClInclude>
+    <ClInclude Include="Geometry.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

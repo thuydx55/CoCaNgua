@@ -1,13 +1,12 @@
-#pragma once
-
-#ifndef _SPRITE_H_
-#define _SPRITE_H_
+#ifndef _CG_SPRITE_H_
+#define _CG_SPRITE_H_
 
 //#include "gl/glut.h"
 
 #include "SOIL/SOIL.h"
 #include "mathlib.h"
 #include "Constants.h"
+#include "Geometry.h"
 
 #include <iostream>
 
@@ -26,7 +25,8 @@ class Sprite2D
 
 public:
 
-  int width, height, channel;
+  int channel;
+  Size size;
 
   Sprite2D(void);
   Sprite2D(const char* pFilename);
@@ -39,6 +39,7 @@ public:
   void setVisible(bool visible);
   bool isVisible();
 
+  Rect boundingBox();
 };  
 
 inline void Sprite2D::setVisible(bool visible)
