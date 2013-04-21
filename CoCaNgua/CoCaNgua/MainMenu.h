@@ -15,6 +15,8 @@ public:
   MainMenu(void);
   ~MainMenu(void);
 
+  void initSprite();
+
   static MainMenu& inst();
   void loop();
 

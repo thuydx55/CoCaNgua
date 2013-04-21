@@ -3,17 +3,22 @@
 
 MainMenu::MainMenu(void)
 {
-  mBackground = new Sprite2D("img/background.png");
-  mBackground->setAnchorPoint(Vector2(-0.5, -0.5));
 
-  mStart = new Button("img/Button_Start.png", "img/Button_Start_Hover.png", "img/Button_Start_Hover.png");
-  mStart->setPosition(Vector2(478, 242));
 }
 
 MainMenu& MainMenu::inst()
 {
   static MainMenu instance;
   return instance;
+}
+
+void MainMenu::initSprite()
+{
+  mBackground = new Sprite2D("img/background.png");
+  mBackground->setAnchorPoint(Vector2(-0.5, -0.5));
+
+  mStart = new Button("img/Button_Start.png", "img/Button_Start_Hover.png", "img/Button_Start_Hover.png");
+  mStart->setPosition(Vector2(478, 242));
 }
 
 void MainMenu::drawScene()

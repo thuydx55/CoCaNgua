@@ -217,6 +217,7 @@ int main( int argc, char *argv[] )  {
   initGL();
 
   Game::inst().initModel();
+  MainMenu::inst().initSprite();
 
   glutMainLoop( );
 }

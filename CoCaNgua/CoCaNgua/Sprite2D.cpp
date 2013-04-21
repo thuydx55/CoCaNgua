@@ -43,7 +43,7 @@ void Sprite2D::loadTexture(const char *pszFilename)
     SOIL_CREATE_NEW_ID,
     SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
   );
-  cout << pszFilename << ' ' << texID << endl;
+  //cout << pszFilename << ' ' << texID << endl;
   if( 0 != texID )
   {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
