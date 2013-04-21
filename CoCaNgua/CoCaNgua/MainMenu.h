@@ -3,10 +3,12 @@
 
 #include "Sprite2D.h"
 #include "Game.h"
+#include "Button.h"
 
 class MainMenu
 {
   Sprite2D* mBackground;
+  Button* mStart;
 
   void drawScene();
 public:

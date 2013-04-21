@@ -5,6 +5,8 @@ MainMenu::MainMenu(void)
 {
   mBackground = new Sprite2D("img/background.png");
   mBackground->setAnchorPoint(Vector2(-0.5, -0.5));
+
+  mStart = new Button("img/Button_Start.png", "img/Button_Start_Hover.png");
 }
 
 MainMenu& MainMenu::inst()
@@ -16,6 +18,7 @@ MainMenu& MainMenu::inst()
 void MainMenu::drawScene()
 {
   mBackground->drawImg();
+  mStart->drawImg();
 }
 
 void MainMenu::loop()
