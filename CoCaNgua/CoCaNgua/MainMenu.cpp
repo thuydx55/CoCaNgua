@@ -3,7 +3,7 @@
 
 MainMenu::MainMenu(void)
 {
-  mBackground = new Sprite2D("background.png");
+  mBackground = new Sprite2D("img/background.png");
   mBackground->setAnchorPoint(Vector2(-0.5, -0.5));
 }
 
