@@ -55,6 +55,7 @@ class Game
   MoveState mPredictMoveState[4];
 
   int mDieNumber;
+  int mTries;
   bool mDieIsThrown;
   bool mustBeStart;
   bool mFullHome;

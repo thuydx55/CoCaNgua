@@ -22,6 +22,8 @@ Game::Game(void)
 
   mPlayerTurn = TURN_RED;
 
+  mTries = 0;
+
   Vector3 start[] = {Vector3(-16, 0, -16),
                      Vector3(-16, 0, -20),
                      Vector3(-20, 0, -20),
@@ -336,6 +338,7 @@ void Game::nextTurn()
 
   if (mDieNumber != 6)
   {
+    mTries = 0;
     switch (mPlayerTurn)
     {
     case TURN_RED:
@@ -428,7 +431,7 @@ void Game::Move(int name)
         mFields[tmp].piece->setPosition(mFields[tmp].piece->getInitPosition());
 
         mFields[tmp].piece = mod;
-        mFields[tmp].piece->setArea(AREA_ROAD);
+        mFields[tmp].piece->setArea(AREA_GAME);
       }
 
       if (mPredictMoveState[k] == MOVE_START)
@@ -436,7 +439,7 @@ void Game::Move(int name)
         int tmp = getModelPositionIndex(mPredictPosition[k], mFields, 40);
 
         mFields[tmp].piece = mod;
-        mFields[tmp].piece->setArea(AREA_ROAD);
+        mFields[tmp].piece->setArea(AREA_GAME);
       }
 
       if (mPredictMoveState[k] == MOVE_HOME_INSIDE)
@@ -509,6 +512,8 @@ void Game::Move(int name)
 
 void Game::rollDice(int number)
 {
+  if (mDieIsThrown)
+    return;
   //mDiceNumber = rand() % 6 + 1;
   mDieIsThrown = true;
   mustBeStart = false;
@@ -688,10 +693,12 @@ void Game::rollDice(int number)
   }
 
   bool allMoveIllegal = true;
+  bool noPieceInTheGame = true;
 
   // Checking if pieces can move
   for (int i = 0; i < 4; i++)
   {
+    // Start field must move first
     if (startFieldMustMove)
     {
       if (mPredictMoveState[i] != MOVE_ILLEGAL && i != startPieceID)
@@ -700,6 +707,13 @@ void Game::rollDice(int number)
       }
     }
 
+    // Checking if no piece in the game
+    if (mPieces[mPlayerTurn*4+i]->getArea() == AREA_GAME)
+    {
+      noPieceInTheGame = false;
+    }
+
+    // Checking if all move are illegal
     if (mPredictMoveState[i] != MOVE_ILLEGAL)
     {
       mPieces[mPlayerTurn*4+i]->highlight(true);
@@ -709,7 +723,17 @@ void Game::rollDice(int number)
 
   // No piece can move?
   if (allMoveIllegal)
+  {
+    if (noPieceInTheGame)
+    {
+      mDieIsThrown = false;
+      mTries ++;
+      if (mTries > 2)
+        nextTurn();
+      return;
+    }
     nextTurn();
+  }
 }
 
 Game::~Game(void)
