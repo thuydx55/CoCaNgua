@@ -44,6 +44,8 @@ class GameScene
   Board*              mBoard;
   Piece*              mPieces[16]; // 0:3 RED, 4:7 BLUE, 8:11 GREEN, 12:16 YELLOW
   
+  bool mEnablePiece[4];
+
   Vector3 mStartPos[16];
   Field mFields[40];
   Field mHome[16];
@@ -74,7 +76,6 @@ public:
   float lightAngle, lightHeight;
 
   bool mDieIsDrawn;
-
   Turn mPlayerTurn;
 
   GameScene(void);
@@ -91,6 +92,8 @@ public:
   void loop();
   void movePiece(int name);
   void rollDice(int number);
+
+  void setDisablePiece(int index);
 
   bool processMouseBegan(int x, int y);
   void processMouseEnded(int x, int y);

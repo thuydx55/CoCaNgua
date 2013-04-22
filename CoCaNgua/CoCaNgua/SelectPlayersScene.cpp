@@ -1,6 +1,6 @@
 #include "SelectPlayersScene.h"
-#include <iostream>
-using namespace std;
+
+#include "GameScene.h"
 
 AboutScene::AboutScene(void)
 {
@@ -63,17 +63,17 @@ void AboutScene::initSprite()
     mPlayer[i] = RadioGroup::create(mHuman[i], mComputer[i], mDisable[i], NULL); 
   }
 
-  mFrame[1]->setPosition(Vector2(575, 433));
+  mFrame[1   ]->setPosition(Vector2(575, 433));
   mHuman[1]   ->setPosition(Vector2(550, 477));
   mComputer[1]->setPosition(Vector2(550, 426));
   mDisable[1] ->setPosition(Vector2(550, 375));
 
-  mFrame[2]->setPosition(Vector2(230, 184));
+  mFrame[2]   ->setPosition(Vector2(230, 184));
   mHuman[2]   ->setPosition(Vector2(205, 227));
   mComputer[2]->setPosition(Vector2(205, 176));
   mDisable[2] ->setPosition(Vector2(205, 125));
 
-  mFrame[3]->setPosition(Vector2(575, 184));
+  mFrame[3]   ->setPosition(Vector2(575, 184));
   mHuman[3]   ->setPosition(Vector2(550, 227));
   mComputer[3]->setPosition(Vector2(550, 176));
   mDisable[3] ->setPosition(Vector2(550, 125));
@@ -145,6 +145,11 @@ void AboutScene::processMouseBegan(int x, int y )
   if (mBtnStart->boundingBox().containsPoint(Vector2(x, y)))
   {
     Graphic::inst().setAppScene(APP_GAME);
+    for (int i = 0; i < 4; i++)
+    {
+      if (mPlayer[i]->getSelectedIndex() == 2)    // Disable
+        GameScene::inst().setDisablePiece(i);
+    }
   } 
   if (mBtnBack->boundingBox().containsPoint(Vector2(x, y)))
   {

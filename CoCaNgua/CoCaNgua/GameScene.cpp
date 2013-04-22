@@ -6,6 +6,11 @@ bool noPieceInTheGame = true;
 GameScene::GameScene(void)
 {
   srand(time(NULL));
+
+  for (int i = 0; i < 4; i++)
+    mEnablePiece[i] = true;
+  mEnablePiece[1] = false;
+
   mDieIsThrown = false;
   mDieIsDrawn = true;
   Light::inst().mDiffuseOffset = 0.5;
@@ -22,7 +27,6 @@ GameScene::GameScene(void)
   font = GLUT_BITMAP_8_BY_13;
 
   mPlayerTurn = TURN_RED;
-
   mTries = 0;
 
   Vector3 start[] = {Vector3(-16, 0, -16),
@@ -258,17 +262,29 @@ void GameScene::drawSence()
 
   for (int i = 0; i < 4; i++)
   {
-    glLoadName(PIECE_RED_1 + i);
-    mPieces[i]->drawModel();
+    if (mEnablePiece[0])
+    {
+      glLoadName(PIECE_RED_1 + i);
+      mPieces[i]->drawModel(); 
+    }
 
-    glLoadName(PIECE_BLUE_1 + i);
-    mPieces[4+i]->drawModel();
+    if (mEnablePiece[1])
+    {
+      glLoadName(PIECE_BLUE_1 + i);
+      mPieces[4+i]->drawModel(); 
+    }
 
-    glLoadName(PIECE_GREEN_1 + i);
-    mPieces[8+i]->drawModel();
+    if (mEnablePiece[2])
+    {
+      glLoadName(PIECE_GREEN_1 + i);
+      mPieces[8+i]->drawModel(); 
+    }
 
-    glLoadName(PIECE_YELLOW_1 + i);
-    mPieces[12+i]->drawModel();
+    if (mEnablePiece[3])
+    {
+      glLoadName(PIECE_YELLOW_1 + i);
+      mPieces[12+i]->drawModel(); 
+    }
   }
 
   /*glLoadName(3);
@@ -365,23 +381,13 @@ void GameScene::nextTurn()
 
   if (mDieNumber != 6)
   {
-    switch (mPlayerTurn)
+    int next = (int)mPlayerTurn + 1 >= 4 ? 0 : (int)mPlayerTurn + 1;
+    while (!mEnablePiece[next])
     {
-    case TURN_RED:
-      mPlayerTurn = TURN_BLUE;
-      break;
-    case TURN_BLUE:
-      mPlayerTurn = TURN_GREEN;
-      break;
-    case TURN_GREEN:
-      mPlayerTurn = TURN_YELLOW;
-      break;
-    case TURN_YELLOW:
-      mPlayerTurn = TURN_RED;
-      break;
-    default:
-      break;
-    } 
+      next++;
+      if (next >= 4) next = 0;
+    }
+    mPlayerTurn = (Turn)next;
   }
 }
 
@@ -761,6 +767,19 @@ void GameScene::update()
     this->rollDice(mDieNumber);
     Light::inst().mDiffuseOffset = 0.0;
     Light::inst().updateLight();
+  }
+}
+
+void GameScene::setDisablePiece( int index )
+{
+  mEnablePiece[index] = false;
+  for (int i = 0; i < 4; i++)
+  {
+    if (!mEnablePiece[i])
+    {
+      mPlayerTurn = (Turn)(i+1 > 4 ? 0 : i+1);
+      break;
+    }
   }
 }
 

@@ -78,32 +78,11 @@ void Button::drawImg()
   glPushMatrix();
   glTranslatef(mPos.x, mPos.y, 0);
 
-  switch (mState)
-  {
-  case BUTTON_NORMAL:
+  if (mImg[mState])
+    mImg[mState]->drawImg();
+  else
     mImg[0]->drawImg();
-    break;
-  case BUTTON_HOVER:
-    if (mImg[1])
-      mImg[1]->drawImg();
-    else
-      mImg[0]->drawImg();
-    break;
-  case BUTTON_PRESSED:
-    if (mImg[2])
-      mImg[2]->drawImg();
-    else
-      mImg[0]->drawImg();
-    break;
-  case BUTTON_DISABLE:
-    if (mImg[3])
-      mImg[3]->drawImg();
-    else
-      mImg[0]->drawImg();
-    break;
-  default:
-    break;
-  }
+
   /*Rect bound = mImg[mState]->boundingBox();
   glBegin(GL_LINE_LOOP);
     glVertex3f(bound.getMinX(), bound.getMinY(), 1);
