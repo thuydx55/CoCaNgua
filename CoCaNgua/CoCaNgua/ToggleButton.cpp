@@ -61,28 +61,14 @@ void ToggleButton::initWithSprite( Sprite2D* pOnImg, Sprite2D* pOffImg, Sprite2D
 void ToggleButton::drawImg()
 {
   glPushMatrix();
-  glTranslatef(mPos.x, mPos.y, 0);
+  glTranslatef(mPos.x-mAnchor.x*mImg[mState]->boundingBox().size.width,
+               mPos.y-mAnchor.x*mImg[mState]->boundingBox().size.height, 0);
 
-  switch (mState)
-  {
-  case TOGGLE_ON:
+  if (mImg[mState])
+    mImg[mState]->drawImg();
+  else
     mImg[0]->drawImg();
-    break;
-  case TOGGLE_OFF:
-    if (mImg[1])
-      mImg[1]->drawImg();
-    else
-      mImg[0]->drawImg();
-    break;
-  case TOGGLE_DISABLE:
-    if (mImg[2])
-      mImg[2]->drawImg();
-    else
-      mImg[0]->drawImg();
-    break;
-  default:
-    break;
-  }
+
   /*Rect bound = mImg[mState]->boundingBox();
   glBegin(GL_LINE_LOOP);
     glVertex3f(bound.getMinX(), bound.getMinY(), 1);
@@ -109,6 +95,9 @@ Rect ToggleButton::boundingbox()
 {
   Rect bound = mImg[mState]->boundingBox();
   bound.origin += mPos;
+  bound.origin.x -= mAnchor.x*mImg[mState]->boundingBox().size.width;
+  bound.origin.y -= mAnchor.x*mImg[mState]->boundingBox().size.height;
+
   return bound;
 }
 

@@ -6,15 +6,20 @@
 #include "ToggleButton.h"
 #include "RadioGroup.h"
 
+#include "Graphic.h"
+
 class AboutScene
 {
   Sprite2D* mBackground;
-  ToggleButton* mStart;
-  ToggleButton* mOption;
-  ToggleButton* mAbout;
-  ToggleButton* mQuit;
+  Sprite2D* mBtnStart;
+  Sprite2D* mBtnBack;
 
-  RadioGroup* mRadioGroup;
+  Sprite2D* mFrame[4];
+  ToggleButton* mHuman[4];
+  ToggleButton* mComputer[4];
+  ToggleButton* mDisable[4];
+
+  RadioGroup* mPlayer[4];
 
   void drawScene();
 public:

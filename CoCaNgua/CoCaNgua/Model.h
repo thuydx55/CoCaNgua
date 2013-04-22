@@ -41,8 +41,6 @@ public:
 
   void setColorTint(GLfloat red, GLfloat green, GLfloat blue);
 
-  Vector3 getCenterLocation();
-
   void loadModel(const char *pszFilename);
   virtual void drawModel();
   virtual void update();

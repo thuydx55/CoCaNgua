@@ -66,10 +66,10 @@ void RadioGroup::click(int x, int y)
   }
 }
 
-Rect RadioGroup::boundingbox()
+Rect RadioGroup::boundingBox()
 {
-  Rect bounding;
-  for (int i = 0; i < mToggle.size(); i++)
+  Rect bounding = mToggle[0]->boundingbox();
+  for (int i = 1; i < mToggle.size(); i++)
   {
     bounding = bounding + mToggle[i]->boundingbox();
   }

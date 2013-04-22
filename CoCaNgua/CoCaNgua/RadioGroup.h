@@ -24,7 +24,7 @@ public:
 
   void click(int x, int y);
 
-  Rect boundingbox();
+  Rect boundingBox();
 };
 
 #endif // !_CG_RADIO_GROUP_H_

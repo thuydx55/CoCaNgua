@@ -14,19 +14,27 @@ MainMenuScene& MainMenuScene::inst()
 
 void MainMenuScene::initSprite()
 {
-  mBackground = new Sprite2D("img/background.png");
+  mBackground = new Sprite2D("img/main_menu/background.png");
   mBackground->setAnchorPoint(Vector2(-0.5, -0.5));
 
-  mStart = new Button("img/Button_Start.png", "img/Button_Start_Hover.png", "img/Button_Start_Hover.png");
+  mStart = new Button("img/main_menu/Button_Start.png", 
+                      "img/main_menu/Button_Start_Hover.png",
+                      "img/main_menu/Button_Start_Hover.png");
   mStart->setPosition(Vector2(478, 242));
 
-  mOption = new Button("img/Button_Option.png", "img/Button_Option_Hover.png", "img/Button_Option_Hover.png");
+  mOption = new Button("img/main_menu/Button_Option.png", 
+                       "img/main_menu/Button_Option_Hover.png",
+                       "img/main_menu/Button_Option_Hover.png");
   mOption->setPosition(Vector2(580, 244));
 
-  mAbout = new Button("img/Button_About.png", "img/Button_About_Hover.png", "img/Button_About_Hover.png");
+  mAbout = new Button("img/main_menu/Button_About.png", 
+                      "img/main_menu/Button_About_Hover.png",
+                      "img/main_menu/Button_About_Hover.png");
   mAbout->setPosition(Vector2(675, 249));
 
-  mQuit = new Button("img/Button_Quit.png", "img/Button_Quit_Hover.png", "img/Button_Quit_Hover.png");
+  mQuit = new Button("img/main_menu/Button_Quit.png", 
+                     "img/main_menu/Button_Quit_Hover.png", 
+                     "img/main_menu/Button_Quit_Hover.png");
   mQuit->setPosition(Vector2(694, 104));
 }
 
@@ -113,7 +121,7 @@ void MainMenuScene::processMouseEnded( int x, int y )
   if (mStart->getButtonState() != BUTTON_DISABLE)
   {
     if (mStart->boundingbox().containsPoint(Vector2(x, y)))
-      Graphic::inst().setAppScene(APP_GAME);
+      Graphic::inst().setAppScene(APP_SELECT);
     else 
       mStart->setButtonState(BUTTON_NORMAL); 
   }

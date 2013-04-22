@@ -24,15 +24,6 @@ Model::Model( const Model* other )
   memcpy(this, other, sizeof(*other));
 }
 
-Vector3 Model::getCenterLocation()
-{
-  float centerX = mPos.x - mAnchor.x*getWidth();
-  float centerY = mPos.y - mAnchor.y*getHeight();
-  float centerZ = mPos.z - mAnchor.z*getLength();
-
-  return Vector3(centerX, centerY, centerZ);
-}
-
 void Model::setColorTint( GLfloat red, GLfloat green, GLfloat blue)
 {
   mColorTint[0] = red;

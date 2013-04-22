@@ -80,7 +80,6 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AboutScene.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -95,6 +94,7 @@
     <ClCompile Include="ModelOBJ.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="RadioGroup.cpp" />
+    <ClCompile Include="SelectPlayersScene.cpp" />
     <ClCompile Include="SOIL\image_DXT.c" />
     <ClCompile Include="SOIL\image_helper.c" />
     <ClCompile Include="SOIL\SOIL.c" />
@@ -103,7 +103,6 @@
     <ClCompile Include="ToggleButton.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AboutScene.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
@@ -120,6 +119,7 @@
     <ClInclude Include="ModelOBJ.h" />
     <ClInclude Include="Piece.h" />
     <ClInclude Include="RadioGroup.h" />
+    <ClInclude Include="SelectPlayersScene.h" />
     <ClInclude Include="SOIL\image_DXT.h" />
     <ClInclude Include="SOIL\image_helper.h" />
     <ClInclude Include="SOIL\SOIL.h" />
