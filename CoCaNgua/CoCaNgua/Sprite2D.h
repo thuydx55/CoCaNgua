@@ -18,7 +18,7 @@ class Sprite2D
   GLSYNTHESIZE(Vector2, mAnchor, AnchorPoint);
   GLSYNTHESIZE(int, mOpacity, Opacity);
 
-  int texID;
+  GLuint texID;
   bool mVisible;
 
   void loadTexture(const char *pszFilename);

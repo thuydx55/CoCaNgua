@@ -26,30 +26,37 @@ void AboutScene::initSprite()
   mBtnBack->setAnchorPoint(Vector2(-0.5, -0.5));
   mBtnStart->setPosition(Vector2(800, 0));
 
-  Sprite2D* humanON     = Sprite2D::create("img/select_piece/HumanON.png");
-  Sprite2D* humanOFF    = Sprite2D::create("img/select_piece/HumanOFF.png");
+  Sprite2D* human[3];
+  Sprite2D* computer[3];
+  Sprite2D* disable[3];
 
-  Sprite2D* computerON  = Sprite2D::create("img/select_piece/ComputerON.png");
-  Sprite2D* computerOFF = Sprite2D::create("img/select_piece/ComputerOFF.png");
+  human[0]    = Sprite2D::create("img/select_piece/HumanON.png");
+  human[1]    = Sprite2D::create("img/select_piece/HumanOFF.png");
+  human[2]    = Sprite2D::create("img/select_piece/HumanDISABLE.png");
 
-  Sprite2D* disableOFF  = Sprite2D::create("img/select_piece/DisableOFF.png");
-  Sprite2D* disableON   = Sprite2D::create("img/select_piece/DisableON.png");
+  computer[0] = Sprite2D::create("img/select_piece/ComputerON.png");
+  computer[1] = Sprite2D::create("img/select_piece/ComputerOFF.png");
+  computer[2] = Sprite2D::create("img/select_piece/ComputerDISABLE.png");
+
+  disable[0]  = Sprite2D::create("img/select_piece/DisableON.png");
+  disable[1]  = Sprite2D::create("img/select_piece/DisableOFF.png");
+  disable[2]  = Sprite2D::create("img/select_piece/DisableDISABLE.png");
 
   for (int i = 0; i < 4; i++)
   {
     mFrame[i] = new Sprite2D("img/select_piece/frame.png");
     mFrame[i]->setPosition(Vector2(230, 433));
 
-    mHuman[i] = new ToggleButton(humanON, humanOFF, humanOFF);
+    mHuman[i] = new ToggleButton(human[0], human[1], human[2]);
     mHuman[i]->setPosition(Vector2(205, 477));
     mHuman[i]->setAnchorPoint(Vector2(-0.5, 0));
 
-    mComputer[i] = new ToggleButton(computerON, computerOFF, computerOFF);
+    mComputer[i] = new ToggleButton(computer[0], computer[1], computer[2]);
     mComputer[i]->setPosition(Vector2(205, 426));
     mComputer[i]->setAnchorPoint(Vector2(-0.5, 0));
     mComputer[i]->setDisable(true);
 
-    mDisable[i] = new ToggleButton(disableON, disableOFF, disableOFF);
+    mDisable[i] = new ToggleButton(disable[0], disable[1], disable[2]);
     mDisable[i]->setPosition(Vector2(205, 375));
     mDisable[i]->setAnchorPoint(Vector2(-0.5, 0));
 
@@ -156,4 +163,15 @@ void AboutScene::processMousePassiveMotion( int x, int y )
 
 AboutScene::~AboutScene(void)
 {
+  delete mBackground;
+  delete mBtnStart;
+  delete mBtnBack;
+
+  for (int i = 0; i < 4; i++)
+  {
+    delete mFrame[i];
+    delete mHuman[i];
+    delete mDisable[i];
+    delete mComputer[i];
+  }
 }

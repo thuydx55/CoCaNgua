@@ -103,7 +103,7 @@ Rect ToggleButton::boundingbox()
 
 ToggleButton::~ToggleButton(void)
 {
-  //for (int i = 0; i < 4; i++)
-  //  if (!mImg[i])
-  //    delete mImg[i];
+  for (int i = 0; i < 4; i++)
+    if (!mImg[i])
+      delete mImg[i];
 }

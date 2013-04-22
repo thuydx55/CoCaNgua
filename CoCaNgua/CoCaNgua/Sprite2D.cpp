@@ -86,4 +86,5 @@ Rect Sprite2D::boundingBox()
 
 Sprite2D::~Sprite2D(void)
 {
+  glDeleteTextures( 1, &texID );
 }
