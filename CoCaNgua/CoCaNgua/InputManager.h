@@ -3,6 +3,7 @@
 
 #include "Game.h"
 #include "MainMenu.h"
+#include "AboutScene.h"
 #include "Light.h"
 #include "Camera.h"
 

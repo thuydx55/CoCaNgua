@@ -55,6 +55,12 @@
     <ClCompile Include="Button.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="ToggleButton.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="AboutScene.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOIL\SOIL.h">
@@ -123,7 +129,15 @@
     <ClInclude Include="Button.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Geometry.h" />
+    <ClInclude Include="ToggleButton.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="AboutScene.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

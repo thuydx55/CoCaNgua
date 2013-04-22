@@ -15,6 +15,7 @@
 
 #include "Game.h"
 #include "MainMenu.h"
+#include "AboutScene.h"
 
 #define SHOW_GRID 1
 #define SHOW_LIGHT_SOURCE 1
@@ -142,6 +143,8 @@ void displayCB( void )  {
   case APP_OPTION:
     break;
   case APP_ABOUT:
+	glDisable(GL_LIGHTING);
+	AboutScene::inst().loop();
     break;
   default:
     break;
@@ -218,7 +221,7 @@ int main( int argc, char *argv[] )  {
 
   Game::inst().initModel();
   MainMenu::inst().initSprite();
-
+  AboutScene::inst().initSprite();
   glutMainLoop( );
 }
 
