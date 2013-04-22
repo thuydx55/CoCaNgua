@@ -22,38 +22,38 @@
     <ClCompile Include="mathlib.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="ModelOBJ.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
     <ClCompile Include="Graphic.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Piece.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Die.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Board.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite2D.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
     <ClCompile Include="Button.cpp">
-      <Filter>Classes</Filter>
+      <Filter>Classes\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite2D.cpp">
+      <Filter>Classes\UI</Filter>
     </ClCompile>
     <ClCompile Include="MainMenuScene.cpp">
-      <Filter>Classes</Filter>
+      <Filter>Classes\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="GameScene.cpp">
-      <Filter>Classes</Filter>
+      <Filter>Classes\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Classes\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Piece.cpp">
+      <Filter>Classes\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelOBJ.cpp">
+      <Filter>Classes\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Classes\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Die.cpp">
+      <Filter>Classes\Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -84,45 +84,45 @@
     <ClInclude Include="mathlib.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelOBJ.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="Graphic.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Piece.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Constants.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Die.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Board.h">
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite2D.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Geometry.h" />
-    <ClInclude Include="GameScene.h">
-      <Filter>Classes</Filter>
+    <ClInclude Include="Button.h">
+      <Filter>Classes\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite2D.h">
+      <Filter>Classes\UI</Filter>
     </ClInclude>
     <ClInclude Include="MainMenuScene.h">
-      <Filter>Classes</Filter>
+      <Filter>Classes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Classes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>Classes\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Piece.h">
+      <Filter>Classes\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelOBJ.h">
+      <Filter>Classes\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Classes\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Die.h">
+      <Filter>Classes\Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +137,15 @@
       <UniqueIdentifier>{c51d09ed-c2fa-4b31-96f9-50f3623dec26}</UniqueIdentifier>
       <Extensions>
       </Extensions>
+    </Filter>
+    <Filter Include="Classes\UI">
+      <UniqueIdentifier>{1398a18c-71d9-4dad-bffb-807fe5d8c918}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Scenes">
+      <UniqueIdentifier>{6e5c9879-2571-44a2-9b8b-020bc85e5494}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Objects">
+      <UniqueIdentifier>{c455afad-0553-403a-9e92-d7830cdc6364}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
