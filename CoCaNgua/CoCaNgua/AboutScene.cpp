@@ -29,6 +29,8 @@ void AboutScene::initSprite()
 
   mQuit = new ToggleButton("img/ToggleON.png", "img/ToggleOFF.png", "img/ToggleOFF.png");
   mQuit->setPosition(Vector2(694, 104));
+
+  mRadioGroup = RadioGroup::create(mStart, mOption, mAbout, NULL);
 }
 
 void AboutScene::drawScene()
@@ -42,7 +44,7 @@ void AboutScene::drawScene()
 
 void AboutScene::loop()
 {
-  cout<<"about scene loop"<<endl;
+  //cout<<"about scene loop"<<endl;
 	glMatrixMode(GL_PROJECTION);
   glPushMatrix();
   {
@@ -73,23 +75,11 @@ void AboutScene::loop()
 void AboutScene::processMouseBegan(int x, int y )
 {
   // Start Button
-  if (mStart->boundingbox().containsPoint(Vector2(x, y)))
+  if (mRadioGroup->boundingbox().containsPoint(Vector2(x, y)))
   {
-    mStart->click();
+    mRadioGroup->click(x, y);
   }
 
-
-  // Option Button
-  if (mOption->boundingbox().containsPoint(Vector2(x, y)))
-  {
-    mOption->click();
-  }
-
-  // About Button
-  if (mAbout->boundingbox().containsPoint(Vector2(x, y)))
-  {
-    mAbout->click();
-  }
 
   // Quit Button
   if (mQuit->boundingbox().containsPoint(Vector2(x, y)))

@@ -1,8 +1,11 @@
 #ifndef _CG_CONSTANTS_H_
 #define _CG_CONSTANTS_H_
 
-#include <gl/glut.h>
 #include "mathlib.h"
+
+#define va_start _crt_va_start
+#define va_arg _crt_va_arg
+#define va_end _crt_va_end
 
 #define DIE_ROLL_NUMBER 3
 #define DIE_WAITING_RANGE 15
@@ -13,7 +16,7 @@
 #define GLSYNTHESIZE(varType, varName, funName)\
 protected: varType varName;\
 public: virtual varType get##funName(void) const { return varName; }\
-public: virtual void set##funName(varType var){ varName = var; glutPostRedisplay(); }
+public: virtual void set##funName(varType var){ varName = var; }
 
 enum PieceName
 {

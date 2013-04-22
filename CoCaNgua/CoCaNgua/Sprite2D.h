@@ -1,12 +1,12 @@
 #ifndef _CG_SPRITE_H_
 #define _CG_SPRITE_H_
 
-//#include "gl/glut.h"
-
 #include "SOIL/SOIL.h"
 #include "mathlib.h"
 #include "Constants.h"
 #include "Geometry.h"
+
+#include "gl/glut.h"
 
 #include <iostream>
 
