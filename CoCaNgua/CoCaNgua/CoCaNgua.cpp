@@ -201,7 +201,7 @@ void keyboardCB(unsigned char key,int x,int y)
 }
 
 void timerCB(int value) {
-  //Game::inst().lightAngle+=0.3;
+  GameScene::inst().lightAngle+=0.3;
 
   glutPostRedisplay(); //Redraw scene
 

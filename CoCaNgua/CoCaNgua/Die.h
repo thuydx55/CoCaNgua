@@ -9,6 +9,7 @@ class Die : public Model
   GLSYNTHESIZE(DieState, mState, State);
 
   bool mIsRolling;
+  bool mUserIsViewed;
   Timer mTimer;
 
   float phi, theta;

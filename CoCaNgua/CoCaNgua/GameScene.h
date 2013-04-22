@@ -73,12 +73,14 @@ public:
   GLfloat lightPosition[4];
   float lightAngle, lightHeight;
 
-  bool mIsDrawDie;
+  bool mDieIsDrawn;
 
   Turn mPlayerTurn;
 
   GameScene(void);
   ~GameScene(void);
+
+  virtual void update();
 
   void initModel();
   static GameScene& inst();
@@ -87,8 +89,12 @@ public:
 
   void resetBoard();
   void loop();
-  void Move(int name);
+  void movePiece(int name);
   void rollDice(int number);
+
+  bool processMouseBegan(int x, int y);
+  void processMouseEnded(int x, int y);
+  void processMousePassiveMotion(int x, int y);
 };
 
 inline Piece** GameScene::getPiecesArray()

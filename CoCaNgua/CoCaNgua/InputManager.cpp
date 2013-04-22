@@ -50,8 +50,8 @@ void KeyBoard::processKey( unsigned char key )
     cout << Light::inst().getPosition()[0] << ' ' << Light::inst().getPosition()[1] << ' ' << Light::inst().getPosition()[2] << ' ' << Light::inst().getPosition()[3] << endl;
     break;
   case 'd':
-    GameScene::inst().mIsDrawDie = !GameScene::inst().mIsDrawDie;
-    if (GameScene::inst().mIsDrawDie)
+    GameScene::inst().mDieIsDrawn = !GameScene::inst().mDieIsDrawn;
+    if (GameScene::inst().mDieIsDrawn)
       Light::inst().mDiffuseOffset = 0.5;
     else
       Light::inst().mDiffuseOffset = 0.0;
@@ -117,7 +117,10 @@ void Mouse::processMouse( int button, int state, int x, int y )
 
     if 	((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN))
     {
-      mousedw(x, y, button);
+      if (!GameScene::inst().processMouseBegan(x, y))
+      {
+        mousedw(x, y, button);
+      }
     } 
   }
   else if (Graphic::inst().getAppScene() == APP_MENU)
@@ -194,7 +197,7 @@ void Mouse::list_hits(GLint hits, GLuint *names)
     }
   }
 
-  GameScene::inst().Move(name);
+  GameScene::inst().movePiece(name);
 }
 
 void Mouse::gl_select(int x, int y)

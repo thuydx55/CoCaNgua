@@ -1,14 +1,15 @@
 #include "GameScene.h"
 
+bool allMoveIllegal = true;
+bool noPieceInTheGame = true;
+
 GameScene::GameScene(void)
 {
   srand(time(NULL));
   mDieIsThrown = false;
-  mIsDrawDie = false;
+  mDieIsDrawn = true;
+  Light::inst().mDiffuseOffset = 0.5;
   mFullHome = false;
-
-  Graphic::inst().screenWidth = 600;
-  Graphic::inst().screenHeight = 800;
 
   lightPosition[0] = 0;
   lightPosition[1] = 50;
@@ -292,7 +293,7 @@ void GameScene::drawSence()
 
 void GameScene::drawDie()
 {
-  if (mIsDrawDie)
+  if (mDieIsDrawn)
   {
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
@@ -325,6 +326,8 @@ void GameScene::drawDie()
 
 void GameScene::loop()
 {
+  update();
+
   drawSence();
   drawDie();
 
@@ -340,6 +343,7 @@ void GameScene::loop()
 void GameScene::nextTurn()
 {
   mDieIsThrown = false;
+  mDieIsDrawn = true;
   mDice->setState(DIE_WAITING);
 
   for (int i = 0; i < 4; i++)
@@ -347,9 +351,16 @@ void GameScene::nextTurn()
     mPieces[mPlayerTurn*4 + i]->highlight(false);
   }
 
+  if (noPieceInTheGame)
+  {
+    mTries ++;
+    if (mTries <= 2)
+      return;
+    mTries = 0;
+  }
+
   if (mDieNumber != 6)
   {
-    mTries = 0;
     switch (mPlayerTurn)
     {
     case TURN_RED:
@@ -398,7 +409,7 @@ Piece* GameScene::getModelByName( int name )
   return mPieces[delta];
 }
 
-void GameScene::Move(int name)
+void GameScene::movePiece(int name)
 {
   if (!mDieIsThrown)
     return;
@@ -528,6 +539,8 @@ void GameScene::rollDice(int number)
   //mDiceNumber = rand() % 6 + 1;
   mDieIsThrown = true;
   mustBeStart = false;
+  allMoveIllegal = true;
+  noPieceInTheGame = true;
   mDieNumber = number;
 
   mPredictPosition[0] = mPredictPosition[1] = mPredictPosition[2] = mPredictPosition[3] = Vector3();
@@ -703,9 +716,6 @@ void GameScene::rollDice(int number)
     cout << mPredictMoveState[i] << endl;
   }
 
-  bool allMoveIllegal = true;
-  bool noPieceInTheGame = true;
-
   // Checking if pieces can move
   for (int i = 0; i < 4; i++)
   {
@@ -735,18 +745,33 @@ void GameScene::rollDice(int number)
   // No piece can move?
   if (allMoveIllegal)
   {
-    if (noPieceInTheGame)
-    {
-      mDieIsThrown = false;
-      mTries ++;
-      if (mTries > 2)
-        nextTurn();
-      return;
-    }
     nextTurn();
+  }
+}
+
+void GameScene::update()
+{
+  if (mDieIsDrawn && mDice->getState() == DIE_STOP)
+  {
+    mDieIsDrawn = false;
+    this->rollDice(mDieNumber);
+    Light::inst().mDiffuseOffset = 0.0;
+    Light::inst().updateLight();
   }
 }
 
 GameScene::~GameScene(void)
 {
+}
+
+bool GameScene::processMouseBegan( int x, int y )
+{
+  if (mDieIsDrawn)
+  {
+    if (mDice->getState() == DIE_WAITING)
+      mDieNumber = GameScene::inst().mDice->rollDie();
+    return true;
+  }
+
+  return false;
 }

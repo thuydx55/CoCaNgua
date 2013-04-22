@@ -9,6 +9,7 @@ double round(double r) {
 Die::Die(void)
 {
   mIsRolling = false;
+  mUserIsViewed = false;
   phi = theta = 0;
   mState = DIE_WAITING;
 
@@ -87,14 +88,23 @@ void Die::update()
   {
     double tEnlapse = mTimer.elapsed();
 
-    phi = phiOld+(phiTarget-phiOld)/(tEnlapse/DIE_TIME_ROLLING);
-    theta = thetaOld+(thetaTarget-thetaOld)/(tEnlapse/DIE_TIME_ROLLING);
+    if (!mUserIsViewed)
+    {
+      phi = phiOld+(phiTarget-phiOld)/(tEnlapse/DIE_TIME_ROLLING);
+      theta = thetaOld+(thetaTarget-thetaOld)/(tEnlapse/DIE_TIME_ROLLING); 
+    }
 
     if (tEnlapse > DIE_TIME_ROLLING)
     {
-      mState = DIE_STOP;
+      mUserIsViewed = true;
       phi = phiTarget;
       theta = thetaTarget;
+    }
+
+    if (tEnlapse > DIE_TIME_ROLLING + DIE_TIME_USER_VIEW)
+    {
+      mState = DIE_STOP;
+      mUserIsViewed = false;
     }
   }
 }
