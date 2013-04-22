@@ -2,7 +2,7 @@
 #define _CG_ABOUT_SCENE_H_
 
 #include "Sprite2D.h"
-#include "Game.h"
+#include "GameScene.h"
 #include "ToggleButton.h"
 #include "RadioGroup.h"
 

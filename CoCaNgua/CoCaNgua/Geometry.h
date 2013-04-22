@@ -1,7 +1,6 @@
 #ifndef _CG_GEOMETRY_H_
 #define _CG_GEOMETRY_H_
-
-
+#include <algorithm>
 class Size
 {
 public:

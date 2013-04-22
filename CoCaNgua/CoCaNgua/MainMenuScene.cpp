@@ -1,18 +1,18 @@
-#include "MainMenu.h"
+#include "MainMenuScene.h"
 
 
-MainMenu::MainMenu(void)
+MainMenuScene::MainMenuScene(void)
 {
 
 }
 
-MainMenu& MainMenu::inst()
+MainMenuScene& MainMenuScene::inst()
 {
-  static MainMenu instance;
+  static MainMenuScene instance;
   return instance;
 }
 
-void MainMenu::initSprite()
+void MainMenuScene::initSprite()
 {
   mBackground = new Sprite2D("img/background.png");
   mBackground->setAnchorPoint(Vector2(-0.5, -0.5));
@@ -30,7 +30,7 @@ void MainMenu::initSprite()
   mQuit->setPosition(Vector2(694, 104));
 }
 
-void MainMenu::drawScene()
+void MainMenuScene::drawScene()
 {
   mBackground->drawImg();
   mStart->drawImg();
@@ -39,7 +39,7 @@ void MainMenu::drawScene()
   mQuit->drawImg();
 }
 
-void MainMenu::loop()
+void MainMenuScene::loop()
 {
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
@@ -68,7 +68,7 @@ void MainMenu::loop()
   glMatrixMode(GL_MODELVIEW);
 }
 
-void MainMenu::processMouseBegan(int x, int y )
+void MainMenuScene::processMouseBegan(int x, int y )
 {
   // Start Button
   if (mStart->getButtonState() != BUTTON_DISABLE)
@@ -107,7 +107,7 @@ void MainMenu::processMouseBegan(int x, int y )
   }
 }
 
-void MainMenu::processMouseEnded( int x, int y )
+void MainMenuScene::processMouseEnded( int x, int y )
 {
   // Start Button
   if (mStart->getButtonState() != BUTTON_DISABLE)
@@ -147,7 +147,7 @@ void MainMenu::processMouseEnded( int x, int y )
 }
 
 
-void MainMenu::processMousePassiveMotion( int x, int y )
+void MainMenuScene::processMousePassiveMotion( int x, int y )
 {
   // Start Button
   if (mStart->getButtonState() != BUTTON_DISABLE)
@@ -186,6 +186,6 @@ void MainMenu::processMousePassiveMotion( int x, int y )
   }
 }
 
-MainMenu::~MainMenu(void)
+MainMenuScene::~MainMenuScene(void)
 {
 }
