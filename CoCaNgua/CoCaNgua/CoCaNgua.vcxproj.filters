@@ -1,25 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="SOIL\SOIL.c">
-      <Filter>SOIL</Filter>
-    </ClCompile>
-    <ClCompile Include="SOIL\stb_image_aug.c">
-      <Filter>SOIL</Filter>
-    </ClCompile>
-    <ClCompile Include="SOIL\image_DXT.c">
-      <Filter>SOIL</Filter>
-    </ClCompile>
-    <ClCompile Include="SOIL\image_helper.c">
-      <Filter>SOIL</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="CoCaNgua.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="mathlib.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="Graphic.cpp">
@@ -28,61 +13,72 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Classes\UI</Filter>
+    <ClCompile Include="mathlib.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="SOIL\image_DXT.c">
+      <Filter>SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="SOIL\image_helper.c">
+      <Filter>SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="SOIL\SOIL.c">
+      <Filter>SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="SOIL\stb_image_aug.c">
+      <Filter>SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="AboutScene.cpp">
+      <Filter>Classes\Scences</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Classes\Scences</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuScene.cpp">
+      <Filter>Classes\Scences</Filter>
     </ClCompile>
     <ClCompile Include="Sprite2D.cpp">
       <Filter>Classes\UI</Filter>
     </ClCompile>
-    <ClCompile Include="MainMenuScene.cpp">
-      <Filter>Classes\Scenes</Filter>
+    <ClCompile Include="ToggleButton.cpp">
+      <Filter>Classes\UI</Filter>
     </ClCompile>
-    <ClCompile Include="GameScene.cpp">
-      <Filter>Classes\Scenes</Filter>
+    <ClCompile Include="RadioGroup.cpp">
+      <Filter>Classes\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Classes\UI</Filter>
     </ClCompile>
     <ClCompile Include="Board.cpp">
-      <Filter>Classes\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Piece.cpp">
-      <Filter>Classes\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="ModelOBJ.cpp">
-      <Filter>Classes\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
       <Filter>Classes\Objects</Filter>
     </ClCompile>
     <ClCompile Include="Die.cpp">
       <Filter>Classes\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="ToggleButton.cpp">
-      <Filter>Classes</Filter>
+    <ClCompile Include="Model.cpp">
+      <Filter>Classes\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="AboutScene.cpp">
-      <Filter>Classes</Filter>
+    <ClCompile Include="ModelOBJ.cpp">
+      <Filter>Classes\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="RadioGroup.cpp" />
+    <ClCompile Include="Piece.cpp">
+      <Filter>Classes\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SOIL\SOIL.h">
-      <Filter>SOIL</Filter>
-    </ClInclude>
-    <ClInclude Include="SOIL\stb_image_aug.h">
-      <Filter>SOIL</Filter>
-    </ClInclude>
-    <ClInclude Include="SOIL\stbi_DDS_aug.h">
-      <Filter>SOIL</Filter>
-    </ClInclude>
-    <ClInclude Include="SOIL\stbi_DDS_aug_c.h">
-      <Filter>SOIL</Filter>
-    </ClInclude>
-    <ClInclude Include="SOIL\image_DXT.h">
-      <Filter>SOIL</Filter>
-    </ClInclude>
-    <ClInclude Include="SOIL\image_helper.h">
-      <Filter>SOIL</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphic.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
@@ -94,80 +90,79 @@
     <ClInclude Include="Timer.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Graphic.h">
-      <Filter>Classes</Filter>
+    <ClInclude Include="SOIL\stbi_DDS_aug_c.h">
+      <Filter>SOIL</Filter>
     </ClInclude>
-    <ClInclude Include="Constants.h">
-      <Filter>Classes</Filter>
+    <ClInclude Include="SOIL\image_DXT.h">
+      <Filter>SOIL</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Classes</Filter>
+    <ClInclude Include="SOIL\image_helper.h">
+      <Filter>SOIL</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
+    <ClInclude Include="SOIL\SOIL.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="SOIL\stb_image_aug.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="SOIL\stbi_DDS_aug.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="AboutScene.h">
+      <Filter>Classes\Scences</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Classes\Scences</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuScene.h">
+      <Filter>Classes\Scences</Filter>
+    </ClInclude>
+    <ClInclude Include="ToggleButton.h">
       <Filter>Classes\UI</Filter>
     </ClInclude>
     <ClInclude Include="Sprite2D.h">
       <Filter>Classes\UI</Filter>
     </ClInclude>
-    <ClInclude Include="MainMenuScene.h">
-      <Filter>Classes\Scenes</Filter>
+    <ClInclude Include="RadioGroup.h">
+      <Filter>Classes\UI</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene.h">
-      <Filter>Classes\Scenes</Filter>
+    <ClInclude Include="Button.h">
+      <Filter>Classes\UI</Filter>
     </ClInclude>
     <ClInclude Include="Board.h">
-      <Filter>Classes\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Piece.h">
-      <Filter>Classes\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelOBJ.h">
-      <Filter>Classes\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
       <Filter>Classes\Objects</Filter>
     </ClInclude>
     <ClInclude Include="Die.h">
       <Filter>Classes\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Geometry.h">
-      <Filter>Classes</Filter>
+    <ClInclude Include="Model.h">
+      <Filter>Classes\Objects</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="ToggleButton.h">
-      <Filter>Classes</Filter>
+    <ClInclude Include="ModelOBJ.h">
+      <Filter>Classes\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="AboutScene.h">
-      <Filter>Classes</Filter>
+    <ClInclude Include="Piece.h">
+      <Filter>Classes\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Geometry.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="RadioGroup.h" />
-=======
->>>>>>> 8322bb59e8ab572cea451802ea299d1ea0aab1c9
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="SOIL">
-      <UniqueIdentifier>{1ab4aa36-710f-4186-b917-2e17a499e8a4}</UniqueIdentifier>
-      <Extensions>SOIL/*.*</Extensions>
-    </Filter>
     <Filter Include="Classes">
-      <UniqueIdentifier>{c51d09ed-c2fa-4b31-96f9-50f3623dec26}</UniqueIdentifier>
-      <Extensions>
-      </Extensions>
+      <UniqueIdentifier>{cf9cc363-164b-45b8-b5e3-e40591924a1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SOIL">
+      <UniqueIdentifier>{22d59523-403c-47b1-af60-6807eec69ea3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Classes\UI">
-      <UniqueIdentifier>{1398a18c-71d9-4dad-bffb-807fe5d8c918}</UniqueIdentifier>
+      <UniqueIdentifier>{8a6a7517-cd5c-4a1d-ad1e-50f0adfb67af}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Classes\Scenes">
-      <UniqueIdentifier>{6e5c9879-2571-44a2-9b8b-020bc85e5494}</UniqueIdentifier>
+    <Filter Include="Classes\Scences">
+      <UniqueIdentifier>{7e4b7120-d517-4de3-b223-0cb372bbeb2e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Classes\Objects">
-      <UniqueIdentifier>{c455afad-0553-403a-9e92-d7830cdc6364}</UniqueIdentifier>
+      <UniqueIdentifier>{0abb9620-ecd8-46bf-9fa3-92ed98a0d6d8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

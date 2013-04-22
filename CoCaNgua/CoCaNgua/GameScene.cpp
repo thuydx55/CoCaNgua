@@ -9,6 +9,7 @@ GameScene::GameScene(void)
   mDieIsThrown = false;
   mDieIsDrawn = true;
   Light::inst().mDiffuseOffset = 0.5;
+  Light::inst().updateLight();
   mFullHome = false;
 
   lightPosition[0] = 0;
@@ -344,6 +345,9 @@ void GameScene::nextTurn()
 {
   mDieIsThrown = false;
   mDieIsDrawn = true;
+  Light::inst().mDiffuseOffset = 0.5;
+  Light::inst().updateLight();
+
   mDice->setState(DIE_WAITING);
 
   for (int i = 0; i < 4; i++)

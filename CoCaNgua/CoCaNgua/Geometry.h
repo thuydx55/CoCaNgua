@@ -1,6 +1,9 @@
 #ifndef _CG_GEOMETRY_H_
 #define _CG_GEOMETRY_H_
-#include <algorithm>
+
+#define max(a,b)    (((a) > (b)) ? (a) : (b))
+#define min(a,b)    (((a) < (b)) ? (a) : (b))
+
 class Size
 {
 public:
