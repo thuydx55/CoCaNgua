@@ -96,7 +96,6 @@
     <ClInclude Include="InputManager.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Geometry.h" />
     <ClInclude Include="Button.h">
       <Filter>Classes\UI</Filter>
     </ClInclude>
@@ -123,6 +122,9 @@
     </ClInclude>
     <ClInclude Include="Die.h">
       <Filter>Classes\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
