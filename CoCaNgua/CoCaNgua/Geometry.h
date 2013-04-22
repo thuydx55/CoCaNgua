@@ -37,6 +37,8 @@ public:
   float getMinY() const; /// return the bottommost y-value of current rect
   float getMidY() const; /// return the midpoint y-value of current rect
   float getMaxY() const; /// return the topmost y-value of current rect
+
+  friend Rect operator+(const Rect& lhs, const Rect& rhs);
 };
 
 inline Rect::Rect(Rect& other)
@@ -112,6 +114,16 @@ inline float Rect::getMidY() const
 inline float Rect::getMinY() const
 {
   return origin.y;
+}
+
+inline Rect operator+(const Rect& lhs, const Rect& rhs)
+{
+  float minX = min(lhs.getMinX(), rhs.getMinX());
+  float minY = min(lhs.getMinY(), rhs.getMinY());
+  float maxX = max(lhs.getMaxX(), rhs.getMaxX());
+  float maxY = max(lhs.getMaxY(), rhs.getMaxY());
+
+  return Rect(minX, minY, maxX-minX, maxY-minY);
 }
 
 #endif

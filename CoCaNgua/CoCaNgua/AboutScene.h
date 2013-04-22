@@ -4,6 +4,7 @@
 #include "Sprite2D.h"
 #include "Game.h"
 #include "ToggleButton.h"
+#include "RadioGroup.h"
 
 class AboutScene
 {
@@ -12,6 +13,8 @@ class AboutScene
   ToggleButton* mOption;
   ToggleButton* mAbout;
   ToggleButton* mQuit;
+
+  RadioGroup* mRadioGroup;
 
   void drawScene();
 public:

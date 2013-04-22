@@ -61,6 +61,7 @@
     <ClCompile Include="AboutScene.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="RadioGroup.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOIL\SOIL.h">
@@ -138,6 +139,7 @@
     <ClInclude Include="Geometry.h">
       <Filter>Classes</Filter>
     </ClInclude>
+    <ClInclude Include="RadioGroup.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
