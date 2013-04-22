@@ -55,6 +55,13 @@
     <ClCompile Include="Die.cpp">
       <Filter>Classes\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="ToggleButton.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="AboutScene.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="RadioGroup.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOIL\SOIL.h">
@@ -126,6 +133,19 @@
     <ClInclude Include="Geometry.h">
       <Filter>Classes</Filter>
     </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="ToggleButton.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="AboutScene.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="RadioGroup.h" />
+=======
+>>>>>>> 8322bb59e8ab572cea451802ea299d1ea0aab1c9
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

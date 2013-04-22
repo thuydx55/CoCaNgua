@@ -133,7 +133,16 @@ void Mouse::processMouse( int button, int state, int x, int y )
         MainMenuScene::inst().processMouseEnded(x, Graphic::inst().screenHeight-y);
     }
   }
-  
+  else if (Graphic::inst().getAppScene() == APP_ABOUT)
+  {
+    if(button == GLUT_LEFT_BUTTON)
+    {
+      if(state == GLUT_DOWN)
+		AboutScene::inst().processMouseBegan(x, Graphic::inst().screenHeight-y);
+      else if(state == GLUT_UP)
+        AboutScene::inst().processMouseEnded(x, Graphic::inst().screenHeight-y);
+    }
+  }
 }
 
 void Mouse::processMouseMotion( int x, int y )

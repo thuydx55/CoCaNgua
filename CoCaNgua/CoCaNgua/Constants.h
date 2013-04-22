@@ -94,4 +94,10 @@ enum ButtonState
   BUTTON_DISABLE
 };
 
+enum ToggleState
+{
+	TOGGLE_ON,
+	TOGGLE_OFF,
+	TOGGLE_DISABLE,
+};
 #endif // !_CONSTANTS_H_
