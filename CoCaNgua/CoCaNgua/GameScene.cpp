@@ -1,7 +1,6 @@
-#include "Game.h"
-#include <ctime>
+#include "GameScene.h"
 
-Game::Game(void)
+GameScene::GameScene(void)
 {
   srand(time(NULL));
   mDieIsThrown = false;
@@ -145,18 +144,18 @@ Game::Game(void)
   int c[] = { 0, 4, 8, 10, 14, 18, 20, 24, 28, 30, 34, 38 };
   memcpy(mConnerIndex, c, sizeof(c));
 
-  Light::inst().setPosition(Game::inst().lightPosition[0], Game::inst().lightPosition[1], 
-    Game::inst().lightPosition[2], Game::inst().lightPosition[3]);
+  Light::inst().setPosition(GameScene::inst().lightPosition[0], GameScene::inst().lightPosition[1], 
+    GameScene::inst().lightPosition[2], GameScene::inst().lightPosition[3]);
   Light::inst().updateLight();
 }
 
-Game& Game::inst()
+GameScene& GameScene::inst()
 {
-  static Game Instance;
+  static GameScene Instance;
   return Instance;
 }
 
-void Game::initModel()
+void GameScene::initModel()
 {
   mBoard       = new Board();
   Piece* horse = new Piece();
@@ -206,7 +205,7 @@ void Game::initModel()
   //yellow[1]->setPosition(Vector3(-4, 0, 20));
 }
 
-void Game::drawSence()
+void GameScene::drawSence()
 {
   // Save current matrix state
   glPushMatrix();
@@ -291,7 +290,7 @@ void Game::drawSence()
   glPopMatrix();
 }
 
-void Game::drawDie()
+void GameScene::drawDie()
 {
   if (mIsDrawDie)
   {
@@ -324,7 +323,7 @@ void Game::drawDie()
 }
 
 
-void Game::loop()
+void GameScene::loop()
 {
   drawSence();
   drawDie();
@@ -338,7 +337,7 @@ void Game::loop()
 
 }
 
-void Game::nextTurn()
+void GameScene::nextTurn()
 {
   mDieIsThrown = false;
   mDice->setState(DIE_WAITING);
@@ -371,7 +370,7 @@ void Game::nextTurn()
   }
 }
 
-bool Game::checkAllModelIdle()
+bool GameScene::checkAllModelIdle()
 {
   for (int i = 0; i < 16; i++)
   {
@@ -381,7 +380,7 @@ bool Game::checkAllModelIdle()
   return true;
 }
 
-int Game::getModelPositionIndex( Vector3 pPos , Field pArray[], int pSize)
+int GameScene::getModelPositionIndex( Vector3 pPos , Field pArray[], int pSize)
 {
   for (int i = 0; i < pSize; i++)
     if (pPos == pArray[i].position)
@@ -390,7 +389,7 @@ int Game::getModelPositionIndex( Vector3 pPos , Field pArray[], int pSize)
   return -1;
 }
 
-Piece* Game::getModelByName( int name )
+Piece* GameScene::getModelByName( int name )
 {
   int delta = name - PIECE_RED_1;
   if (delta < 0 || delta > 15)
@@ -399,7 +398,7 @@ Piece* Game::getModelByName( int name )
   return mPieces[delta];
 }
 
-void Game::Move(int name)
+void GameScene::Move(int name)
 {
   if (!mDieIsThrown)
     return;
@@ -522,7 +521,7 @@ void Game::Move(int name)
   }
 }
 
-void Game::rollDice(int number)
+void GameScene::rollDice(int number)
 {
   if (mDieIsThrown)
     return;
@@ -748,6 +747,6 @@ void Game::rollDice(int number)
   }
 }
 
-Game::~Game(void)
+GameScene::~GameScene(void)
 {
 }

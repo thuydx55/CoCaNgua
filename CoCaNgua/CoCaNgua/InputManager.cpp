@@ -41,17 +41,17 @@ void KeyBoard::processKey( unsigned char key )
   case '4':
   case '5':
   case '6':
-    Game::inst().rollDice(key-48);
+    GameScene::inst().rollDice(key-48);
     break;
   case 'm':
-    Game::inst().rollDice(rand() % 6 +1);
+    GameScene::inst().rollDice(rand() % 6 +1);
     break;
   case 'p':
     cout << Light::inst().getPosition()[0] << ' ' << Light::inst().getPosition()[1] << ' ' << Light::inst().getPosition()[2] << ' ' << Light::inst().getPosition()[3] << endl;
     break;
   case 'd':
-    Game::inst().mIsDrawDie = !Game::inst().mIsDrawDie;
-    if (Game::inst().mIsDrawDie)
+    GameScene::inst().mIsDrawDie = !GameScene::inst().mIsDrawDie;
+    if (GameScene::inst().mIsDrawDie)
       Light::inst().mDiffuseOffset = 0.5;
     else
       Light::inst().mDiffuseOffset = 0.0;
@@ -59,10 +59,10 @@ void KeyBoard::processKey( unsigned char key )
     break;
 
   case 'r':
-    Game::inst().mDice->rollDie();
+    GameScene::inst().mDice->rollDie();
     break;
   case 't':
-    Game::inst().mDice->setState(DIE_WAITING);
+    GameScene::inst().mDice->setState(DIE_WAITING);
 
   default:
     break;
@@ -125,9 +125,9 @@ void Mouse::processMouse( int button, int state, int x, int y )
     if(button == GLUT_LEFT_BUTTON)
     {
       if(state == GLUT_DOWN)
-        MainMenu::inst().processMouseBegan(x, Graphic::inst().screenHeight-y);
+        MainMenuScene::inst().processMouseBegan(x, Graphic::inst().screenHeight-y);
       else if(state == GLUT_UP)
-        MainMenu::inst().processMouseEnded(x, Graphic::inst().screenHeight-y);
+        MainMenuScene::inst().processMouseEnded(x, Graphic::inst().screenHeight-y);
     }
   }
   
@@ -146,7 +146,7 @@ void Mouse::processMousePassiveMotion( int x, int y )
   switch (Graphic::inst().getAppScene())
   {
   case APP_MENU:
-    MainMenu::inst().processMousePassiveMotion(x, Graphic::inst().screenHeight-y);
+    MainMenuScene::inst().processMousePassiveMotion(x, Graphic::inst().screenHeight-y);
   default:
     break;
   }
@@ -194,7 +194,7 @@ void Mouse::list_hits(GLint hits, GLuint *names)
     }
   }
 
-  Game::inst().Move(name);
+  GameScene::inst().Move(name);
 }
 
 void Mouse::gl_select(int x, int y)
@@ -250,7 +250,7 @@ void Mouse::gl_select(int x, int y)
   draw only the names in the stack, and fill the array
   */
   glutSwapBuffers();
-  Game::inst().loop();
+  GameScene::inst().loop();
 
   /*
   Do you remeber? We do pushMatrix in PROJECTION mode

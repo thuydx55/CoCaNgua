@@ -37,7 +37,7 @@ struct Field
   }
 };
 
-class Game
+class GameScene
 {
   void *font;
 
@@ -77,11 +77,11 @@ public:
 
   Turn mPlayerTurn;
 
-  Game(void);
-  ~Game(void);
+  GameScene(void);
+  ~GameScene(void);
 
   void initModel();
-  static Game& inst();
+  static GameScene& inst();
 
   Piece** getPiecesArray();
 
@@ -91,7 +91,7 @@ public:
   void rollDice(int number);
 };
 
-inline Piece** Game::getPiecesArray()
+inline Piece** GameScene::getPiecesArray()
 {
   return mPieces;
 }

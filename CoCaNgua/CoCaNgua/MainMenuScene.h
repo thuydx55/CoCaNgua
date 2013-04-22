@@ -2,10 +2,10 @@
 #define _CG_MAIN_MENU_H_
 
 #include "Sprite2D.h"
-#include "Game.h"
+#include "GameScene.h"
 #include "Button.h"
 
-class MainMenu
+class MainMenuScene
 {
   Sprite2D* mBackground;
   Button* mStart;
@@ -15,12 +15,12 @@ class MainMenu
 
   void drawScene();
 public:
-  MainMenu(void);
-  ~MainMenu(void);
+  MainMenuScene(void);
+  ~MainMenuScene(void);
 
   void initSprite();
 
-  static MainMenu& inst();
+  static MainMenuScene& inst();
   void loop();
 
   void processMouseBegan(int x, int y);

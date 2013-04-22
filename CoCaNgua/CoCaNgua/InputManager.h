@@ -1,8 +1,8 @@
 #ifndef _CG_INPUT_MANAGER_H_
 #define _CG_INPUT_MANAGER_H_
 
-#include "Game.h"
-#include "MainMenu.h"
+#include "GameScene.h"
+#include "MainMenuScene.h"
 #include "Light.h"
 #include "Camera.h"
 

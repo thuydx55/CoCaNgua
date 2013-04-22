@@ -28,9 +28,6 @@
     <ClCompile Include="ModelOBJ.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
     <ClCompile Include="Graphic.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
@@ -49,10 +46,13 @@
     <ClCompile Include="Sprite2D.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="MainMenu.cpp">
+    <ClCompile Include="Button.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
+    <ClCompile Include="MainMenuScene.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -96,9 +96,6 @@
     <ClInclude Include="Graphic.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Piece.h">
       <Filter>Classes</Filter>
     </ClInclude>
@@ -117,13 +114,16 @@
     <ClInclude Include="Sprite2D.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="MainMenu.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="Geometry.h" />
+    <ClInclude Include="GameScene.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuScene.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

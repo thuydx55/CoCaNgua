@@ -13,8 +13,8 @@
 #include "InputManager.h"
 #include "Graphic.h"
 
-#include "Game.h"
-#include "MainMenu.h"
+#include "GameScene.h"
+#include "MainMenuScene.h"
 
 #define SHOW_GRID 1
 #define SHOW_LIGHT_SOURCE 1
@@ -133,11 +133,11 @@ void displayCB( void )  {
   {
   case APP_GAME:
     glEnable(GL_LIGHTING);
-    Game::inst().loop();
+    GameScene::inst().loop();
     break;
   case APP_MENU:
     glDisable(GL_LIGHTING);
-    MainMenu::inst().loop();
+    MainMenuScene::inst().loop();
     break;
   case APP_OPTION:
     break;
@@ -216,8 +216,8 @@ int main( int argc, char *argv[] )  {
   initGLUT(argc, argv);
   initGL();
 
-  Game::inst().initModel();
-  MainMenu::inst().initSprite();
+  GameScene::inst().initModel();
+  MainMenuScene::inst().initSprite();
 
   glutMainLoop( );
 }
