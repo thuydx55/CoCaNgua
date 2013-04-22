@@ -60,7 +60,8 @@ void RadioGroup::click(int x, int y)
       {
         if (i == j)
           continue;
-        mToggle[j]->setToggleState(TOGGLE_OFF);
+        if (mToggle[j]->getToggleState() != TOGGLE_DISABLE)
+          mToggle[j]->setToggleState(TOGGLE_OFF);
       }
     }
   }
