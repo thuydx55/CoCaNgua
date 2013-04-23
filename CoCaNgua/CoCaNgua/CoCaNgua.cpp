@@ -241,6 +241,8 @@ int main( int argc, char *argv[] )  {
   initGLUT(argc, argv);
   initGL();
 
+  LoadingScene::inst().initSprite();
+
   glutMainLoop( );
 }
 

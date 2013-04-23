@@ -8,7 +8,7 @@
 
 LoadingScene::LoadingScene(void)
 {
-  initSprite();
+  ;
 }
 
 LoadingScene& LoadingScene::inst()
