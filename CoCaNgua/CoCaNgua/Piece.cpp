@@ -83,6 +83,7 @@ void Piece::drawModel()
         glEnable(GL_LIGHTING);
       }
     }
+    glPopMatrix();
 
     if(mShadow)
     {
@@ -91,7 +92,7 @@ void Piece::drawModel()
       glStencilMask(0x4);
       glStencilOp(GL_KEEP, GL_KEEP, GL_INVERT);
 
-
+      //float fP[4] = {floorPlane[0], floorPlane[1], floorPlane[2], floorPlane[3] + mPos.y };
       shadowMatrix(floorShadow, floorPlane, Light::inst().getPosition());
 
       glEnable(GL_BLEND);
@@ -101,10 +102,12 @@ void Piece::drawModel()
 
       glPushMatrix();
       {
+        glTranslatef(-mAnchor.x*getWidth(), -mAnchor.y*getHeight(), -mAnchor.z*getLength());
         /* Project the shadow. */
         glMultMatrixf((GLfloat *) floorShadow);
         glPushMatrix();
         {
+          glTranslated(mPos.x, mPos.y, mPos.z);
           //glTranslatef(0, 8.01, 0);
           draw();
         }
@@ -117,7 +120,7 @@ void Piece::drawModel()
       glDisable(GL_STENCIL_TEST);
       glEnable(GL_LIGHTING);
     }
-    glPopMatrix();
+    
   }
   glPopMatrix();
 }
