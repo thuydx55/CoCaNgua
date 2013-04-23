@@ -12,8 +12,7 @@ GameScene::GameScene(void)
 
   mDieIsThrown = false;
   mDieIsDrawn = true;
-  Light::inst().mDiffuseOffset = 0.5;
-  Light::inst().updateLight();
+  Light::inst().setDiffuseOffset(0.5);
   mFullHome = false;
   mPieceIsMoving = false;
   
@@ -759,8 +758,7 @@ void GameScene::rollDice(int number)
     nextTurn();
 
     mDieIsDrawn = true;
-    Light::inst().mDiffuseOffset = 0.5;
-    Light::inst().updateLight();
+    Light::inst().setDiffuseOffset(0.5);
   }
 }
 
@@ -770,8 +768,7 @@ void GameScene::update()
   {
     mDieIsDrawn = false;
     this->rollDice(mDieNumber);
-    Light::inst().mDiffuseOffset = 0.0;
-    Light::inst().updateLight();
+    Light::inst().setDiffuseOffset(0);
   }
 
   if (mPieceIsMoving && !mDieIsDrawn )
@@ -783,8 +780,7 @@ void GameScene::update()
         mPieceIsMoving = false;
 
         mDieIsDrawn = true;
-        Light::inst().mDiffuseOffset = 0.5;
-        Light::inst().updateLight();
+        Light::inst().setDiffuseOffset(0.5);
       }
     }
   }

@@ -116,7 +116,6 @@ void initGL()
 
   Light::inst().setPosition(GameScene::inst().lightPosition[0], GameScene::inst().lightPosition[1], 
     GameScene::inst().lightPosition[2], GameScene::inst().lightPosition[3]);
-  Light::inst().updateLight();
 
   float _position[4] = {0, 0, 5, 1};
   float _ambient[4] = {0.2, 0.2, 0.2, 1.0};
