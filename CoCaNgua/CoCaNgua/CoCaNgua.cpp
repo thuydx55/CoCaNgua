@@ -165,6 +165,7 @@ void displayCB( void )  {
   case APP_ABOUT:
     break;
   case APP_LOADING:
+    glDisable(GL_LIGHTING);
     LoadingScene::inst().loop();
     break;
   default:
