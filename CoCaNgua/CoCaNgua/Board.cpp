@@ -7,6 +7,7 @@ Board::Board(void)
 void Board::drawModel()
 {
   Model::drawModel();
+
   float x, y, z;
   getCenter(x, y, z);
 

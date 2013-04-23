@@ -33,6 +33,8 @@ class Model : public ModelOBJ
 
   bool mWaitIsCalled;
 
+  Timer mTimer;
+
   void draw();
   GLuint loadTexture(const char *pszFilename);
 

@@ -12,6 +12,8 @@ public:
   Scene(void);
   ~Scene(void);
 
+  virtual void update() {};
+
   bool wait(float sec);
 };  
 

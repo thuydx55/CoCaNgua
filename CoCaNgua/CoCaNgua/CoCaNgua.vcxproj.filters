@@ -70,7 +70,9 @@
     <ClCompile Include="ProgressTimer.cpp">
       <Filter>Classes\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Scene.cpp">
+      <Filter>Classes\Scences</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -157,7 +159,9 @@
     <ClInclude Include="ProgressTimer.h">
       <Filter>Classes\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Scene.h">
+      <Filter>Classes\Scences</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
