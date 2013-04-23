@@ -97,12 +97,12 @@ void LoadingScene::load()
   case 3:
     GameScene::inst().initDie();
     cout << "GAME SCENE Die" << endl;
-    mProgress->setPercent(70);
+    mProgress->setPercent(75);
     break;
   case 4:
     GameScene::inst().initPieces();
     cout << "GAME SCENE Pieces" << endl;
-    mProgress->setPercent(90);
+    mProgress->setPercent(100);
     break;
   default:
     Graphic::inst().setAppScene(APP_MENU);
