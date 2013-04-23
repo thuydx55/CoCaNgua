@@ -64,6 +64,9 @@
     <ClCompile Include="SelectPlayersScene.cpp">
       <Filter>Classes\Scences</Filter>
     </ClCompile>
+    <ClCompile Include="LoadingScene.cpp">
+      <Filter>Classes\Scences</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -142,6 +145,9 @@
       <Filter>Classes\Objects</Filter>
     </ClInclude>
     <ClInclude Include="SelectPlayersScene.h">
+      <Filter>Classes\Scences</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadingScene.h">
       <Filter>Classes\Scences</Filter>
     </ClInclude>
   </ItemGroup>

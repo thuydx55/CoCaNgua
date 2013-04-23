@@ -138,9 +138,9 @@ void Mouse::processMouse( int button, int state, int x, int y )
     if(button == GLUT_LEFT_BUTTON)
     {
       if(state == GLUT_DOWN)
-		    AboutScene::inst().processMouseBegan(x, Graphic::inst().screenHeight-y);
+		    SelectPlayersScene::inst().processMouseBegan(x, Graphic::inst().screenHeight-y);
       else if(state == GLUT_UP)
-        AboutScene::inst().processMouseEnded(x, Graphic::inst().screenHeight-y);
+        SelectPlayersScene::inst().processMouseEnded(x, Graphic::inst().screenHeight-y);
     }
   }
 }

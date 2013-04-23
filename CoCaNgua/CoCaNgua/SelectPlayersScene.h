@@ -1,5 +1,5 @@
-#ifndef _CG_ABOUT_SCENE_H_
-#define _CG_ABOUT_SCENE_H_
+#ifndef _CG_SELECT_PLAYERS_SCENE_H_
+#define _CG_SELECT_PLAYERS_SCENE_H_
 
 #include "Sprite2D.h"
 #include "GameScene.h"
@@ -8,7 +8,7 @@
 
 #include "Graphic.h"
 
-class AboutScene
+class SelectPlayersScene
 {
   Sprite2D* mBackground;
   Sprite2D* mBtnStart;
@@ -23,12 +23,12 @@ class AboutScene
 
   void drawScene();
 public:
-  AboutScene(void);
-  ~AboutScene(void);
+  SelectPlayersScene(void);
+  ~SelectPlayersScene(void);
 
   void initSprite();
 
-  static AboutScene& inst();
+  static SelectPlayersScene& inst();
   void loop();
 
   void processMouseBegan(int x, int y);

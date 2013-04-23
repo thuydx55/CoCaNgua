@@ -2,18 +2,18 @@
 
 #include "GameScene.h"
 
-AboutScene::AboutScene(void)
+SelectPlayersScene::SelectPlayersScene(void)
 {
 
 }
 
-AboutScene& AboutScene::inst()
+SelectPlayersScene& SelectPlayersScene::inst()
 {
-  static AboutScene instance;
+  static SelectPlayersScene instance;
   return instance;
 }
 
-void AboutScene::initSprite()
+void SelectPlayersScene::initSprite()
 {
   mBackground = Sprite2D::create("img/select_piece/background.png");
   mBackground->setAnchorPoint(Vector2(-0.5, -0.5));
@@ -79,7 +79,7 @@ void AboutScene::initSprite()
   mDisable[3] ->setPosition(Vector2(550, 125));
 }
 
-void AboutScene::drawScene()
+void SelectPlayersScene::drawScene()
 {
   mBackground->drawImg();
   mBtnStart->drawImg();
@@ -102,7 +102,7 @@ void AboutScene::drawScene()
   //glEnd();
 }
 
-void AboutScene::loop()
+void SelectPlayersScene::loop()
 {
   //cout<<"about scene loop"<<endl;
 	glMatrixMode(GL_PROJECTION);
@@ -132,7 +132,7 @@ void AboutScene::loop()
   glMatrixMode(GL_MODELVIEW);
 }
 
-void AboutScene::processMouseBegan(int x, int y )
+void SelectPlayersScene::processMouseBegan(int x, int y )
 {
   // Start Button
   for (int i = 0; i < 4; i++)
@@ -157,16 +157,16 @@ void AboutScene::processMouseBegan(int x, int y )
   } 
 }
 
-void AboutScene::processMouseEnded( int x, int y )
+void SelectPlayersScene::processMouseEnded( int x, int y )
 {
   
 }
 
 
-void AboutScene::processMousePassiveMotion( int x, int y )
+void SelectPlayersScene::processMousePassiveMotion( int x, int y )
 {}
 
-AboutScene::~AboutScene(void)
+SelectPlayersScene::~SelectPlayersScene(void)
 {
   delete mBackground;
   delete mBtnStart;

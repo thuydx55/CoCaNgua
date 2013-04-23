@@ -88,6 +88,7 @@
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="LoadingScene.cpp" />
     <ClCompile Include="MainMenuScene.cpp" />
     <ClCompile Include="mathlib.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="LoadingScene.h" />
     <ClInclude Include="MainMenuScene.h" />
     <ClInclude Include="mathlib.h" />
     <ClInclude Include="Model.h" />

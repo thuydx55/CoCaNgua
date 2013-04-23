@@ -9,7 +9,6 @@ GameScene::GameScene(void)
 
   for (int i = 0; i < 4; i++)
     mEnablePiece[i] = true;
-  mEnablePiece[1] = false;
 
   mDieIsThrown = false;
   mDieIsDrawn = true;

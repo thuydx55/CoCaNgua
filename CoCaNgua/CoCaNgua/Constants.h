@@ -87,7 +87,8 @@ enum AppScene
   APP_MENU,
   APP_OPTION,
   APP_ABOUT,
-  APP_SELECT
+  APP_SELECT,
+  APP_LOADING
 };
 
 enum ButtonState

@@ -3,7 +3,7 @@
 
 Graphic::Graphic(void)
 {
-  mAppScene = APP_MENU;
+  mAppScene = APP_LOADING;
 }
 
 Graphic& Graphic::inst()

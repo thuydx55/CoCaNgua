@@ -16,6 +16,7 @@
 #include "SelectPlayersScene.h"
 #include "GameScene.h"
 #include "MainMenuScene.h"
+#include "LoadingScene.h"
 
 
 #define SHOW_GRID 1
@@ -144,10 +145,13 @@ void displayCB( void )  {
   case APP_OPTION:
     break;
   case APP_SELECT:
-	glDisable(GL_LIGHTING);
-	AboutScene::inst().loop();
+	  glDisable(GL_LIGHTING);
+	  SelectPlayersScene::inst().loop();
     break;
   case APP_ABOUT:
+    break;
+  case APP_LOADING:
+    LoadingScene::inst().loop();
     break;
   default:
     break;
@@ -221,11 +225,6 @@ int main( int argc, char *argv[] )  {
   // init GLUT and GL
   initGLUT(argc, argv);
   initGL();
-
-
-  AboutScene::inst().initSprite();
-  GameScene::inst().initModel();
-  MainMenuScene::inst().initSprite();
 
   glutMainLoop( );
 }
