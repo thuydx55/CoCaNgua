@@ -148,10 +148,6 @@ GameScene::GameScene(void)
 
   int c[] = { 0, 4, 8, 10, 14, 18, 20, 24, 28, 30, 34, 38 };
   memcpy(mConnerIndex, c, sizeof(c));
-
-  Light::inst().setPosition(GameScene::inst().lightPosition[0], GameScene::inst().lightPosition[1], 
-    GameScene::inst().lightPosition[2], GameScene::inst().lightPosition[3]);
-  Light::inst().updateLight();
 }
 
 GameScene& GameScene::inst()
@@ -165,7 +161,7 @@ void GameScene::initModel()
   mBoard       = new Board();
   Piece* horse = new Piece();
   mDice        = new Die();
-
+  
   mBoard->loadModel("Models/board.obj");
   mBoard->setAnchorPoint(Vector3(0, 0.5, 0));
 

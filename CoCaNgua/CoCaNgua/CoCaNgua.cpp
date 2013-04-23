@@ -113,6 +113,20 @@ void initGL()
   glClearStencil(0);                          // clear stencil buffer
   glClearDepth(1.0f);                         // 0 is near, 1 is far
   glDepthFunc(GL_LEQUAL);
+
+  Light::inst().setPosition(GameScene::inst().lightPosition[0], GameScene::inst().lightPosition[1], 
+    GameScene::inst().lightPosition[2], GameScene::inst().lightPosition[3]);
+  Light::inst().updateLight();
+
+  float _position[4] = {0, 0, 5, 1};
+  float _ambient[4] = {0.2, 0.2, 0.2, 1.0};
+  float _diffuse[4] = {0.7, 0.7, 0.7, 1.0};
+  float _specular[4] = {1.0, 1.0, 1.0, 1.0};
+
+  glLightfv(GL_LIGHT1, GL_POSITION, _position);
+  glLightfv(GL_LIGHT1, GL_AMBIENT,  _ambient);
+  glLightfv(GL_LIGHT1, GL_DIFFUSE,  _diffuse);
+  glLightfv(GL_LIGHT1, GL_SPECULAR, _specular);
 }
 
 /* ----------------------------------------------------------------------- */
