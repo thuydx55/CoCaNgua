@@ -44,6 +44,7 @@ class GameScene : public Scene
 
   Board*              mBoard;
   Piece*              mPieces[16]; // 0:3 RED, 4:7 BLUE, 8:11 GREEN, 12:16 YELLOW
+  Piece* tmp;
   
   bool mEnablePiece[4];
 
@@ -87,7 +88,8 @@ public:
 
   void initBoard();
   void initDie();
-  void initPieces();
+  void initPiece();
+  void initAllPieces();
 
   Piece** getPiecesArray();
 

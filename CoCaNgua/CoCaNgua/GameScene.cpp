@@ -169,34 +169,39 @@ void GameScene::initDie()
   mDice->loadModel("Models/dice.obj");
 }
 
-void GameScene::initPieces()
+void GameScene::initPiece()
 {
-  Piece* horse = new Piece();
+  tmp = new Piece();
   
-  horse->loadModel("Models/knight.obj");
-  horse->setAnchorPoint(Vector3(0, -0.5, 0));
+  tmp->loadModel("Models/knight.obj");
+  tmp->setAnchorPoint(Vector3(0, -0.5, 0));
 
+}
+
+
+void GameScene::initAllPieces()
+{
   for (int i = 0; i < 4; i++)
   {
-    mPieces[i] = new Piece(horse);
+    mPieces[i] = new Piece(tmp);
     mPieces[i]->setColorTint(0.8, 0, 0);         // RED
     mPieces[i]->setPosition(mStartPos[i]);
     mPieces[i]->setInitPosition(mStartPos[i]);
     mPieces[i]->setType(TURN_RED);
 
-    mPieces[4+i] = new Piece(horse);
+    mPieces[4+i] = new Piece(tmp);
     mPieces[4+i]->setColorTint(0, 0, 0.8);        // BLUE
     mPieces[4+i]->setPosition(mStartPos[4+i]);
     mPieces[4+i]->setInitPosition(mStartPos[4+i]);
     mPieces[4+i]->setType(TURN_BLUE);
 
-    mPieces[8+i] = new Piece(horse);
+    mPieces[8+i] = new Piece(tmp);
     mPieces[8+i]->setColorTint(0, 0.8, 0);        // GREEN
     mPieces[8+i]->setPosition(mStartPos[8+i]);
     mPieces[8+i]->setInitPosition(mStartPos[8+i]);
     mPieces[8+i]->setType(TURN_GREEN);
 
-    mPieces[12+i] = new Piece(horse);
+    mPieces[12+i] = new Piece(tmp);
     mPieces[12+i]->setColorTint(0.8, 0.8, 0);     // YELLOW
     mPieces[12+i]->setPosition(mStartPos[12+i]);
     mPieces[12+i]->setInitPosition(mStartPos[12+i]);
@@ -204,13 +209,10 @@ void GameScene::initPieces()
   }
 
   mPieces[1]->setPosition(Vector3(0, 5, 0));
-  /*mPieces[5]->setPosition(mFields[0].position);
-  mFields[0].piece = mPieces[5];
-  mFields[10].piece = mPieces[1];*/
-  //blue[1]->setPosition(Vector3(4, 0, -20));
-  //green[1]->setPosition(Vector3(20, 0, 4));
-  //yellow[1]->setPosition(Vector3(-4, 0, 20));
+
+  delete tmp;
 }
+
 
 void GameScene::drawSence()
 {
