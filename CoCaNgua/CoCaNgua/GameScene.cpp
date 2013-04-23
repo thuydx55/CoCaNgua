@@ -376,13 +376,13 @@ void GameScene::nextTurn()
     mTries ++;
     if (mTries <= 2)
       return;
-    mTries = 0;
   }
+  mTries = 0;
 
   if (mDieNumber != 6)
   {
     int next = (int)mPlayerTurn + 1 >= 4 ? 0 : (int)mPlayerTurn + 1;
-    while (!mEnablePiece[next])
+    while (!mEnablePiece[next] || mIsGoHome[next])
     {
       next++;
       if (next >= 4) next = 0;
@@ -541,6 +541,7 @@ void GameScene::movePiece(int name)
   if (mFullHome)
   {
     mWinner = playerTurn;
+    mIsGoHome[playerTurn] = true;
   }
 }
 
@@ -555,8 +556,13 @@ void GameScene::rollDice(int number)
   noPieceInTheGame = true;
   mDieNumber = number;
 
-  mPredictPosition[0] = mPredictPosition[1] = mPredictPosition[2] = mPredictPosition[3] = Vector3();
-  mPredictMoveState[0] = mPredictMoveState[1] = mPredictMoveState[2] = mPredictMoveState[3] = MOVE_ILLEGAL;
+  for (int i = 0; i < 4; i++)
+  {
+    mPredictPosition[i] = Vector3();
+    mPredictMoveState[i] = MOVE_ILLEGAL;
+    mIsGoHome[i] = false;
+  }
+
   int predictIndexPos[4] = {-1, -1, -1, -1};
 
   for (int i = 0; i < 4; i++)

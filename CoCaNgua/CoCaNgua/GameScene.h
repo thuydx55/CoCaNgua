@@ -55,6 +55,7 @@ class GameScene : public Scene
 
   Vector3 mPredictPosition[4];
   MoveState mPredictMoveState[4];
+  bool mIsGoHome[4];
 
   int mDieNumber;
   int mTries;
