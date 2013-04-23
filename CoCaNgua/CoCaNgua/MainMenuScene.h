@@ -1,11 +1,12 @@
 #ifndef _CG_MAIN_MENU_H_
 #define _CG_MAIN_MENU_H_
 
+#include "Scene.h"
 #include "Sprite2D.h"
 #include "GameScene.h"
 #include "Button.h"
 
-class MainMenuScene
+class MainMenuScene : Scene
 {
   Sprite2D* mBackground;
   Button* mStart;

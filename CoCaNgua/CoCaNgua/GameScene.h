@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "Scene.h"
 #include "Piece.h"
 #include "Die.h"
 #include "Board.h"
@@ -37,7 +38,7 @@ struct Field
   }
 };
 
-class GameScene
+class GameScene : public Scene
 {
   void *font;
 
@@ -59,6 +60,7 @@ class GameScene
   bool mDieIsThrown;
   bool mustBeStart;
   bool mFullHome;
+  bool mPieceIsMoving;
 
   Turn mWinner;
 

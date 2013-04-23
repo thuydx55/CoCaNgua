@@ -4,16 +4,14 @@
 
 #define LOADING_DELAY_PER_LOOP 1
 
-#include "Timer.h"
+#include "Scene.h"
 
 #include <iostream>
 
 using namespace std;
 
-class LoadingScene
+class LoadingScene : Scene
 {
-  Timer mTimer;
-
 public:
   LoadingScene(void);
   ~LoadingScene(void);

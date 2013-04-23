@@ -176,7 +176,6 @@ int Die::rollDie()
     face = roundTheta%2 ? 4 : 3;
     break;
   }
-  mTimer.start();
 
   cout << "FACE: " << face << endl;
   cout << "Random Phi " << randPhi << " Random Theta: " << randTheta << endl;

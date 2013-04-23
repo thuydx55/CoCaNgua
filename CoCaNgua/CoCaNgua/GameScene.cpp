@@ -15,7 +15,8 @@ GameScene::GameScene(void)
   Light::inst().mDiffuseOffset = 0.5;
   Light::inst().updateLight();
   mFullHome = false;
-
+  mPieceIsMoving = false;
+  
   lightPosition[0] = 0;
   lightPosition[1] = 50;
   lightPosition[2] = 0;
@@ -361,9 +362,6 @@ void GameScene::loop()
 void GameScene::nextTurn()
 {
   mDieIsThrown = false;
-  mDieIsDrawn = true;
-  Light::inst().mDiffuseOffset = 0.5;
-  Light::inst().updateLight();
 
   mDice->setState(DIE_WAITING);
 
@@ -495,6 +493,7 @@ void GameScene::movePiece(int name)
       }
 
       mod->jumpTo(target, mPredictMoveState[k]);
+      mPieceIsMoving = true;
       nextTurn();
     }
     else if (mPredictMoveState[k] == MOVE_NORMAL)
@@ -522,6 +521,7 @@ void GameScene::movePiece(int name)
       mFields[tmp].piece = mod;
 
       mod->jumpTo(target, MOVE_NORMAL);
+      mPieceIsMoving = true;
       nextTurn();
     }
   }
@@ -757,6 +757,10 @@ void GameScene::rollDice(int number)
   if (allMoveIllegal)
   {
     nextTurn();
+
+    mDieIsDrawn = true;
+    Light::inst().mDiffuseOffset = 0.5;
+    Light::inst().updateLight();
   }
 }
 
@@ -768,6 +772,21 @@ void GameScene::update()
     this->rollDice(mDieNumber);
     Light::inst().mDiffuseOffset = 0.0;
     Light::inst().updateLight();
+  }
+
+  if (mPieceIsMoving && !mDieIsDrawn )
+  {
+    if (checkAllModelIdle())
+    {
+      if (wait(1))
+      {
+        mPieceIsMoving = false;
+
+        mDieIsDrawn = true;
+        Light::inst().mDiffuseOffset = 0.5;
+        Light::inst().updateLight();
+      }
+    }
   }
 }
 

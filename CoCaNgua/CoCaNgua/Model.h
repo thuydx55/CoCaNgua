@@ -31,6 +31,8 @@ class Model : public ModelOBJ
   ModelTextures       mModelTextures;  
   GLfloat             mColorTint[3];
 
+  bool mWaitIsCalled;
+
   void draw();
   GLuint loadTexture(const char *pszFilename);
 
@@ -45,7 +47,23 @@ public:
   virtual void drawModel();
   virtual void update();
 
-  
+  bool wait(float sec);
 };
+
+inline bool Model::wait(float sec)
+{
+  if (!mWaitIsCalled)
+  {
+    mTimer.start();
+    mWaitIsCalled = true;
+  }
+  if (mTimer.elapsed() < sec)
+    return false;
+  else
+  {
+    mWaitIsCalled = false;
+    return true;
+  }
+}
 
 #endif // !_MODEL_H_

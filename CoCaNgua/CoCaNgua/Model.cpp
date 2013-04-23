@@ -12,6 +12,8 @@ Model::Model(void)
   mRotate = Vector3(0, 1, 0);
   mAngle = 0;
 
+  mWaitIsCalled = false;
+
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_CULL_FACE);

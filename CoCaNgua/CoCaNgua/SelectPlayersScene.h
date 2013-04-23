@@ -1,6 +1,7 @@
 #ifndef _CG_SELECT_PLAYERS_SCENE_H_
 #define _CG_SELECT_PLAYERS_SCENE_H_
 
+#include "Scene.h"
 #include "Sprite2D.h"
 #include "GameScene.h"
 #include "ToggleButton.h"
@@ -8,7 +9,7 @@
 
 #include "Graphic.h"
 
-class SelectPlayersScene
+class SelectPlayersScene : Scene
 {
   Sprite2D* mBackground;
   Sprite2D* mBtnStart;

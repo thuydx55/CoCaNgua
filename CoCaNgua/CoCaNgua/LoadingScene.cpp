@@ -6,7 +6,7 @@
 
 LoadingScene::LoadingScene(void)
 {
-  mTimer.start();
+
 }
 
 LoadingScene& LoadingScene::inst()
@@ -18,7 +18,7 @@ LoadingScene& LoadingScene::inst()
 void LoadingScene::loop()
 {
   static int i = 0;
-  if (mTimer.elapsed() < i*LOADING_DELAY_PER_LOOP)
+  if (!wait(LOADING_DELAY_PER_LOOP))
     return;
 
   switch (i)
