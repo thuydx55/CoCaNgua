@@ -81,10 +81,11 @@ public:
   GameScene(void);
   ~GameScene(void);
 
-  virtual void update();
-
-  void initModel();
   static GameScene& inst();
+
+  void initBoard();
+  void initDie();
+  void initPieces();
 
   Piece** getPiecesArray();
 
@@ -98,6 +99,8 @@ public:
   bool processMouseBegan(int x, int y);
   void processMouseEnded(int x, int y);
   void processMousePassiveMotion(int x, int y);
+
+  virtual void update();
 };
 
 inline Piece** GameScene::getPiecesArray()

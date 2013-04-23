@@ -67,6 +67,9 @@
     <ClCompile Include="LoadingScene.cpp">
       <Filter>Classes\Scences</Filter>
     </ClCompile>
+    <ClCompile Include="ProgressTimer.cpp">
+      <Filter>Classes\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -149,6 +152,9 @@
     </ClInclude>
     <ClInclude Include="LoadingScene.h">
       <Filter>Classes\Scences</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressTimer.h">
+      <Filter>Classes\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

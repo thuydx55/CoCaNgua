@@ -156,17 +156,23 @@ GameScene& GameScene::inst()
   return Instance;
 }
 
-void GameScene::initModel()
+void GameScene::initBoard()
 {
   mBoard       = new Board();
-  Piece* horse = new Piece();
-  mDice        = new Die();
-  
   mBoard->loadModel("Models/board.obj");
   mBoard->setAnchorPoint(Vector3(0, 0.5, 0));
+}
 
+void GameScene::initDie()
+{
+  mDice        = new Die();
   mDice->loadModel("Models/dice.obj");
+}
 
+void GameScene::initPieces()
+{
+  Piece* horse = new Piece();
+  
   horse->loadModel("Models/knight.obj");
   horse->setAnchorPoint(Vector3(0, -0.5, 0));
 

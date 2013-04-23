@@ -32,8 +32,16 @@ void LoadingScene::loop()
     cout << "MAIN MENU SCENE" << endl;
     break;
   case 2:
-    GameScene::inst().initModel();
-    cout << "GAME SCENE" << endl;
+    GameScene::inst().initBoard();
+    cout << "GAME SCENE Board" << endl;
+    break;
+  case 3:
+    GameScene::inst().initDie();
+    cout << "GAME SCENE Die" << endl;
+    break;
+  case 4:
+    GameScene::inst().initPieces();
+    cout << "GAME SCENE Pieces" << endl;
     break;
   default:
     Graphic::inst().setAppScene(APP_MENU);

@@ -94,6 +94,7 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelOBJ.cpp" />
     <ClCompile Include="Piece.cpp" />
+    <ClCompile Include="ProgressTimer.cpp" />
     <ClCompile Include="RadioGroup.cpp" />
     <ClCompile Include="SelectPlayersScene.cpp" />
     <ClCompile Include="SOIL\image_DXT.c" />
@@ -120,6 +121,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelOBJ.h" />
     <ClInclude Include="Piece.h" />
+    <ClInclude Include="ProgressTimer.h" />
     <ClInclude Include="RadioGroup.h" />
     <ClInclude Include="SelectPlayersScene.h" />
     <ClInclude Include="SOIL\image_DXT.h" />
