@@ -772,13 +772,16 @@ void GameScene::update()
 void GameScene::setDisablePiece( int index )
 {
   mEnablePiece[index] = false;
-  for (int i = 0; i < 4; i++)
+  if (mPlayerTurn == index)
   {
-    if (!mEnablePiece[i])
+    for (int i = 0; i < 4; i++)
     {
-      mPlayerTurn = (Turn)(i+1 > 4 ? 0 : i+1);
-      break;
-    }
+      if (!mEnablePiece[i])
+      {
+        mPlayerTurn = (Turn)(i+1 > 4 ? 0 : i+1);
+        break;
+      }
+    } 
   }
 }
 
