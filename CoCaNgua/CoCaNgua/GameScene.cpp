@@ -210,7 +210,7 @@ void GameScene::initAllPieces()
 
   mPieces[1]->setPosition(Vector3(0, 5, 0));
 
-  delete tmp;
+  //delete tmp;
 }
 
 
