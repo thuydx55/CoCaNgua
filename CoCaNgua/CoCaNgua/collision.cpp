@@ -56,6 +56,12 @@ float BoundingBox::getSize() const
     return (max - min).magnitude();
 }
 
+void BoundingBox::set( const Vector3 &min_, const Vector3 &max_ )
+{
+  min = min_;
+  max = max_;
+}
+
 //-----------------------------------------------------------------------------
 // BoundingSphere.
 
@@ -349,6 +355,12 @@ Ray::Ray(const Vector3 &origin_, const Vector3 &direction_)
 
 Ray::~Ray()
 {
+}
+
+void Ray::set( const Vector3 &origin_, const Vector3 &direction_ )
+{
+  origin = origin_;
+  direction = direction_;
 }
 
 bool Ray::hasIntersected(const BoundingSphere &sphere) const

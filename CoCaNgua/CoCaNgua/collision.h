@@ -41,6 +41,8 @@ public:
     Vector3 getCenter() const;
     float getRadius() const;
     float getSize() const;
+
+    void set(const Vector3 &min_, const Vector3 &max_);
 };
 
 //-----------------------------------------------------------------------------
@@ -133,6 +135,8 @@ public:
     Ray();
     Ray(const Vector3 &origin_, const Vector3 &direction_);
     ~Ray();
+
+    void set(const Vector3 &origin_, const Vector3 &direction_);
 
     bool hasIntersected(const BoundingSphere &sphere) const;
     bool hasIntersected(const BoundingBox &box) const;

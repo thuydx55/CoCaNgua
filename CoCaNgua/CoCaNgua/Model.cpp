@@ -130,6 +130,14 @@ void Model::loadModel(const char *pszFilename)
     throw std::runtime_error("Failed to load model.");
   }
 
+  //float x, y, z;
+  //getCenter(x, y, z);
+
+  //cout << pszFilename << ' ' << x << ' ' << y << ' ' << z << endl;
+
+  minVec.set( - getWidth()/2,  - getHeight()/2,  - getLength()/2);
+  maxVec.set( + getWidth()/2,  + getHeight()/2,  + getLength()/2);
+
   // Load any associated textures.
   // Note the path where the textures are assumed to be located.
 
@@ -214,11 +222,66 @@ GLuint Model::loadTexture(const char *pszFilename)
 void Model::drawModel()
 {
   update();
+
+  Vector3 mAnchorOffset(mAnchor.x*getWidth(), mAnchor.y*getHeight(), mAnchor.z*getLength());
+  BoundingBox b(minVec+mPos-mAnchorOffset, maxVec+mPos-mAnchorOffset);
+
+  glDisable(GL_LIGHTING);
+  glColor3f(0, 0, 0);
+  glBegin(GL_LINES);
+
+  // BOT wireframe
+  glVertex3f(b.min.x, b.min.y, b.min.z);
+  glVertex3f(b.max.x, b.min.y, b.min.z);
+
+  glVertex3f(b.max.x, b.min.y, b.min.z);
+  glVertex3f(b.max.x, b.min.y, b.max.z);
+
+  glVertex3f(b.max.x, b.min.y, b.max.z);
+  glVertex3f(b.min.x, b.min.y, b.max.z);
+
+  glVertex3f(b.min.x, b.min.y, b.max.z);
+  glVertex3f(b.min.x, b.min.y, b.min.z);
+
+  // TOP wireframe
+  glVertex3f(b.min.x, b.max.y, b.min.z);
+  glVertex3f(b.max.x, b.max.y, b.min.z);
+
+  glVertex3f(b.max.x, b.max.y, b.min.z);
+  glVertex3f(b.max.x, b.max.y, b.max.z);
+
+  glVertex3f(b.max.x, b.max.y, b.max.z);
+  glVertex3f(b.min.x, b.max.y, b.max.z);
+
+  glVertex3f(b.min.x, b.max.y, b.max.z);
+  glVertex3f(b.min.x, b.max.y, b.min.z);
+
+  // SIDE wireframe
+  glVertex3f(b.min.x, b.min.y, b.min.z);
+  glVertex3f(b.min.x, b.max.y, b.min.z);
+
+  glVertex3f(b.min.x, b.min.y, b.max.z);
+  glVertex3f(b.min.x, b.max.y, b.max.z);
+
+  glVertex3f(b.max.x, b.min.y, b.max.z);
+  glVertex3f(b.max.x, b.max.y, b.max.z);
+
+  glVertex3f(b.max.x, b.min.y, b.min.z);
+  glVertex3f(b.max.x, b.max.y, b.min.z);
+
+  glEnd();
+
+  glEnable(GL_LIGHTING);
 }
 
 void Model::update()
 {
 
+}
+
+BoundingBox Model::boundingbox()
+{
+  return BoundingBox(minVec+mPos-mAnchor, maxVec+mPos-mAnchor);
 }
 
 Model::~Model(void)

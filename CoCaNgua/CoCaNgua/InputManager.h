@@ -8,6 +8,7 @@
 
 #include "Light.h"
 #include "Camera.h"
+#include "Piece.h"
 
 class KeyBoard
 {
@@ -29,9 +30,15 @@ class Mouse
   bool mouseMiddleDown;
   float mouseX, mouseY;
 
+  Matrix4 modelViewMatx;
+
+  Ray mViewRay;
+
   void list_hits(GLint hits, GLuint *names);
   void gl_select(int x, int y);
   void mousedw(int x, int y, int but);
+
+  void createRay(int x, int y);
 
 public:
   Mouse(void);

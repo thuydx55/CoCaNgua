@@ -943,6 +943,9 @@ public:
     void translate(float tx, float ty, float tz);
     Matrix4 transpose() const;
 
+    Vector3 multiVectorWithTranslate(const Vector3 &mul);
+    void set(float m[16]);
+
 private:
     float mtx[4][4];
 };
@@ -1179,6 +1182,24 @@ inline Matrix4 Matrix4::transpose() const
     tmp[3][0] = mtx[0][3], tmp[3][1] = mtx[1][3], tmp[3][2] = mtx[2][3], tmp[3][3] = mtx[3][3];
 
     return tmp;
+}
+
+inline Vector3 Matrix4::multiVectorWithTranslate(const Vector3 &mul)
+{
+  Vector3 result;
+  
+  result.x = mul.x*mtx[0][0] + mul.y*mtx[1][0] + mul.z*mtx[2][0] + mtx[3][0];
+  result.y = mul.x*mtx[0][1] + mul.y*mtx[1][1] + mul.z*mtx[2][1] + mtx[3][1];
+  result.z = mul.x*mtx[0][2] + mul.y*mtx[1][2] + mul.z*mtx[2][2] + mtx[3][2];
+
+  return result;
+}
+
+inline void Matrix4::set(float m[16])
+{
+  for(int i = 0; i < 4; i++)
+    for (int j = 0; j < 4; j++)
+      mtx[i][j] = m[4*i+j];
 }
 
 //-----------------------------------------------------------------------------

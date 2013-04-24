@@ -7,6 +7,7 @@
 #include "Timer.h"
 #include "Light.h"
 #include "SOIL/SOIL.h"
+#include "collision.h"
 
 #include <gl/glut.h>
 
@@ -28,6 +29,8 @@ class Model : public ModelOBJ
 
   GLSYNTHESIZE(bool, g_enableTextures, EnableTextures);
 
+  Vector3 minVec, maxVec;
+
   ModelTextures       mModelTextures;  
   GLfloat             mColorTint[3];
 
@@ -48,6 +51,8 @@ public:
   void loadModel(const char *pszFilename);
   virtual void drawModel();
   virtual void update();
+
+  BoundingBox boundingbox();
 
   bool wait(float sec);
 };
