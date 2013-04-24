@@ -4,6 +4,9 @@
 Graphic::Graphic(void)
 {
   mAppScene = APP_LOADING;
+  near_height = 0.5;
+  zNear = 1;
+  zFar = 1000;
 }
 
 Graphic& Graphic::inst()

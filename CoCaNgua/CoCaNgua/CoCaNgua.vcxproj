@@ -84,6 +84,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CoCaNgua.cpp" />
+    <ClCompile Include="collision.cpp" />
     <ClCompile Include="Die.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Graphic.cpp" />
@@ -109,6 +110,7 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="collision.h" />
     <ClInclude Include="Die.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="GameScene.h" />

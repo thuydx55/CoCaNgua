@@ -177,13 +177,22 @@ void displayCB( void )  {
 void reshapeCB(int width, int height) {
   Graphic::inst().screenWidth = width;
   Graphic::inst().screenHeight = height;
+
+  float aspect = double(width)/double(height);
+
   // set viewport to be the entire window
   glViewport(0, 0, width, height);
 
   // set perspective viewing frustum
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(60.0f, (float)Graphic::inst().screenWidth/Graphic::inst().screenHeight, 1.0f, 1000.0f); // FOV, AspectRatio, NearClip, FarClip
+  //gluPerspective(60.0f, (float)Graphic::inst().screenWidth/Graphic::inst().screenHeight, 1.0f, 1000.0f); // FOV, AspectRatio, NearClip, FarClip
+  glFrustum(-Graphic::inst().near_height * aspect, 
+             Graphic::inst().near_height * aspect, 
+            -Graphic::inst().near_height,
+             Graphic::inst().near_height,
+             Graphic::inst().zNear,
+             Graphic::inst().zFar);
 
   // switch to modelview matrix in order to set scene
   glMatrixMode(GL_MODELVIEW);

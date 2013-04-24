@@ -13,9 +13,6 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="mathlib.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
     <ClCompile Include="SOIL\image_DXT.c">
       <Filter>SOIL</Filter>
     </ClCompile>
@@ -73,6 +70,12 @@
     <ClCompile Include="ProgressTimerSprite2D.cpp">
       <Filter>Classes\UI</Filter>
     </ClCompile>
+    <ClCompile Include="mathlib.cpp">
+      <Filter>Classes\matlib</Filter>
+    </ClCompile>
+    <ClCompile Include="collision.cpp">
+      <Filter>Classes\matlib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -91,9 +94,6 @@
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="mathlib.h">
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
@@ -162,6 +162,12 @@
     <ClInclude Include="ProgressTimerSprite2D.h">
       <Filter>Classes\UI</Filter>
     </ClInclude>
+    <ClInclude Include="mathlib.h">
+      <Filter>Classes\matlib</Filter>
+    </ClInclude>
+    <ClInclude Include="collision.h">
+      <Filter>Classes\matlib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -181,6 +187,9 @@
     </Filter>
     <Filter Include="Classes\Objects">
       <UniqueIdentifier>{0abb9620-ecd8-46bf-9fa3-92ed98a0d6d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\matlib">
+      <UniqueIdentifier>{dc888eea-7924-47b7-8ac7-a79bba99c50a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
