@@ -223,6 +223,7 @@ void Model::drawModel()
 {
   update();
 
+#if DEBUG_BOUNDINGBOX
   Vector3 mAnchorOffset(mAnchor.x*getWidth(), mAnchor.y*getHeight(), mAnchor.z*getLength());
   BoundingBox b(minVec+mPos-mAnchorOffset, maxVec+mPos-mAnchorOffset);
 
@@ -271,7 +272,9 @@ void Model::drawModel()
 
   glEnd();
 
-  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHTING);  
+#endif // DEBUG_BOUNDINGBOX
+
 }
 
 void Model::update()

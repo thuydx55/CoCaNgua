@@ -208,8 +208,6 @@ void GameScene::initAllPieces()
     mPieces[12+i]->setType(TURN_YELLOW);
   }
 
-  mPieces[1]->setPosition(Vector3(0, 5, 0));
-
   //delete tmp;
 }
 
@@ -814,14 +812,50 @@ GameScene::~GameScene(void)
 {
 }
 
-bool GameScene::processMouseBegan( int x, int y )
+void GameScene::processMouseBegan( int x, int y )
 {
   if (mDieIsDrawn)
   {
     if (mDice->getState() == DIE_WAITING)
       mDieNumber = GameScene::inst().mDice->rollDie();
-    return true;
   }
+  else
+  {
+    identifyModelClicked(x, y);
+  }
+}
 
-  return false;
+void GameScene::identifyModelClicked( int mouse_x, int mouse_y )
+{
+  int window_y = mouse_y - Graphic::inst().screenHeight/2;
+  double norm_y = double(window_y)/double(Graphic::inst().screenHeight/2);
+  int window_x = mouse_x - Graphic::inst().screenWidth/2;
+  double norm_x = double(window_x)/double(Graphic::inst().screenWidth/2);
+
+  float aspect = Graphic::inst().screenWidth/Graphic::inst().screenHeight;
+
+  float y = Graphic::inst().near_height * norm_y;
+  float x = Graphic::inst().near_height * aspect * norm_x;
+
+  float m[16];
+  glGetFloatv(GL_MODELVIEW_MATRIX , m);
+
+  modelViewMatx.set(m);
+
+  Matrix4 inMatrix = modelViewMatx.inverse();
+
+  Vector3 rayOrigin = inMatrix.multiVectorWithTranslate(Vector3());
+  Vector3 rayVec = rayVec = Vector3(x, y, -Graphic::inst().zNear)*inMatrix;
+
+  mViewRay.set(rayOrigin, rayVec);
+
+  Piece** piecesArray = GameScene::inst().getPiecesArray();
+
+  for (int i = 0; i < 16; i++)
+  {
+    if (mViewRay.hasIntersected(piecesArray[i]->boundingbox()))
+    {
+      cout << "intersected" << endl;
+    }
+  }
 }

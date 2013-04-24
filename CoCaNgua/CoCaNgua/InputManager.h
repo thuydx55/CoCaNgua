@@ -30,10 +30,6 @@ class Mouse
   bool mouseMiddleDown;
   float mouseX, mouseY;
 
-  Matrix4 modelViewMatx;
-
-  Ray mViewRay;
-
   void list_hits(GLint hits, GLuint *names);
   void gl_select(int x, int y);
   void mousedw(int x, int y, int but);
