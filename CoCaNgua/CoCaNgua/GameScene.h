@@ -10,6 +10,7 @@
 #include "Light.h"
 #include "Graphic.h"
 #include "Constants.h"
+#include "Camera.h"
 
 #define SHOW_GRID 1
 #define SHOW_LIGHT_SOURCE 1
@@ -106,7 +107,7 @@ public:
 
   void resetBoard();
   void loop();
-  void movePiece(int name);
+  void movePiece(Piece* pPiece);
   void rollDice(int number);
 
   void setDisablePiece(int index);

@@ -10,6 +10,7 @@ class Piece : public Model
   GLSYNTHESIZE(PieceState, mState, State);
   GLSYNTHESIZE(Vector3, mInitPos, InitPosition);
   GLSYNTHESIZE(Area, mArea, Area);
+  GLSYNTHESIZE(int, mName, Name);
 
   Turn mType;
   int mIndexFirstPos;

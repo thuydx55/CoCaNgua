@@ -188,24 +188,28 @@ void GameScene::initAllPieces()
     mPieces[i]->setPosition(mStartPos[i]);
     mPieces[i]->setInitPosition(mStartPos[i]);
     mPieces[i]->setType(TURN_RED);
+    mPieces[i]->setName(PIECE_RED_1+i);
 
     mPieces[4+i] = new Piece(tmp);
     mPieces[4+i]->setColorTint(0, 0, 0.8);        // BLUE
     mPieces[4+i]->setPosition(mStartPos[4+i]);
     mPieces[4+i]->setInitPosition(mStartPos[4+i]);
     mPieces[4+i]->setType(TURN_BLUE);
+    mPieces[4+i]->setName(PIECE_BLUE_1+i);
 
     mPieces[8+i] = new Piece(tmp);
     mPieces[8+i]->setColorTint(0, 0.8, 0);        // GREEN
     mPieces[8+i]->setPosition(mStartPos[8+i]);
     mPieces[8+i]->setInitPosition(mStartPos[8+i]);
     mPieces[8+i]->setType(TURN_GREEN);
+    mPieces[8+i]->setName(PIECE_GREEN_1+i);
 
     mPieces[12+i] = new Piece(tmp);
     mPieces[12+i]->setColorTint(0.8, 0.8, 0);     // YELLOW
     mPieces[12+i]->setPosition(mStartPos[12+i]);
     mPieces[12+i]->setInitPosition(mStartPos[12+i]);
     mPieces[12+i]->setType(TURN_YELLOW);
+    mPieces[12+i]->setName(PIECE_YELLOW_1+i);
   }
 
   //delete tmp;
@@ -256,46 +260,23 @@ void GameScene::drawSence()
   glEnd();*/
 #endif
 
-  //glDisable(GL_COLOR_MATERIAL);
-
   glLoadName(1);
   mBoard->drawModel();
 
   for (int i = 0; i < 4; i++)
   {
     if (mEnablePiece[0])
-    {
-      glLoadName(PIECE_RED_1 + i);
       mPieces[i]->drawModel(); 
-    }
 
     if (mEnablePiece[1])
-    {
-      glLoadName(PIECE_BLUE_1 + i);
       mPieces[4+i]->drawModel(); 
-    }
 
     if (mEnablePiece[2])
-    {
-      glLoadName(PIECE_GREEN_1 + i);
       mPieces[8+i]->drawModel(); 
-    }
 
     if (mEnablePiece[3])
-    {
-      glLoadName(PIECE_YELLOW_1 + i);
       mPieces[12+i]->drawModel(); 
-    }
   }
-
-  /*glLoadName(3);
-  dice->drawModel();*/
-
-  //glEnable(GL_COLOR_MATERIAL);
-
-  /*float pos[3] = {0.0f, 5.0f, 0};
-  float colorS[4] = {1,1,1,1};
-  drawString3D("Chess board", pos, colorS, font);*/
 
 #if SHOW_LIGHT_SOURCE
   lightPosition[0] = 15*cos(lightAngle);
@@ -417,13 +398,14 @@ Piece* GameScene::getModelByName( int name )
   return mPieces[delta];
 }
 
-void GameScene::movePiece(int name)
+void GameScene::movePiece(Piece* pPiece)
 {
   if (!mDieIsThrown)
     return;
 
-  Piece* mod = getModelByName(name);
+  Piece* mod = pPiece;
   Turn playerTurn = mPlayerTurn;
+  int name = pPiece->getName();
 
   if (mod != NULL && mod->getType() == mPlayerTurn && checkAllModelIdle())
   {
@@ -808,10 +790,6 @@ void GameScene::setDisablePiece( int index )
   }
 }
 
-GameScene::~GameScene(void)
-{
-}
-
 void GameScene::processMouseBegan( int x, int y )
 {
   if (mDieIsDrawn)
@@ -821,7 +799,7 @@ void GameScene::processMouseBegan( int x, int y )
   }
   else
   {
-    identifyModelClicked(x, y);
+    identifyModelClicked(x, Graphic::inst().screenHeight - y);
   }
 }
 
@@ -849,13 +827,37 @@ void GameScene::identifyModelClicked( int mouse_x, int mouse_y )
 
   mViewRay.set(rayOrigin, rayVec);
 
-  Piece** piecesArray = GameScene::inst().getPiecesArray();
+  Piece** piecesArray = getPiecesArray();
+
+  float disMin = -1;
+  int index = 0;
 
   for (int i = 0; i < 16; i++)
   {
     if (mViewRay.hasIntersected(piecesArray[i]->boundingbox()))
     {
       cout << "intersected" << endl;
+      
+      Vector3 a = Camera::inst().eye;
+      Vector3 b = piecesArray[i]->getPosition();
+      float dist = (a-b).magnitude();
+
+      if (disMin < 0)
+      {
+        disMin = dist;
+        index = i;
+      }
+      else if (dist < disMin)
+      {
+        disMin = dist;
+        index = i;
+      }
     }
   }
+
+  movePiece(piecesArray[index]);
+}
+
+GameScene::~GameScene(void)
+{
 }
