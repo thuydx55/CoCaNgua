@@ -170,9 +170,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Filter Include="Classes">
       <UniqueIdentifier>{cf9cc363-164b-45b8-b5e3-e40591924a1e}</UniqueIdentifier>
     </Filter>

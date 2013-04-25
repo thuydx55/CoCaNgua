@@ -1,22 +1,24 @@
-/*
- *  Ethereal Chess - OpenGL 3D Chess - <http://etherealchess.sourceforge.net/>
- *  Copyright (C) 2012 Jordan Sparks - unixunited@live.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- *  Special thanks to http://www.dhpoware.com/ for providing some OpenGL code. 
- */
+//-----------------------------------------------------------------------------
+// Copyright (c) 2005-2009 dhpoware. All Rights Reserved.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+// IN THE SOFTWARE.
+//-----------------------------------------------------------------------------
 
 #include "mathlib.h"
 
@@ -45,6 +47,22 @@ int Math::nextPower2(int x)
 const Matrix3 Matrix3::IDENTITY(1.0f, 0.0f, 0.0f,
                                 0.0f, 1.0f, 0.0f,
                                 0.0f, 0.0f, 1.0f);
+
+Matrix3 Matrix3::createMirror(const Vector3 &planeNormal)
+{
+    // Constructs a reflection (or mirror) matrix given an arbitrary plane
+    // that passes through the origin.
+    //
+    // Ronald Goldman, "Matrices and Transformation," Graphics Gems, 1990.
+
+    float x = planeNormal.x;
+    float y = planeNormal.y;
+    float z = planeNormal.z;
+
+    return Matrix3( 1.0f - 2.0f * x * x, -2.0f * y * x,        -2.0f * z * x,
+                   -2.0f * x * y,         1.0f - 2.0f * y * y, -2.0f * z * y,
+                   -2.0f * x * z,        -2.0f * y * z,         1.0f - 2.0f * z * z);
+}
 
 void Matrix3::fromHeadPitchRoll(float headDegrees, float pitchDegrees, float rollDegrees)
 {
@@ -298,6 +316,24 @@ const Matrix4 Matrix4::IDENTITY(1.0f, 0.0f, 0.0f, 0.0f,
                               0.0f, 1.0f, 0.0f, 0.0f,
                               0.0f, 0.0f, 1.0f, 0.0f,
                               0.0f, 0.0f, 0.0f, 1.0f);
+
+Matrix4 Matrix4::createMirror(const Vector3 &planeNormal, const Vector3 &pointOnPlane)
+{
+    // Constructs a reflection (or mirror) matrix given an arbitrary plane
+    // that passes through the specified position.
+    //
+    // Ronald Goldman, "Matrices and Transformation," Graphics Gems, 1990.
+
+    float x = planeNormal.x;
+    float y = planeNormal.y;
+    float z = planeNormal.z;
+    float dot = Vector3::dot(planeNormal, pointOnPlane);
+
+    return Matrix4( 1.0f - 2.0f * x * x, -2.0f * y * x,        -2.0f * z * x,        0.0f,    
+                   -2.0f * x * y,         1.0f - 2.0f * y * y, -2.0f * z * y,        0.0f,
+                   -2.0f * x * z,        -2.0f * y * z,         1.0f - 2.0f * z * z, 0.0f,
+                    2.0f * dot * x,       2.0f * dot * y,       2.0f * dot * z,      1.0f);
+}
 
 void Matrix4::fromHeadPitchRoll(float headDegrees, float pitchDegrees, float rollDegrees)
 {
@@ -874,4 +910,105 @@ Matrix4 Quaternion::toMatrix4() const
     m[3][3] = 1.0f;
 
     return m;
+}
+
+//-----------------------------------------------------------------------------
+// MatrixStack.
+
+
+MatrixStack::MatrixStack()
+{
+	init(DEFAULT_MAX_STACK_DEPTH);
+}
+
+MatrixStack::MatrixStack(unsigned int maxDepth)
+{
+	init(maxDepth);
+}
+
+MatrixStack::~MatrixStack()
+{
+	delete [] m_pStack;
+	m_pStack = 0;
+}
+
+unsigned int MatrixStack::currentDepth() const
+{
+	return m_depth;
+}
+
+const Matrix4 &MatrixStack::currentMatrix() const
+{
+	return m_pStack[m_depth];
+}
+
+MatrixStack::Error MatrixStack::lastError() const
+{
+	return m_lastError;
+}
+
+void MatrixStack::loadIdentity()
+{
+	m_pStack[m_depth].identity();
+}
+
+void MatrixStack::loadMatrix(const Matrix4 &m)
+{
+	m_pStack[m_depth] = m;
+}
+
+unsigned int MatrixStack::maxDepth() const
+{
+	return m_maxDepth;
+}
+
+void MatrixStack::multMatrix(const Matrix4 &m)
+{
+	m_pStack[m_depth] *= m;
+}
+
+void MatrixStack::popMatrix()
+{
+	if (m_depth == 0)
+	{
+		m_lastError = ERROR_MATRIX_STACK_UNDERFLOW;
+	}
+	else
+	{
+		--m_depth;
+		m_lastError = ERROR_OK;
+	}
+}
+
+void MatrixStack::pushMatrix()
+{
+	if (m_depth + 1 >= m_maxDepth)
+	{
+		m_lastError = ERROR_MATRIX_STACK_OVERFLOW;
+	}
+	else
+	{
+		m_pStack[m_depth + 1] = m_pStack[m_depth];
+		++m_depth;
+		m_lastError = ERROR_OK;
+	}
+}
+
+void MatrixStack::init(unsigned int maxDepth)
+{	
+	m_pStack = 0;
+	m_depth = 0;
+	m_maxDepth = 0;
+	m_lastError = ERROR_OK;
+
+	if (maxDepth > 0)
+	{
+		m_maxDepth = maxDepth;
+		m_pStack = new Matrix4[m_maxDepth];
+		m_lastError = ERROR_OK;
+	}
+	else
+	{
+		m_lastError = ERROR_INVALID_VALUE;
+	}
 }

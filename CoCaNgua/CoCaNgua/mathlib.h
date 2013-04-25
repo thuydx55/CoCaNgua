@@ -1,31 +1,30 @@
+//-----------------------------------------------------------------------------
+// Copyright (c) 2005-2009 dhpoware. All Rights Reserved.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+// IN THE SOFTWARE.
+//-----------------------------------------------------------------------------
+
 #if !defined(MATHLIB_H)
 #define MATHLIB_H
 
-/*
- *  Ethereal Chess - OpenGL 3D Chess - <http://etherealchess.sourceforge.net/>
- *  Copyright (C) 2012 Jordan Sparks - unixunited@live.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- *  Special thanks to http://www.dhpoware.com/ for providing some OpenGL code. 
- */
-
 #include <cmath>
 #include <cstdlib>
-#include <string>
-
-#undef PI
 
 //-----------------------------------------------------------------------------
 // Classes.
@@ -182,7 +181,7 @@ public:
 //-----------------------------------------------------------------------------
 // A 2-component vector class that represents a row vector.
 
-typedef class Vector2
+class Vector2
 {
     friend Vector2 operator*(float lhs, const Vector2 &rhs);
     friend Vector2 operator-(const Vector2 &v);
@@ -199,7 +198,7 @@ public:
     static Vector2 perp(const Vector2 &p, const Vector2 &q);
     static Vector2 reflect(const Vector2 &i, const Vector2 &n);
 
-    Vector2();
+    Vector2() {}
     Vector2(float x_, float y_);
     ~Vector2() {}
 
@@ -221,9 +220,7 @@ public:
     Vector2 inverse() const;
     void normalize();
     void set(float x_, float y_);
-
-    std::string toString();
-} Vec2, *pVec2;
+};
 
 inline Vector2 operator*(float lhs, const Vector2 &rhs)
 {
@@ -287,8 +284,6 @@ inline Vector2 Vector2::reflect(const Vector2 &i, const Vector2 &n)
     // and surface normal 'n'.
     return i - 2.0f * Vector2::proj(i, n);
 }
-
-inline Vector2::Vector2() : x(0), y(0) {}
 
 inline Vector2::Vector2(float x_, float y_) : x(x_), y(y_) {}
 
@@ -376,18 +371,10 @@ inline void Vector2::set(float x_, float y_)
     x = x_, y = y_;
 }
 
-inline std::string Vector2::toString()
-{
-  char buffer[255];
-  sprintf(buffer, "X: %f, Y: %f\n", x, y);
-
-  return std::string(buffer);
-}
-
 //-----------------------------------------------------------------------------
 // A 3-component vector class that represents a row vector.
 
-typedef class Vector3
+class Vector3
 {
     friend Vector3 operator*(float lhs, const Vector3 &rhs);
     friend Vector3 operator-(const Vector3 &v);
@@ -406,19 +393,15 @@ public:
     static Vector3 perp(const Vector3 &p, const Vector3 &q);
     static Vector3 reflect(const Vector3 &i, const Vector3 &n);
 
-    Vector3();
+    Vector3() {}
     Vector3(float x_, float y_, float z_);
     ~Vector3() {}
 
     bool operator==(const Vector3 &rhs) const;
     bool operator!=(const Vector3 &rhs) const;
-	bool operator<(const Vector3& rhs) const;
-	bool operator>(const Vector3& rhs) const;
 
     Vector3 &operator+=(const Vector3 &rhs);
-	Vector3 &operator+=(float scalar);
     Vector3 &operator-=(const Vector3 &rhs);
-	Vector3 &operator-=(float scalar);
     Vector3 &operator*=(float scalar);
     Vector3 &operator/=(float scalar);
 
@@ -432,9 +415,7 @@ public:
     Vector3 inverse() const;
     void normalize();
     void set(float x_, float y_, float z_);
-
-    std::string toString();
-} Vec3, *pVec3;
+};
 
 inline Vector3 operator*(float lhs, const Vector3 &rhs)
 {
@@ -519,20 +500,12 @@ inline Vector3 Vector3::reflect(const Vector3 &i, const Vector3 &n)
     return i - 2.0f * Vector3::proj(i, n);
 }
 
-inline Vector3::Vector3() : x(0), y(0), z(0) {}
-
 inline Vector3::Vector3(float x_, float y_, float z_) : x(x_), y(y_), z(z_) {}
 
 inline Vector3 &Vector3::operator+=(const Vector3 &rhs)
 {
     x += rhs.x, y += rhs.y, z += rhs.z;
     return *this;
-}
-
-inline Vector3 &Vector3::operator+=(float scalar)
-{
-	x += scalar; y += scalar; z += scalar;
-	return *this;
 }
 
 inline bool Vector3::operator==(const Vector3 &rhs) const
@@ -546,28 +519,10 @@ inline bool Vector3::operator!=(const Vector3 &rhs) const
     return !(*this == rhs);
 }
 
-inline bool Vector3::operator<(const Vector3 &rhs) const
-{
-	if(x < rhs.x && y < rhs.y && z < rhs.z)
-		return true;
-}
-
-inline bool Vector3::operator>(const Vector3 &rhs) const
-{
-	if(x > rhs.x && y > rhs.y && z > rhs.z)
-		return true;
-}
-
 inline Vector3 &Vector3::operator-=(const Vector3 &rhs)
 {
     x -= rhs.x, y -= rhs.y, z -= rhs.z;
     return *this;
-}
-
-inline Vector3 &Vector3::operator-=(float scalar)
-{
-	x -= scalar; y -= scalar; z -= scalar;
-	return *this;
 }
 
 inline Vector3 &Vector3::operator*=(float scalar)
@@ -632,12 +587,177 @@ inline void Vector3::set(float x_, float y_, float z_)
     x = x_, y = y_, z = z_;
 }
 
-inline std::string Vector3::toString()
-{
-  char buffer[255];
-  sprintf(buffer, "X: %f, Y: %f, Z: %f\n", x, y, z);
+//-----------------------------------------------------------------------------
+// A 4-component row vector class that represents a point or vector in 
+// homogeneous coordinates.
 
-  return std::string(buffer);
+class Vector4
+{
+    friend Vector4 operator*(float lhs, const Vector4 &rhs);
+    friend Vector4 operator-(const Vector4 &v);
+
+public:
+    float x, y, z, w;
+
+    static float distance(const Vector4 &pt1, const Vector4 &pt2);
+    static float distanceSq(const Vector4 &pt1, const Vector4 &pt2);
+    static float dot(const Vector4 &p, const Vector4 &q);
+    static Vector4 lerp(const Vector4 &p, const Vector4 &q, float t);
+
+    Vector4() {}
+    Vector4(float x_, float y_, float z_, float w_);
+    Vector4(const Vector3 &v, float w_);
+    ~Vector4() {}
+
+    bool operator==(const Vector4 &rhs) const;
+    bool operator!=(const Vector4 &rhs) const;
+
+    Vector4 &operator+=(const Vector4 &rhs);
+    Vector4 &operator-=(const Vector4 &rhs);
+    Vector4 &operator*=(float scalar);
+    Vector4 &operator/=(float scalar);
+
+    Vector4 operator+(const Vector4 &rhs) const;
+    Vector4 operator-(const Vector4 &rhs) const;
+    Vector4 operator*(float scalar) const;
+    Vector4 operator/(float scalar) const;
+
+    float magnitude() const;
+    float magnitudeSq() const;
+    Vector4 inverse() const;
+    void normalize();
+    void set(float x_, float y_, float z_, float w_);
+    Vector3 toVector3() const;
+};
+
+inline Vector4 operator*(float lhs, const Vector4 &rhs)
+{
+    return Vector4(lhs * rhs.x, lhs * rhs.y, lhs * rhs.z, lhs * rhs.w);
+}
+
+inline Vector4 operator-(const Vector4 &v)
+{
+    return Vector4(-v.x, -v.y, -v.z, -v.w);
+}
+
+inline float Vector4::distance(const Vector4 &pt1, const Vector4 &pt2)
+{
+    // Calculates the distance between 2 points.
+    return sqrtf(distanceSq(pt1, pt2));
+}
+
+inline float Vector4::distanceSq(const Vector4 &pt1, const Vector4 &pt2)
+{
+    // Calculates the squared distance between 2 points.
+    return ((pt1.x - pt2.x) * (pt1.x - pt2.x))
+        + ((pt1.y - pt2.y) * (pt1.y - pt2.y))
+        + ((pt1.z - pt2.z) * (pt1.z - pt2.z))
+        + ((pt1.w - pt2.w) * (pt1.w - pt2.w));
+}
+
+inline float Vector4::dot(const Vector4 &p, const Vector4 &q)
+{
+    return (p.x * q.x) + (p.y * q.y) + (p.z * q.z) + (p.w * q.w);
+}
+
+inline Vector4 Vector4::lerp(const Vector4 &p, const Vector4 &q, float t)
+{
+    // Linearly interpolates from 'p' to 'q' as t varies from 0 to 1.
+    return p + t * (q - p);
+}
+
+inline Vector4::Vector4(float x_, float y_, float z_, float w_) : x(x_), y(y_), z(z_), w(w_) {}
+
+inline Vector4::Vector4(const Vector3 &v, float w_) : x(v.x), y(v.y), z(v.z), w(w_) {}
+
+inline Vector4 &Vector4::operator+=(const Vector4 &rhs)
+{
+    x += rhs.x, y += rhs.y, z += rhs.z, w += rhs.w;
+    return *this;
+}
+
+inline bool Vector4::operator==(const Vector4 &rhs) const
+{
+    return Math::closeEnough(x, rhs.x) && Math::closeEnough(y, rhs.y)
+        && Math::closeEnough(z, rhs.z) && Math::closeEnough(w, rhs.w);
+}
+
+inline bool Vector4::operator!=(const Vector4 &rhs) const
+{
+    return !(*this == rhs);
+}
+
+inline Vector4 &Vector4::operator-=(const Vector4 &rhs)
+{
+    x -= rhs.x, y -= rhs.y, z -= rhs.z, w -= rhs.w;
+    return *this;
+}
+
+inline Vector4 &Vector4::operator*=(float scalar)
+{
+    x *= scalar, y *= scalar, z *= scalar, w *= scalar;
+    return *this;
+}
+
+inline Vector4 &Vector4::operator/=(float scalar)
+{
+    x /= scalar, y /= scalar, z /= scalar, w /= scalar;
+    return *this;
+}
+
+inline Vector4 Vector4::operator+(const Vector4 &rhs) const
+{
+    Vector4 tmp(*this);
+    tmp += rhs;
+    return tmp;
+}
+
+inline Vector4 Vector4::operator-(const Vector4 &rhs) const
+{
+    Vector4 tmp(*this);
+    tmp -= rhs;
+    return tmp;
+}
+
+inline Vector4 Vector4::operator*(float scalar) const
+{
+    return Vector4(x * scalar, y * scalar, z * scalar, w * scalar);
+}
+
+inline Vector4 Vector4::operator/(float scalar) const
+{
+    return Vector4(x / scalar, y / scalar, z / scalar, w / scalar);
+}
+
+inline float Vector4::magnitude() const
+{
+    return sqrtf((x * x) + (y * y) + (z * z) + (w * w));
+}
+
+inline float Vector4::magnitudeSq() const
+{
+    return (x * x) + (y * y) + (z * z) + (w * w);
+}
+
+inline Vector4 Vector4::inverse() const
+{
+    return Vector4(-x, -y, -z, -w);
+}
+
+inline void Vector4::normalize()
+{
+    float invMag = 1.0f / magnitude();
+    x *= invMag, y *= invMag, z *= invMag, w *= invMag;
+}
+
+inline void Vector4::set(float x_, float y_, float z_, float w_)
+{
+    x = x_, y = y_, z = z_, w = w_;
+}
+
+inline Vector3 Vector4::toVector3() const
+{
+    return (w != 0.0f) ? Vector3(x / w, y / w, z / w) : Vector3(x, y, z);
 }
 
 //-----------------------------------------------------------------------------
@@ -653,6 +773,13 @@ class Matrix3
 
 public:
     static const Matrix3 IDENTITY;
+    static Matrix3 createFromAxes(const Vector3 &x, const Vector3 &y, const Vector3 &z);
+    static Matrix3 createFromAxesTransposed(const Vector3 &x, const Vector3 &y, const Vector3 &z);
+    static Matrix3 createFromHeadPitchRoll(float headDegrees, float pitchDegrees, float rollDegrees);
+    static Matrix3 createMirror(const Vector3 &planeNormal);
+    static Matrix3 createOrient(const Vector3 &from, const Vector3 &to);
+    static Matrix3 createRotate(const Vector3 &axis, float degrees);
+    static Matrix3 createScale(float sx, float sy, float sz);
 
     Matrix3() {}
     Matrix3(float m11, float m12, float m13,
@@ -698,7 +825,8 @@ private:
 
 inline Vector3 operator*(const Vector3 &lhs, const Matrix3 &rhs)
 {
-    return Vector3((lhs.x * rhs.mtx[0][0]) + (lhs.y * rhs.mtx[1][0]) + (lhs.z * rhs.mtx[2][0]),
+    return Vector3(
+        (lhs.x * rhs.mtx[0][0]) + (lhs.y * rhs.mtx[1][0]) + (lhs.z * rhs.mtx[2][0]),
         (lhs.x * rhs.mtx[0][1]) + (lhs.y * rhs.mtx[1][1]) + (lhs.z * rhs.mtx[2][1]),
         (lhs.x * rhs.mtx[0][2]) + (lhs.y * rhs.mtx[1][2]) + (lhs.z * rhs.mtx[2][2]));
 }
@@ -706,6 +834,48 @@ inline Vector3 operator*(const Vector3 &lhs, const Matrix3 &rhs)
 inline Matrix3 operator*(float scalar, const Matrix3 &rhs)
 {
     return rhs * scalar;
+}
+
+inline Matrix3 Matrix3::createFromAxes(const Vector3 &x, const Vector3 &y, const Vector3 &z)
+{
+    Matrix3 tmp;
+    tmp.createFromAxes(x, y, z);
+    return tmp;
+}
+
+inline Matrix3 Matrix3::createFromAxesTransposed(const Vector3 &x, const Vector3 &y, const Vector3 &z)
+{
+    Matrix3 tmp;
+    tmp.fromAxesTransposed(x, y, z);
+    return tmp;
+}
+
+inline Matrix3 Matrix3::createFromHeadPitchRoll(float headDegrees, float pitchDegrees, float rollDegrees)
+{
+    Matrix3 tmp;
+    tmp.fromHeadPitchRoll(headDegrees, pitchDegrees, rollDegrees);
+    return tmp;
+}
+
+inline Matrix3 Matrix3::createOrient(const Vector3 &from, const Vector3 &to)
+{
+    Matrix3 tmp;
+    tmp.orient(from, to);
+    return tmp;
+}
+
+inline Matrix3 Matrix3::createRotate(const Vector3 &axis, float degrees)
+{
+    Matrix3 tmp;
+    tmp.rotate(axis, degrees);
+    return tmp;
+}
+
+inline Matrix3 Matrix3::createScale(float sx, float sy, float sz)
+{
+    Matrix3 tmp;
+    tmp.scale(sx, sy, sz);
+    return tmp;
 }
 
 inline Matrix3::Matrix3(float m11, float m12, float m13,
@@ -896,18 +1066,26 @@ inline Matrix3 Matrix3::transpose() const
 
 class Matrix4
 {
+    friend Vector4 operator*(const Vector4 &lhs, const Matrix4 &rhs);
     friend Vector3 operator*(const Vector3 &lhs, const Matrix4 &rhs);
     friend Matrix4 operator*(float scalar, const Matrix4 &rhs);
 
 public:
     static const Matrix4 IDENTITY;
+    static Matrix4 createFromAxes(const Vector3 &x, const Vector3 &y, const Vector3 &z);
+    static Matrix4 createFromAxesTransposed(const Vector3 &x, const Vector3 &y, const Vector3 &z);
+    static Matrix4 createFromHeadPitchRoll(float headDegrees, float pitchDegrees, float rollDegrees);
+    static Matrix4 createMirror(const Vector3 &planeNormal, const Vector3 &pointOnPlane);
+    static Matrix4 createOrient(const Vector3 &from, const Vector3 &to);
+    static Matrix4 createRotate(const Vector3 &axis, float degrees);
+    static Matrix4 createScale(float sx, float sy, float sz);
+    static Matrix4 createTranslate(float tx, float ty, float tz);
 
     Matrix4() {}
     Matrix4(float m11, float m12, float m13, float m14,
             float m21, float m22, float m23, float m24,
             float m31, float m32, float m33, float m34,
             float m41, float m42, float m43, float m44);
-    Matrix4(float m[16]);
     ~Matrix4() {}
 
     float *operator[](int row);
@@ -943,16 +1121,23 @@ public:
     void translate(float tx, float ty, float tz);
     Matrix4 transpose() const;
 
-    Vector3 multiVectorWithTranslate(const Vector3 &mul);
-    void set(float m[16]);
-
 private:
     float mtx[4][4];
 };
 
+inline Vector4 operator*(const Vector4 &lhs, const Matrix4 &rhs)
+{
+    return Vector4(
+        (lhs.x * rhs.mtx[0][0]) + (lhs.y * rhs.mtx[1][0]) + (lhs.z * rhs.mtx[2][0]) + (lhs.w * rhs.mtx[3][0]),
+        (lhs.x * rhs.mtx[0][1]) + (lhs.y * rhs.mtx[1][1]) + (lhs.z * rhs.mtx[2][1]) + (lhs.w * rhs.mtx[3][1]),
+        (lhs.x * rhs.mtx[0][2]) + (lhs.y * rhs.mtx[1][2]) + (lhs.z * rhs.mtx[2][2]) + (lhs.w * rhs.mtx[3][2]),
+        (lhs.x * rhs.mtx[0][3]) + (lhs.y * rhs.mtx[1][3]) + (lhs.z * rhs.mtx[2][3]) + (lhs.w * rhs.mtx[3][3]));
+}
+
 inline Vector3 operator*(const Vector3 &lhs, const Matrix4 &rhs)
 {
-    return Vector3((lhs.x * rhs.mtx[0][0]) + (lhs.y * rhs.mtx[1][0]) + (lhs.z * rhs.mtx[2][0]),
+    return Vector3(
+        (lhs.x * rhs.mtx[0][0]) + (lhs.y * rhs.mtx[1][0]) + (lhs.z * rhs.mtx[2][0]),
         (lhs.x * rhs.mtx[0][1]) + (lhs.y * rhs.mtx[1][1]) + (lhs.z * rhs.mtx[2][1]),
         (lhs.x * rhs.mtx[0][2]) + (lhs.y * rhs.mtx[1][2]) + (lhs.z * rhs.mtx[2][2]));
 }
@@ -960,6 +1145,55 @@ inline Vector3 operator*(const Vector3 &lhs, const Matrix4 &rhs)
 inline Matrix4 operator*(float scalar, const Matrix4 &rhs)
 {
     return rhs * scalar;
+}
+
+inline Matrix4 Matrix4::createFromAxes(const Vector3 &x, const Vector3 &y, const Vector3 &z)
+{
+    Matrix4 tmp;
+    tmp.fromAxes(x, y, z);
+    return tmp;
+}
+
+inline Matrix4 Matrix4::createFromAxesTransposed(const Vector3 &x, const Vector3 &y, const Vector3 &z)
+{
+    Matrix4 tmp;
+    tmp.fromAxesTransposed(x, y, z);
+    return tmp;
+}
+
+inline Matrix4 Matrix4::createFromHeadPitchRoll(float headDegrees, float pitchDegrees, float rollDegrees)
+{
+    Matrix4 tmp;
+    tmp.fromHeadPitchRoll(headDegrees, pitchDegrees, rollDegrees);
+    return tmp;
+}
+
+inline Matrix4 Matrix4::createOrient(const Vector3 &from, const Vector3 &to)
+{
+    Matrix4 tmp;
+    tmp.orient(from, to);
+    return tmp;
+}
+
+inline Matrix4 Matrix4::createRotate(const Vector3 &axis, float degrees)
+{
+    Matrix4 tmp;
+    tmp.rotate(axis, degrees);
+    return tmp;
+}
+
+inline Matrix4 Matrix4::createScale(float sx, float sy, float sz)
+{
+    Matrix4 tmp;
+    tmp.scale(sx, sy, sz);
+    return tmp;
+}
+
+inline Matrix4 Matrix4::createTranslate(float tx, float ty, float tz)
+{
+    Matrix4 tmp;
+    tmp.translate(tx, ty, tz);
+    return tmp;
 }
 
 inline Matrix4::Matrix4(float m11, float m12, float m13, float m14,
@@ -971,13 +1205,6 @@ inline Matrix4::Matrix4(float m11, float m12, float m13, float m14,
     mtx[1][0] = m21, mtx[1][1] = m22, mtx[1][2] = m23, mtx[1][3] = m24;
     mtx[2][0] = m31, mtx[2][1] = m32, mtx[2][2] = m33, mtx[2][3] = m34;
     mtx[3][0] = m41, mtx[3][1] = m42, mtx[3][2] = m43, mtx[3][3] = m44;
-}
-
-inline Matrix4::Matrix4(float m[16])
-{
-  for(int i = 0; i < 4; i++)
-    for (int j = 0; j < 4; j++)
-      mtx[i][j] = m[4*i+j];
 }
 
 inline float *Matrix4::operator[](int row)
@@ -1182,24 +1409,6 @@ inline Matrix4 Matrix4::transpose() const
     tmp[3][0] = mtx[0][3], tmp[3][1] = mtx[1][3], tmp[3][2] = mtx[2][3], tmp[3][3] = mtx[3][3];
 
     return tmp;
-}
-
-inline Vector3 Matrix4::multiVectorWithTranslate(const Vector3 &mul)
-{
-  Vector3 result;
-  
-  result.x = mul.x*mtx[0][0] + mul.y*mtx[1][0] + mul.z*mtx[2][0] + mtx[3][0];
-  result.y = mul.x*mtx[0][1] + mul.y*mtx[1][1] + mul.z*mtx[2][1] + mtx[3][1];
-  result.z = mul.x*mtx[0][2] + mul.y*mtx[1][2] + mul.z*mtx[2][2] + mtx[3][2];
-
-  return result;
-}
-
-inline void Matrix4::set(float m[16])
-{
-  for(int i = 0; i < 4; i++)
-    for (int j = 0; j < 4; j++)
-      mtx[i][j] = m[4*i+j];
 }
 
 //-----------------------------------------------------------------------------
@@ -1429,6 +1638,55 @@ inline void Quaternion::toHeadPitchRoll(float &headDegrees, float &pitchDegrees,
     Matrix3 m = toMatrix3();
     m.toHeadPitchRoll(headDegrees, pitchDegrees, rollDegrees);
 }
+
+//-----------------------------------------------------------------------------
+// The MatrixStack utility class is used to maintain a stack of Matrix objects.
+// pushMatrix() copies the current matrix and adds the copy to the top of
+// the matrix stack. popMatrix() removes the top most matrix from the stack.
+// currentMatrix() returns a read only copy of the matrix at the top of the
+// stack. loadIdentity() replaces the top most matrix on the stack with the
+// identity matrix. loadMatrix() replaces the top most matrix with the
+// specified matrix. multMatrix() multiplies the top most matrix with the
+// specified matrix and replaces the top most matrix with the result.
+// lastError() returns the error code from the last operation performed.
+// currentDepth() returns the current depth of the matrix stack.
+// maxDepth() returns the maximum depth of the matrix stack.
+
+class MatrixStack
+{
+public:
+	enum Error
+	{
+		ERROR_OK,
+		ERROR_INVALID_VALUE,
+		ERROR_MATRIX_STACK_OVERFLOW,
+		ERROR_MATRIX_STACK_UNDERFLOW
+	};
+
+	static const int DEFAULT_MAX_STACK_DEPTH = 32;
+
+	MatrixStack();
+	MatrixStack(unsigned int maxDepth);
+	~MatrixStack();
+
+	unsigned int currentDepth() const;
+	const Matrix4 &currentMatrix() const;
+	unsigned int maxDepth() const;
+	Error lastError() const;
+	void loadIdentity();
+	void loadMatrix(const Matrix4 &m);
+	void multMatrix(const Matrix4 &m);
+	void popMatrix();
+	void pushMatrix();
+
+private:
+	void init(unsigned int maxDepth);
+
+	Matrix4 *m_pStack;
+	unsigned int m_depth;
+	unsigned int m_maxDepth;
+	Error m_lastError;
+};
 
 //-----------------------------------------------------------------------------
 

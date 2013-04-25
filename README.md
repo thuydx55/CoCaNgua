@@ -29,4 +29,5 @@ Third-party software component
 ------------------------------
 
 * [GLObjViewer](http://www.dhpoware.com/demos/glObjViewer.html)
+* [3D Math Library](http://www.dhpoware.com/source/mathlib.html)
 * Simple OpenGL Image Library ([SOIL](http://www.lonesock.net/soil.html))
