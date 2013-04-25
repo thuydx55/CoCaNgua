@@ -3,6 +3,7 @@
 
 #include <ctime>
 
+#include "gl/glut.h"
 
 class Timer
 {
@@ -15,16 +16,16 @@ public:
   }
   void start()
   {
-    Begin = clock();
+    Begin = glutGet(GLUT_ELAPSED_TIME);
   }
   double stop()
   {
-    End = clock();
+    End = glutGet(GLUT_ELAPSED_TIME);
     return (End - Begin) / CLOCKS_PER_SEC;
   }
   double elapsed()
   {
-    double tmp = clock();
+    double tmp = glutGet(GLUT_ELAPSED_TIME);
     return (tmp - Begin) / CLOCKS_PER_SEC;
   }
 };

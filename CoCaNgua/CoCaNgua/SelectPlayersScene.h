@@ -1,8 +1,9 @@
 #ifndef _CG_SELECT_PLAYERS_SCENE_H_
 #define _CG_SELECT_PLAYERS_SCENE_H_
 
-#include "Scene.h"
 #include "Sprite2D.h"
+
+#include "Scene.h"
 #include "GameScene.h"
 #include "ToggleButton.h"
 #include "RadioGroup.h"

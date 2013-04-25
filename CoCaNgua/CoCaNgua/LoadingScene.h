@@ -4,8 +4,8 @@
 
 #define LOADING_DELAY_PER_LOOP 0.5
 
-#include "Scene.h"
 #include "Sprite2D.h"
+#include "Scene.h"
 #include "ProgressTimerSprite2D.h"
 
 #include <iostream>
