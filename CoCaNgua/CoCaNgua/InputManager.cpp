@@ -51,10 +51,6 @@ void KeyBoard::processKey( unsigned char key )
     break;
   case 'd':
     GameScene::inst().mDieIsDrawn = !GameScene::inst().mDieIsDrawn;
-    if (GameScene::inst().mDieIsDrawn)
-      Light::inst().setDiffuseOffset(0.5);
-    else
-      Light::inst().setDiffuseOffset(0);
     break;
 
   case 'r':

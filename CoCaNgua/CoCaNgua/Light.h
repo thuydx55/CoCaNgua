@@ -10,7 +10,6 @@ using namespace std;
 
 class Light
 {
-  float mDiffuseOffset;
 public:
   Light()
   {
@@ -19,8 +18,6 @@ public:
     setDiffuse(0.7, 0.7, 0.7, 1.0);
     setSpecular(1.0, 1.0, 1.0, 1.0);
     glEnable(GL_LIGHT0);
-
-    mDiffuseOffset = 0;
   }
 
   Light(float px, float py, float pz, float pw)
@@ -30,8 +27,6 @@ public:
     setDiffuse(0.7, 0.7, 0.7, 1.0);
     setSpecular(1.0, 1.0, 1.0, 1.0);
     glEnable(GL_LIGHT0);  
-
-    mDiffuseOffset = 0;
   }
 
   static Light& inst()
@@ -108,18 +103,6 @@ public:
       glEnable(GL_CULL_FACE);
     glEnable(GL_LIGHTING);
     glPopMatrix();
-  }
-
-  void setDiffuseOffset(float pDiff)
-  {
-    mDiffuseOffset = pDiff;
-
-    float _diff[4] = {_diffuse[0] - pDiff,
-                      _diffuse[0] - pDiff,
-                      _diffuse[0] - pDiff,
-                      _diffuse[0] - pDiff
-    };
-    glLightfv(GL_LIGHT0, GL_DIFFUSE,  _diff);
   }
 
 private:

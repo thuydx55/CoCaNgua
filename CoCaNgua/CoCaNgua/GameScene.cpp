@@ -12,7 +12,6 @@ GameScene::GameScene(void)
 
   mDieIsThrown = false;
   mDieIsDrawn = true;
-  Light::inst().setDiffuseOffset(0.5);
   mFullHome = false;
   mPieceIsMoving = false;
   
@@ -304,34 +303,48 @@ void GameScene::drawSence()
 
 void GameScene::drawDie()
 {
-  if (mDieIsDrawn)
+  float left = -10*Graphic::inst().screenWidth/Graphic::inst().screenHeight;
+  float right = 10*Graphic::inst().screenWidth/Graphic::inst().screenHeight;
+  float bot = -10;
+  float top = 10;
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
   {
-    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(left, right, bot, top, -10.0, 10.0);
+    glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     {
       glLoadIdentity();
-      glOrtho(-10*Graphic::inst().screenWidth/Graphic::inst().screenHeight,
-        10*Graphic::inst().screenWidth/Graphic::inst().screenHeight,
-        -10, 10, -10.0, 10.0);
-      glMatrixMode(GL_MODELVIEW);
-      glPushMatrix();
-      {
-        glLoadIdentity();
-        glDisable(GL_CULL_FACE);
+      glDisable(GL_CULL_FACE);
 
-        glClear(GL_DEPTH_BUFFER_BIT);
+      glClear(GL_DEPTH_BUFFER_BIT);
 
-        mDice->drawModel();
-      }
-      glPopMatrix();
+      mDice->drawModel();
 
-      // Making sure we can render 3d again
-      glMatrixMode(GL_PROJECTION);
+      glEnable(GL_BLEND);
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+      glColor4f(0, 0, 0, 0.5);
+      glDisable(GL_LIGHTING);
+      glBegin(GL_QUADS);
+        glVertex3f(left,  bot, -5);
+        glVertex3f(right, bot, -5);
+        glVertex3f(right, top, -5);
+        glVertex3f(left,  top, -5);
+      glEnd();
+      glEnable(GL_LIGHTING);
+
+      glDisable(GL_BLEND);
     }
-
     glPopMatrix();
-    glMatrixMode(GL_MODELVIEW); 
+
+    // Making sure we can render 3d again
+    glMatrixMode(GL_PROJECTION);
   }
+
+  glPopMatrix();
+  glMatrixMode(GL_MODELVIEW); 
 }
 
 
@@ -340,7 +353,8 @@ void GameScene::loop()
   update();
 
   drawSence();
-  drawDie();
+  if (mDieIsDrawn)
+    drawDie();
 
   // Winnnnnnnnnnnnnnnnn
   if (mFullHome && checkAllModelIdle())
@@ -758,7 +772,6 @@ void GameScene::rollDice(int number)
     nextTurn();
 
     mDieIsDrawn = true;
-    Light::inst().setDiffuseOffset(0.5);
   }
 }
 
@@ -768,7 +781,6 @@ void GameScene::update()
   {
     mDieIsDrawn = false;
     this->rollDice(mDieNumber);
-    Light::inst().setDiffuseOffset(0);
   }
 
   if (mPieceIsMoving && !mDieIsDrawn )
@@ -780,7 +792,6 @@ void GameScene::update()
         mPieceIsMoving = false;
 
         mDieIsDrawn = true;
-        Light::inst().setDiffuseOffset(0.5);
       }
     }
   }
