@@ -70,10 +70,7 @@ class GameScene : public Scene
   bool mPieceIsMoving;
 
   Turn mWinner;
-
-  // Click
-  Matrix4 modelViewMatx;
-  Ray mViewRay;
+  Ray viewRay;
 
   void drawSence();
   void drawDie();

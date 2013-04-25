@@ -221,6 +221,15 @@ void GameScene::drawSence()
   // Save current matrix state
   glPushMatrix();
 
+  glDisable(GL_LIGHTING);
+  glBegin(GL_LINES);
+  Vector3 a = viewRay.origin + 100*viewRay.direction;
+
+  glVertex3f(viewRay.origin.x, viewRay.origin.y, viewRay.origin.z);
+  glVertex3f(a.x, a.y, a.z);
+  glEnd();
+  glEnable(GL_LIGHTING);
+
 #if SHOW_GRID
   glDisable(GL_LIGHTING);
   glBegin(GL_LINES);
@@ -818,23 +827,21 @@ void GameScene::identifyModelClicked( int mouse_x, int mouse_y )
   float m[16];
   glGetFloatv(GL_MODELVIEW_MATRIX , m);
 
-  modelViewMatx.set(m);
+  Matrix4 inverseModelViewMatrix = Matrix4(m).inverse();
 
-  Matrix4 inMatrix = modelViewMatx.inverse();
+  Vector4 rayOrigin = Vector4()*inverseModelViewMatrix;
+  Vector3 rayVec = rayVec = Vector3(x, y, -Graphic::inst().zNear)*inverseModelViewMatrix;
 
-  Vector3 rayOrigin = inMatrix.multiVectorWithTranslate(Vector3());
-  Vector3 rayVec = rayVec = Vector3(x, y, -Graphic::inst().zNear)*inMatrix;
-
-  mViewRay.set(rayOrigin, rayVec);
+  viewRay.set(rayOrigin.toVector3(), rayVec);
 
   Piece** piecesArray = getPiecesArray();
 
   float disMin = -1;
-  int index = 0;
+  int index = -1;
 
   for (int i = 0; i < 16; i++)
   {
-    if (mViewRay.hasIntersected(piecesArray[i]->boundingbox()))
+    if (viewRay.hasIntersected(piecesArray[i]->boundingbox()))
     {
       cout << "intersected" << endl;
       
@@ -855,6 +862,8 @@ void GameScene::identifyModelClicked( int mouse_x, int mouse_y )
     }
   }
 
+  if (index < 0)
+    return;
   movePiece(piecesArray[index]);
 }
 

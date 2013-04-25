@@ -198,7 +198,7 @@ public:
     static Vector2 perp(const Vector2 &p, const Vector2 &q);
     static Vector2 reflect(const Vector2 &i, const Vector2 &n);
 
-    Vector2() {}
+    Vector2() : x(0), y(0) {}
     Vector2(float x_, float y_);
     ~Vector2() {}
 
@@ -393,7 +393,7 @@ public:
     static Vector3 perp(const Vector3 &p, const Vector3 &q);
     static Vector3 reflect(const Vector3 &i, const Vector3 &n);
 
-    Vector3() {}
+    Vector3() : x(0), y(0), z(0) {}
     Vector3(float x_, float y_, float z_);
     ~Vector3() {}
 
@@ -604,7 +604,7 @@ public:
     static float dot(const Vector4 &p, const Vector4 &q);
     static Vector4 lerp(const Vector4 &p, const Vector4 &q, float t);
 
-    Vector4() {}
+    Vector4() : x(0), y(0), z(0), w(0) {}
     Vector4(float x_, float y_, float z_, float w_);
     Vector4(const Vector3 &v, float w_);
     ~Vector4() {}
@@ -1082,6 +1082,7 @@ public:
     static Matrix4 createTranslate(float tx, float ty, float tz);
 
     Matrix4() {}
+    Matrix4(float m[16]);
     Matrix4(float m11, float m12, float m13, float m14,
             float m21, float m22, float m23, float m24,
             float m31, float m32, float m33, float m34,
@@ -1194,6 +1195,13 @@ inline Matrix4 Matrix4::createTranslate(float tx, float ty, float tz)
     Matrix4 tmp;
     tmp.translate(tx, ty, tz);
     return tmp;
+}
+
+inline Matrix4::Matrix4(float m[16])
+{
+  for (int i = 0; i < 4; i++)
+    for (int j = 0; j < 4; j++)
+      mtx[i][j] = m[4*i+j];
 }
 
 inline Matrix4::Matrix4(float m11, float m12, float m13, float m14,
@@ -1427,7 +1435,7 @@ public:
 
     static Quaternion slerp(const Quaternion &a, const Quaternion &b, float t);
 
-    Quaternion() {}
+    Quaternion() : w(0), x(0) , y(0), z(0) {}
     Quaternion(float w_, float x_, float y_, float z_);
     Quaternion(float headDegrees, float pitchDegrees, float rollDegrees);
     Quaternion(const Vector3 &axis, float degrees);
