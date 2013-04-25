@@ -12,9 +12,6 @@
 #include "Constants.h"
 #include "Camera.h"
 
-#define SHOW_GRID 1
-#define SHOW_LIGHT_SOURCE 1
-
 struct Field
 {
   Vector3 position;
