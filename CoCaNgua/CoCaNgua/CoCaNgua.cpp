@@ -18,10 +18,6 @@
 #include "MainMenuScene.h"
 #include "LoadingScene.h"
 
-
-#define SHOW_GRID 1
-#define SHOW_LIGHT_SOURCE 1
-
 using namespace std;
 
 void displayCB();

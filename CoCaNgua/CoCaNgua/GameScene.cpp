@@ -221,6 +221,7 @@ void GameScene::drawSence()
   // Save current matrix state
   glPushMatrix();
 
+#if DEBUG_CLICKING_RAY
   glDisable(GL_LIGHTING);
   glBegin(GL_LINES);
   Vector3 a = viewRay.origin + 100*viewRay.direction;
@@ -228,9 +229,11 @@ void GameScene::drawSence()
   glVertex3f(viewRay.origin.x, viewRay.origin.y, viewRay.origin.z);
   glVertex3f(a.x, a.y, a.z);
   glEnd();
-  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHTING);  
+#endif // DEBUG_CLICKING_RAY
 
-#if SHOW_GRID
+
+#if DEBUG_ORIGIN_AXES
   glDisable(GL_LIGHTING);
   glBegin(GL_LINES);
   glColor3f(0, 0, 0);
@@ -287,7 +290,7 @@ void GameScene::drawSence()
       mPieces[12+i]->drawModel(); 
   }
 
-#if SHOW_LIGHT_SOURCE
+#if DEBUG_LIGHT_SOURCE
   lightPosition[0] = 15*cos(lightAngle);
   lightPosition[1] = lightHeight;
   lightPosition[2] = 15*sin(lightAngle);
@@ -830,7 +833,9 @@ void GameScene::identifyModelClicked( int mouse_x, int mouse_y )
   Matrix4 inverseModelViewMatrix = Matrix4(m).inverse();
 
   Vector4 rayOrigin = Vector4()*inverseModelViewMatrix;
-  Vector3 rayVec = rayVec = Vector3(x, y, -Graphic::inst().zNear)*inverseModelViewMatrix;
+  Vector3 rayVec = Vector3(x, y, -Graphic::inst().zNear)*inverseModelViewMatrix;
+
+  //cout << rayOrigin.toString();
 
   viewRay.set(rayOrigin.toVector3(), rayVec);
 
@@ -843,7 +848,7 @@ void GameScene::identifyModelClicked( int mouse_x, int mouse_y )
   {
     if (viewRay.hasIntersected(piecesArray[i]->boundingbox()))
     {
-      cout << "intersected" << endl;
+      //cout << "intersected" << endl;
       
       Vector3 a = Camera::inst().eye;
       Vector3 b = piecesArray[i]->getPosition();

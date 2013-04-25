@@ -25,6 +25,7 @@
 
 #include <cmath>
 #include <cstdlib>
+#include <string>
 
 //-----------------------------------------------------------------------------
 // Classes.
@@ -604,7 +605,7 @@ public:
     static float dot(const Vector4 &p, const Vector4 &q);
     static Vector4 lerp(const Vector4 &p, const Vector4 &q, float t);
 
-    Vector4() : x(0), y(0), z(0), w(0) {}
+    Vector4() : x(0), y(0), z(0), w(1) {}
     Vector4(float x_, float y_, float z_, float w_);
     Vector4(const Vector3 &v, float w_);
     ~Vector4() {}
@@ -628,6 +629,8 @@ public:
     void normalize();
     void set(float x_, float y_, float z_, float w_);
     Vector3 toVector3() const;
+
+    std::string toString();
 };
 
 inline Vector4 operator*(float lhs, const Vector4 &rhs)
@@ -758,6 +761,14 @@ inline void Vector4::set(float x_, float y_, float z_, float w_)
 inline Vector3 Vector4::toVector3() const
 {
     return (w != 0.0f) ? Vector3(x / w, y / w, z / w) : Vector3(x, y, z);
+}
+
+inline std::string Vector4::toString()
+{
+  char buffer[255];
+  sprintf(buffer, "(x, y, z, w) = (%f, %f, %f, %f)\n", x, y, z, w);
+
+  return std::string(buffer);
 }
 
 //-----------------------------------------------------------------------------
