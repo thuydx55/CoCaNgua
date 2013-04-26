@@ -10,7 +10,7 @@ Piece::Piece(void)
   mHighlight = false;
   mShadow = true;
 
-  mHighlightThickness =  1;
+  mHighlightThickness =  0.7;
   mHighlightColor[0] = 0.8;
   mHighlightColor[1] = 0.8;
   mHighlightColor[2] = 0.0;

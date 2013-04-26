@@ -94,6 +94,7 @@
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="ProgressTimerSprite2D.cpp" />
     <ClCompile Include="RadioGroup.cpp" />
+    <ClCompile Include="Rock.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SelectPlayersScene.cpp" />
     <ClCompile Include="SOIL\image_DXT.c" />
@@ -123,6 +124,7 @@
     <ClInclude Include="Piece.h" />
     <ClInclude Include="ProgressTimerSprite2D.h" />
     <ClInclude Include="RadioGroup.h" />
+    <ClInclude Include="Rock.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SelectPlayersScene.h" />
     <ClInclude Include="SOIL\image_DXT.h" />

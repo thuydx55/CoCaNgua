@@ -142,6 +142,7 @@ GameScene::GameScene(void)
   //memcpy(mFields, r, sizeof(r));
   for (int i = 0; i < 40; i++)
   {
+    r[i].y = 2;
     mFields[i] = Field(r[i]);
   }
 
@@ -176,7 +177,6 @@ void GameScene::initPiece()
   tmp->setAnchorPoint(Vector3(0, -0.5, 0));
 
 }
-
 
 void GameScene::initAllPieces()
 {
@@ -214,6 +214,17 @@ void GameScene::initAllPieces()
   //delete tmp;
 }
 
+void GameScene::initRoad()
+{
+  Rock* tmp = new Rock();
+  tmp->loadModel("Models/rock.obj");
+  tmp->setAnchorPoint(Vector3(0, 0.5, 0));
+  for (int i = 0; i < 40; i++)
+  {
+    mFieldModel[i] = new Rock(tmp);
+    mFieldModel[i]->setPosition(mFields[i].position);
+  }
+}
 
 void GameScene::drawSence()
 {
@@ -271,8 +282,10 @@ void GameScene::drawSence()
   glEnd();*/
 #endif
 
-  glLoadName(1);
   mBoard->drawModel();
+
+  for (int i = 0; i < 40; i++)
+    mFieldModel[i]->drawModel();
 
   for (int i = 0; i < 4; i++)
   {

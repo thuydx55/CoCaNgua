@@ -7,6 +7,7 @@
 #include "Piece.h"
 #include "Die.h"
 #include "Board.h"
+#include "Rock.h"
 #include "Light.h"
 #include "Graphic.h"
 #include "Constants.h"
@@ -44,6 +45,7 @@ class GameScene : public Scene
   Board*              mBoard;
   Piece*              mPieces[16]; // 0:3 RED, 4:7 BLUE, 8:11 GREEN, 12:16 YELLOW
   Piece*              tmp;
+  Rock*               mFieldModel[40];
   
   // Disable some players
   bool mEnablePiece[4];
@@ -96,6 +98,7 @@ public:
   void initDie();
   void initPiece();
   void initAllPieces();
+  void initRoad();
 
   Piece** getPiecesArray();
 
