@@ -46,4 +46,4 @@ public:
   void processMousePassiveMotion(int x, int y);
 };
 
-#endif
+#endif // !_CG_INPUT_MANAGER_H_

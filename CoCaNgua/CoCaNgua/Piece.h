@@ -87,4 +87,4 @@ inline int Piece::getIndexFirstPos()
   return mIndexFirstPos;
 }
 
-#endif // !_PIECE_H_
+#endif // !_CG_PIECE_H_

@@ -61,4 +61,4 @@ inline bool ToggleButton::isDisable()
   return mState == TOGGLE_DISABLE;
 }
 
-#endif // !_TOGGLEBUTTON_H_
+#endif // !_CG_TOGGLEBUTTON_H_

@@ -128,4 +128,4 @@ inline Rect operator+(const Rect& lhs, const Rect& rhs)
   return Rect(minX, minY, maxX-minX, maxY-minY);
 }
 
-#endif
+#endif // !_CG_GEOMETRY_H_

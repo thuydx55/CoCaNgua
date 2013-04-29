@@ -1,6 +1,6 @@
 
-#ifndef _LOADING_SCENE_H_
-#define _LOADING_SCENE_H_
+#ifndef _CG_LOADING_SCENE_H_
+#define _CG_LOADING_SCENE_H_
 
 #define LOADING_DELAY_PER_LOOP 0.5
 
@@ -31,6 +31,6 @@ public:
 
   void loop();
 };  
-#endif // !_LOADING_SCENE_H_
+#endif // !_CG_LOADING_SCENE_H_
 
 

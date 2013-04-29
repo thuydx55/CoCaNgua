@@ -22,4 +22,4 @@ public:
 
 };
 
-#endif
+#endif // !_CG_GRAPHIC_H_

@@ -12,6 +12,6 @@ public:
   virtual void drawModel();
 };  
 
-#endif // !_BOARD_H_
+#endif // !_CG_BOARD_H_
 
 

@@ -113,4 +113,4 @@ private:
 };
 
 
-#endif
+#endif // !_CG_LIGHT_H_

@@ -17,6 +17,6 @@ public:
   virtual void drawImg();
 
 };  
-#endif // !_CG_PROGRESS_TIMER_H_
+#endif // !_CG_PROGRESS_TIMER_SPRITE2D_H_
 
 

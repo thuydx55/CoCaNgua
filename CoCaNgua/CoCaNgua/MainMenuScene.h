@@ -29,6 +29,6 @@ public:
   void processMouseEnded(int x, int y);
   void processMousePassiveMotion(int x, int y);
 };  
-#endif // !_MAIN_MENU_H_
+#endif // !_CG_MAIN_MENU_H_
 
 

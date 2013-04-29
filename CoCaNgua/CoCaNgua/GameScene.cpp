@@ -471,51 +471,51 @@ void GameScene::movePiece(int index)
       if (mPredictMoveState[k] == MOVE_ATTACK)
       {
         int index = getModelPositionIndex(mod->getPosition(), mFields, 40);
-        int tmp = getModelPositionIndex(mPredictPosition[k], mFields, 40);
+        int predictIndex = getModelPositionIndex(mPredictPosition[k], mFields, 40);
 
-        mFields[tmp].piece->setArea(AREA_OUT);
-        mFields[tmp].piece->setPosition(mFields[tmp].piece->getInitPosition());
+        mFields[predictIndex].piece->setArea(AREA_OUT);
+        mFields[predictIndex].piece->setPosition(mFields[predictIndex].piece->getInitPosition());
 
         mFields[index].piece = NULL;
-        mFields[tmp].piece = mod;
+        mFields[predictIndex].piece = mod;
       }
 
       if (mPredictMoveState[k] == MOVE_START_ATTACK)
       {
-        int tmp = getModelPositionIndex(mPredictPosition[k], mFields, 40);
+        int predictIndex = getModelPositionIndex(mPredictPosition[k], mFields, 40);
 
-        mFields[tmp].piece->setArea(AREA_OUT);
-        mFields[tmp].piece->setPosition(mFields[tmp].piece->getInitPosition());
+        mFields[predictIndex].piece->setArea(AREA_OUT);
+        mFields[predictIndex].piece->setPosition(mFields[predictIndex].piece->getInitPosition());
 
-        mFields[tmp].piece = mod;
-        mFields[tmp].piece->setArea(AREA_GAME);
+        mFields[predictIndex].piece = mod;
+        mFields[predictIndex].piece->setArea(AREA_GAME);
       }
 
       if (mPredictMoveState[k] == MOVE_START)
       {
-        int tmp = getModelPositionIndex(mPredictPosition[k], mFields, 40);
+        int predictIndex = getModelPositionIndex(mPredictPosition[k], mFields, 40);
 
-        mFields[tmp].piece = mod;
-        mFields[tmp].piece->setArea(AREA_GAME);
+        mFields[predictIndex].piece = mod;
+        mFields[predictIndex].piece->setArea(AREA_GAME);
       }
 
       if (mPredictMoveState[k] == MOVE_HOME_INSIDE)
       {
         int index = getModelPositionIndex(mod->getPosition(), mHome, 16);
-        int tmp = getModelPositionIndex(mPredictPosition[k], mHome, 16);
+        int predictIndex = getModelPositionIndex(mPredictPosition[k], mHome, 16);
 
         mHome[index].piece = NULL;
-        mHome[tmp].piece = mod;
+        mHome[predictIndex].piece = mod;
       }
 
       if (mPredictMoveState[k] == MOVE_HOME_OUTSIDE)
       {
         int index = getModelPositionIndex(mod->getPosition(), mFields, 40);
-        int tmp = getModelPositionIndex(mPredictPosition[k], mHome, 16);
+        int predictIndex = getModelPositionIndex(mPredictPosition[k], mHome, 16);
 
         mFields[index].piece = NULL;
-        mHome[tmp].piece = mod;
-        mHome[tmp].piece->setArea(AREA_HOME);
+        mHome[predictIndex].piece = mod;
+        mHome[predictIndex].piece->setArea(AREA_HOME);
       }
 
       mod->jumpTo(target, mPredictMoveState[k]);

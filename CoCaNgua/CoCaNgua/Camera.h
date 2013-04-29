@@ -40,4 +40,4 @@ private:
     Vector3 transf_coord();
 };
 
-#endif // CAMERA_H_INCLUDED
+#endif // _CG_CAMERA_H_INCLUDED

@@ -34,4 +34,4 @@ inline bool Die::isRolling()
   return mIsRolling;
 }
 
-#endif // !_DIE_H_
+#endif // !_CG_DIE_H_

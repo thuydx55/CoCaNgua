@@ -3,20 +3,20 @@
 
 #include "mathlib.h"
 
-#define DEBUG_BOUNDINGBOX 0
-#define DEBUG_CLICKING_RAY 0
-#define DEBUG_ORIGIN_AXES 0
-#define DEBUG_LIGHT_SOURCE 1
+#define DEBUG_BOUNDINGBOX       0
+#define DEBUG_CLICKING_RAY      0
+#define DEBUG_ORIGIN_AXES       0
+#define DEBUG_LIGHT_SOURCE      1
 
-#define va_start _crt_va_start
-#define va_arg _crt_va_arg
-#define va_end _crt_va_end
+#define va_start    _crt_va_start
+#define va_arg      _crt_va_arg
+#define va_end      _crt_va_end
 
-#define DIE_ROLL_NUMBER 3
-#define DIE_WAITING_RANGE 15
-#define DIE_WAITING_SPEED 5
-#define DIE_TIME_ROLLING 3
-#define DIE_TIME_USER_VIEW 1
+#define DIE_ROLL_NUMBER         3
+#define DIE_WAITING_RANGE       15
+#define DIE_WAITING_SPEED       5
+#define DIE_TIME_ROLLING        3
+#define DIE_TIME_USER_VIEW      1
 
 #define GLSYNTHESIZE(varType, varName, funName)\
 protected: varType varName;\
@@ -87,4 +87,4 @@ enum ToggleState
 	TOGGLE_OFF,
 	TOGGLE_DISABLE,
 };
-#endif // !_CONSTANTS_H_
+#endif // !_CG_CONSTANTS_H_

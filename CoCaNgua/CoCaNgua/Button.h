@@ -62,4 +62,4 @@ inline bool Button::isDisable()
   return mState == BUTTON_DISABLE;
 }
 
-#endif // !_BUTTON_H_
+#endif // !_CG_BUTTON_H_

@@ -1,5 +1,5 @@
-#ifndef _CG_GAME_H
-#define _CG_GAME_H
+#ifndef _CG_GAME_SCENE_H_
+#define _CG_GAME_SCENE_H_
 
 #include <string>
 
@@ -120,5 +120,5 @@ inline Piece** GameScene::getPiecesArray()
   return mPieces;
 }
 
-#endif // !_GAME_H
+#endif // !_CG_GAME_SCENE_H_
 

@@ -1,5 +1,5 @@
-#ifndef _CG_TIMER_H__
-#define _CG_TIMER_H__
+#ifndef _CG_TIMER_H_
+#define _CG_TIMER_H_
 
 #include <ctime>
 
@@ -29,6 +29,5 @@ public:
     return (tmp - Begin) / CLOCKS_PER_SEC;
   }
 };
-//-----------------------------------------------------------------------------
-#endif
-//-----------------------------------------------------------------------------
+
+#endif // !_CG_TIMER_H_

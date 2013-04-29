@@ -73,4 +73,4 @@ inline bool Model::wait(float sec)
   }
 }
 
-#endif // !_MODEL_H_
+#endif // !_CG_MODEL_H_

@@ -55,6 +55,6 @@ inline bool Sprite2D::isVisible()
   return mVisible;
 }
 
-#endif // !_SPRITE_H_
+#endif // !_CG_SPRITE_H_
 
 

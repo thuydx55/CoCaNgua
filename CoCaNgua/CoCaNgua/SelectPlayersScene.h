@@ -37,6 +37,6 @@ public:
   void processMouseEnded(int x, int y);
   void processMousePassiveMotion(int x, int y);
 };  
-#endif // !_ABOUT_SCENE_H_
+#endif // !_CG_SELECT_PLAYERS_SCENE_H_
 
 
