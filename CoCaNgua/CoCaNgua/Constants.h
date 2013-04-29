@@ -23,29 +23,6 @@ protected: varType varName;\
 public: virtual varType get##funName(void) const { return varName; }\
 public: virtual void set##funName(varType var){ varName = var; }
 
-enum PieceName
-{
-  PIECE_RED_1 = 100,
-  PIECE_RED_2,
-  PIECE_RED_3,
-  PIECE_RED_4,
-
-  PIECE_BLUE_1,
-  PIECE_BLUE_2,
-  PIECE_BLUE_3,
-  PIECE_BLUE_4,
-
-  PIECE_GREEN_1,
-  PIECE_GREEN_2,
-  PIECE_GREEN_3,
-  PIECE_GREEN_4,  
-
-  PIECE_YELLOW_1,
-  PIECE_YELLOW_2,
-  PIECE_YELLOW_3,
-  PIECE_YELLOW_4
-};
-
 enum Turn
 {
   TURN_RED = 0,

@@ -183,32 +183,24 @@ void GameScene::initAllPieces()
   for (int i = 0; i < 4; i++)
   {
     mPieces[i] = new Piece(tmp);
-    mPieces[i]->setColorTint(0.8, 0, 0);         // RED
     mPieces[i]->setPosition(mStartPos[i]);
     mPieces[i]->setInitPosition(mStartPos[i]);
     mPieces[i]->setType(TURN_RED);
-    mPieces[i]->setName(PIECE_RED_1+i);
 
     mPieces[4+i] = new Piece(tmp);
-    mPieces[4+i]->setColorTint(0, 0, 0.8);        // BLUE
     mPieces[4+i]->setPosition(mStartPos[4+i]);
     mPieces[4+i]->setInitPosition(mStartPos[4+i]);
     mPieces[4+i]->setType(TURN_BLUE);
-    mPieces[4+i]->setName(PIECE_BLUE_1+i);
 
     mPieces[8+i] = new Piece(tmp);
-    mPieces[8+i]->setColorTint(0, 0.8, 0);        // GREEN
     mPieces[8+i]->setPosition(mStartPos[8+i]);
     mPieces[8+i]->setInitPosition(mStartPos[8+i]);
     mPieces[8+i]->setType(TURN_GREEN);
-    mPieces[8+i]->setName(PIECE_GREEN_1+i);
 
     mPieces[12+i] = new Piece(tmp);
-    mPieces[12+i]->setColorTint(0.8, 0.8, 0);     // YELLOW
     mPieces[12+i]->setPosition(mStartPos[12+i]);
     mPieces[12+i]->setInitPosition(mStartPos[12+i]);
     mPieces[12+i]->setType(TURN_YELLOW);
-    mPieces[12+i]->setName(PIECE_YELLOW_1+i);
   }
 
   //delete tmp;
@@ -428,29 +420,19 @@ int GameScene::getModelPositionIndex( Vector3 pPos , Field pArray[], int pSize)
   return -1;
 }
 
-Piece* GameScene::getModelByName( int name )
-{
-  int delta = name - PIECE_RED_1;
-  if (delta < 0 || delta > 15)
-    return NULL;
-
-  return mPieces[delta];
-}
-
-void GameScene::movePiece(Piece* pPiece)
+void GameScene::movePiece(int index)
 {
   if (!mDieIsThrown)
     return;
 
-  Piece* mod = pPiece;
+  Piece* mod = mPieces[index];
   Turn playerTurn = mPlayerTurn;
-  int name = pPiece->getName();
 
   if (mod != NULL && mod->getType() == mPlayerTurn && checkAllModelIdle())
   {
     vector<Vector3> target;
 
-    int k = (name - PIECE_RED_1) % 4;
+    int k = index % 4;
 
     if (mPredictMoveState[k] == MOVE_ILLEGAL)
       return;
@@ -893,7 +875,7 @@ void GameScene::identifyModelClicked( int mouse_x, int mouse_y )
 
   if (index < 0)
     return;
-  movePiece(piecesArray[index]);
+  movePiece(index);
 }
 
 GameScene::~GameScene(void)

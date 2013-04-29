@@ -10,7 +10,6 @@ class Piece : public Model
   GLSYNTHESIZE(PieceState, mState, State);
   GLSYNTHESIZE(Vector3, mInitPos, InitPosition);
   GLSYNTHESIZE(Area, mArea, Area);
-  GLSYNTHESIZE(int, mName, Name);
 
   Turn mType;
   int mIndexFirstPos;
@@ -63,6 +62,24 @@ inline void Piece::setType(Turn pType)
 {
   mType = pType;
   mIndexFirstPos = mType*10;
+
+  switch (pType)
+  {
+  case TURN_RED:
+    setColorTint(0.8, 0, 0);
+    break;
+  case TURN_BLUE:
+    setColorTint(0, 0, 0.8);
+    break;
+  case TURN_GREEN:
+    setColorTint(0, 0.8, 0); 
+    break;
+  case TURN_YELLOW:
+    setColorTint(0.8, 0.8, 0);
+    break;
+  default:
+    break;
+  }
 }
 
 inline int Piece::getIndexFirstPos()

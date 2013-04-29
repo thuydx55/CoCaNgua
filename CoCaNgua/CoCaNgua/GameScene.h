@@ -73,7 +73,6 @@ class GameScene : public Scene
 
   void drawSence();
   void drawDie();
-  Piece* getModelByName(int name);
   int getModelPositionIndex(Vector3 pPos, Field pArray[], int pSize);
   bool checkAllModelIdle();
   void nextTurn();
@@ -104,7 +103,7 @@ public:
 
   void resetBoard();
   void loop();
-  void movePiece(Piece* pPiece);
+  void movePiece(int index);
   void rollDice(int number);
 
   void setDisablePiece(int index);
