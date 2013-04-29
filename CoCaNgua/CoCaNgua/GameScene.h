@@ -104,7 +104,7 @@ public:
   void resetBoard();
   void loop();
   void movePiece(int index);
-  void rollDice(int number);
+  void predictNextMove(int number);
 
   void setDisablePiece(int index);
 

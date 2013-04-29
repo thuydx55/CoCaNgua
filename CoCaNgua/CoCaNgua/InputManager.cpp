@@ -41,10 +41,10 @@ void KeyBoard::processKey( unsigned char key )
   case '4':
   case '5':
   case '6':
-    GameScene::inst().rollDice(key-48);
+    GameScene::inst().predictNextMove(key-48);
     break;
   case 'm':
-    GameScene::inst().rollDice(rand() % 6 +1);
+    GameScene::inst().predictNextMove(rand() % 6 +1);
     break;
   case 'p':
     cout << Light::inst().getPosition()[0] << ' ' << Light::inst().getPosition()[1] << ' ' << Light::inst().getPosition()[2] << ' ' << Light::inst().getPosition()[3] << endl;

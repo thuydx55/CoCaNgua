@@ -436,11 +436,35 @@ void GameScene::movePiece(int index)
 
     if (mPredictMoveState[k] == MOVE_ILLEGAL)
       return;
-    else if (mPredictMoveState[k] == MOVE_START 
-      || mPredictMoveState[k] == MOVE_ATTACK
-      || mPredictMoveState[k] == MOVE_HOME_INSIDE
-      || mPredictMoveState[k] == MOVE_HOME_OUTSIDE
-      || mPredictMoveState[k] == MOVE_START_ATTACK)
+    if (mPredictMoveState[k] == MOVE_NORMAL)
+    {
+      int index = getModelPositionIndex(mod->getPosition(), mFields, 40);
+      int tmp = getModelPositionIndex(mPredictPosition[k], mFields, 40);
+
+      // Move with corner
+      if (tmp > index)
+      {
+        for (int i = 0; i < 12; i++)
+          if (index < mConnerIndex[i] && mConnerIndex[i] < tmp )
+            target.push_back(mFields[mConnerIndex[i]].position);
+      }
+      else // corner at index 38 & 0
+      {
+        if (index < mConnerIndex[11])
+          target.push_back(mFields[mConnerIndex[11]].position);
+        if (tmp > mConnerIndex[0])
+          target.push_back(mFields[mConnerIndex[0]].position);
+      }
+      target.push_back(mFields[tmp].position);
+
+      mFields[index].piece = NULL;
+      mFields[tmp].piece = mod;
+
+      mod->jumpTo(target, MOVE_NORMAL);
+      mPieceIsMoving = true;
+      nextTurn();
+    }
+    else
     {
       target.push_back(mPredictPosition[k]);
 
@@ -498,34 +522,6 @@ void GameScene::movePiece(int index)
       mPieceIsMoving = true;
       nextTurn();
     }
-    else if (mPredictMoveState[k] == MOVE_NORMAL)
-    {
-      int index = getModelPositionIndex(mod->getPosition(), mFields, 40);
-      int tmp = getModelPositionIndex(mPredictPosition[k], mFields, 40);
-
-      // Move with corner
-      if (tmp > index)
-      {
-        for (int i = 0; i < 12; i++)
-          if (index < mConnerIndex[i] && mConnerIndex[i] < tmp )
-            target.push_back(mFields[mConnerIndex[i]].position);
-      }
-      else // corner at index 38 & 0
-      {
-        if (index < mConnerIndex[11])
-          target.push_back(mFields[mConnerIndex[11]].position);
-        if (tmp > mConnerIndex[0])
-          target.push_back(mFields[mConnerIndex[0]].position);
-      }
-      target.push_back(mFields[tmp].position);
-
-      mFields[index].piece = NULL;
-      mFields[tmp].piece = mod;
-
-      mod->jumpTo(target, MOVE_NORMAL);
-      mPieceIsMoving = true;
-      nextTurn();
-    }
   }
 
   /*---------------- FIND THE WINNER ^^ -------------------*/
@@ -546,7 +542,9 @@ void GameScene::movePiece(int index)
   }
 }
 
-void GameScene::rollDice(int number)
+// Predict if next move is illegal or not,
+// which field pieces will be in
+void GameScene::predictNextMove(int number)
 {
   if (mDieIsThrown)
     return;
@@ -772,10 +770,11 @@ void GameScene::rollDice(int number)
 
 void GameScene::update()
 {
+  // Checking if die is displayed and show the number to user
   if (mDieIsDrawn && mDice->getState() == DIE_STOP)
   {
     mDieIsDrawn = false;
-    this->rollDice(mDieNumber);
+    this->predictNextMove(mDieNumber);
   }
 
   if (mPieceIsMoving && !mDieIsDrawn )
@@ -792,6 +791,7 @@ void GameScene::update()
   }
 }
 
+// Disable some Players
 void GameScene::setDisablePiece( int index )
 {
   mEnablePiece[index] = false;
@@ -799,6 +799,7 @@ void GameScene::setDisablePiece( int index )
   {
     for (int i = 0; i < 4; i++)
     {
+      // Change start turn if the currently is disabled
       if (!mEnablePiece[i])
       {
         mPlayerTurn = (Turn)(i+1 > 4 ? 0 : i+1);
@@ -810,19 +811,24 @@ void GameScene::setDisablePiece( int index )
 
 void GameScene::processMouseBegan( int x, int y )
 {
+  // If die is currently displayed
   if (mDieIsDrawn)
   {
+    // Roll die
     if (mDice->getState() == DIE_WAITING)
-      mDieNumber = GameScene::inst().mDice->rollDie();
+      mDieNumber = mDice->rollDie();
   }
   else
   {
+    // Click the Piece
     identifyModelClicked(x, Graphic::inst().screenHeight - y);
   }
 }
 
+// Identify which Piece has been clicked
 void GameScene::identifyModelClicked( int mouse_x, int mouse_y )
 {
+  // Get x, y coordinate in zNear plane
   int window_y = mouse_y - Graphic::inst().screenHeight/2;
   double norm_y = double(window_y)/double(Graphic::inst().screenHeight/2);
   int window_x = mouse_x - Graphic::inst().screenWidth/2;
@@ -833,11 +839,13 @@ void GameScene::identifyModelClicked( int mouse_x, int mouse_y )
   float y = Graphic::inst().near_height * norm_y;
   float x = Graphic::inst().near_height * aspect * norm_x;
 
+  // Get ModelView matrix
   float m[16];
   glGetFloatv(GL_MODELVIEW_MATRIX , m);
 
   Matrix4 inverseModelViewMatrix = Matrix4(m).inverse();
 
+  // Calculate origin and vector of clicked-ray
   Vector4 rayOrigin = Vector4()*inverseModelViewMatrix;
   Vector3 rayVec = Vector3(x, y, -Graphic::inst().zNear)*inverseModelViewMatrix;
 
@@ -852,6 +860,7 @@ void GameScene::identifyModelClicked( int mouse_x, int mouse_y )
 
   for (int i = 0; i < 16; i++)
   {
+    // checking click-ray intersected with piece
     if (viewRay.hasIntersected(piecesArray[i]->boundingbox()))
     {
       //cout << "intersected" << endl;
@@ -860,6 +869,7 @@ void GameScene::identifyModelClicked( int mouse_x, int mouse_y )
       Vector3 b = piecesArray[i]->getPosition();
       float dist = (a-b).magnitude();
 
+      // get the nearest piece
       if (disMin < 0)
       {
         disMin = dist;
