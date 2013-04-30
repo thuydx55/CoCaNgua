@@ -5,6 +5,8 @@
 #include <gl/glut.h>
 
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 
 #include "Model.h"
 #include "Light.h"
@@ -32,8 +34,12 @@ const int   SCREEN_WIDTH    = 800;
 const int   SCREEN_HEIGHT   = 600;
 const float CAMERA_DISTANCE = 10.0f;
 const int   TEXT_WIDTH      = 8;
-const int   TEXT_HEIGHT     = 13;
+const int   TEXT_HEIGHT     = 18;
 const float DELTA_TIME      = 33;
+
+Timer mTimer;
+float color[4] = {1,1,1,1};
+void* font = GLUT_BITMAP_HELVETICA_18;
 
 ///////////////////////////////////////////////////////////////////////////////
 // initialize global variables
@@ -124,18 +130,44 @@ void initGL()
   glLightfv(GL_LIGHT1, GL_SPECULAR, _specular);
 }
 
-/* ----------------------------------------------------------------------- */
-/* Function    : void myDisplay( void )
-*
-* Description : This function gets called everytime the window needs to
-*               be redrawn.
-*
-* Parameters  : void
-*
-* Returns     : void
-*/
+void showInfo(float elapse)
+{
+  // backup current model-view matrix
+  glPushMatrix();                     // save current modelview matrix
+  glLoadIdentity();                   // reset modelview matrix
+
+  // set to 2D orthogonal projection
+  glMatrixMode(GL_PROJECTION);        // switch to projection matrix
+  glPushMatrix();                     // save current projection matrix
+  glLoadIdentity();                   // reset projection matrix
+  gluOrtho2D(0, Graphic::inst().screenWidth, 0, Graphic::inst().screenHeight); // set to orthogonal projection
+
+  float color[4] = {1, 1, 1, 1};
+
+  stringstream ss;
+  ss << std::fixed << std::setprecision(3);
+
+  ss << elapse << ends;
+  Graphic::inst().drawString(ss.str().c_str(), 10, Graphic::inst().screenHeight-TEXT_HEIGHT, color, font);
+  ss.str("");
+
+  ss << int(1/elapse) << ends;
+  Graphic::inst().drawString(ss.str().c_str(), 10, Graphic::inst().screenHeight-(2*TEXT_HEIGHT), color, font);
+  ss.str("");
+
+  // unset floating format
+  ss << std::resetiosflags(std::ios_base::fixed | std::ios_base::floatfield);
+
+  // restore projection matrix
+  glPopMatrix();                   // restore to previous projection matrix
+
+  // restore modelview matrix
+  glMatrixMode(GL_MODELVIEW);      // switch to modelview matrix
+  glPopMatrix();                   // restore to previous modelview matrix
+}
 
 void displayCB( void )  {
+  mTimer.start();
 
   glStencilMask(0xffffffff);
   glClearStencil(0x4);
@@ -167,6 +199,12 @@ void displayCB( void )  {
     break;
   }
 
+  double elapsed = mTimer.stop();
+  if (Math::closeEnough(elapsed, 0))
+  {
+    elapsed = 0.001;
+  }
+  showInfo(elapsed);
   glutSwapBuffers();
 }
 

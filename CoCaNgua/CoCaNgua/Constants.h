@@ -18,6 +18,8 @@
 #define DIE_TIME_ROLLING        3
 #define DIE_TIME_USER_VIEW      1
 
+#define PIECE_CIRCLE_SIZE       1.5
+
 #define GLSYNTHESIZE(varType, varName, funName)\
 protected: varType varName;\
 public: virtual varType get##funName(void) const { return varName; }\

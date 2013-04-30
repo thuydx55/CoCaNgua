@@ -33,7 +33,6 @@ void Piece::drawModel()
 {
   Model::drawModel();
 
-#define CIRCLE_SIZE 1.5
   if (mSelected)
   {
     glColor4f(1, 1, 1, 1);
@@ -42,10 +41,10 @@ void Piece::drawModel()
     glTranslatef(mPos.x, mPos.y, mPos.z);
     glRotatef(circleAngle, 0, 1, 0);
     float size = getWidth() > getLength() ? getWidth()/2 : getLength()/2;
-    mCircle->drawImg(Vector3( -CIRCLE_SIZE*size, 0, -CIRCLE_SIZE*size),
-      Vector3( -CIRCLE_SIZE*size, 0,  CIRCLE_SIZE*size),
-      Vector3(  CIRCLE_SIZE*size, 0,  CIRCLE_SIZE*size),
-      Vector3(  CIRCLE_SIZE*size, 0, -CIRCLE_SIZE*size));
+    mCircle->drawImg(Vector3( -PIECE_CIRCLE_SIZE*size, 0, -PIECE_CIRCLE_SIZE*size),
+                     Vector3( -PIECE_CIRCLE_SIZE*size, 0,  PIECE_CIRCLE_SIZE*size),
+                     Vector3(  PIECE_CIRCLE_SIZE*size, 0,  PIECE_CIRCLE_SIZE*size),
+                     Vector3(  PIECE_CIRCLE_SIZE*size, 0, -PIECE_CIRCLE_SIZE*size));
     glEnable(GL_LIGHTING);
     glPopMatrix();
   }

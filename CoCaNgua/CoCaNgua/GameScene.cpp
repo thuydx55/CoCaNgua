@@ -2,7 +2,7 @@
 
 bool allMoveIllegal = true;
 bool noPieceInTheGame = true;
-int selectIndex = -1;
+int selectedIndex = -1;
 
 GameScene::GameScene(void)
 {
@@ -831,14 +831,15 @@ void GameScene::processMouseBegan( int x, int y )
 void GameScene::processMousePassiveMotion( int x, int y )
 {
   int index = identifyModelClicked(x, y);
-  if (index != selectIndex)
+  if (index != selectedIndex)
   {
-    mPieces[selectIndex]->selected(false);
-    if (index >= 0)
+    if (selectedIndex >= 0)
+      mPieces[selectedIndex]->selected(false);
+    if (index >= 0 && mPieces[index]->isHighlight())
     {
       mPieces[index]->selected(true);
     }
-    selectIndex = index;
+    selectedIndex = index;
   }
 }
 

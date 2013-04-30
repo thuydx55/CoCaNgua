@@ -115,6 +115,10 @@ inline bool Piece::isSelected()
 inline void Piece::highlight(bool value)
 {
   mHighlight = value;
+  if (!mHighlight)
+  {
+    mSelected = false;
+  }
 }
 
 inline bool Piece::isHighlight()
