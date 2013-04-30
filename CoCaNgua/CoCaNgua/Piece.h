@@ -66,7 +66,7 @@ class Piece : public Model
   float             mHeight;
   vector<float>     mDuration;
   Vector3           mStartPos;
-  vector<Vector3>   mTarget;
+  vector<Field>   mTarget;
 
   void shadowMatrix(GLfloat shadowMat[4][4], GLfloat groundplane[4], GLfloat lightpos[4]);
 
@@ -92,7 +92,7 @@ public:
   void setType(Turn pType);
   int getIndexFirstPos();
 
-  void jumpTo(const vector<Vector3> &pTarget, MoveState pMoveState);
+  void jumpTo(const vector<Field> &pTarget, MoveState pMoveState);
   void update();
 };  
 

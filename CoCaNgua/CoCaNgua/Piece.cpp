@@ -176,7 +176,7 @@ void Piece::shadowMatrix(GLfloat shadowMat[4][4], GLfloat groundplane[4], GLfloa
 
 }
 
-void Piece::jumpTo( const vector<Vector3> &pTarget, MoveState pMoveState )
+void Piece::jumpTo( const vector<Field> &pTarget, MoveState pMoveState )
 {
   if (mState == MODEL_IDLE)
   {
@@ -187,14 +187,14 @@ void Piece::jumpTo( const vector<Vector3> &pTarget, MoveState pMoveState )
 
     if (pMoveState == MOVE_NORMAL || pMoveState == MOVE_HOME_INSIDE || pMoveState == MOVE_HOME_OUTSIDE)
     {
-      Vector3 delta = (pTarget[0] - mStartPos)/4;
+      Vector3 delta = (pTarget[0].position - mStartPos)/4;
       mJumps.push_back(delta.magnitude());
       mDuration.push_back(delta.magnitude() * 0.25);
       mHeight = 5;
 
       for (int i = 1; i < pTarget.size(); i++)
       {
-        delta = (pTarget[i] - pTarget[i-1])/4;
+        delta = (pTarget[i].position - pTarget[i-1].position)/4;
         mJumps.push_back(delta.magnitude());
         mDuration.push_back(delta.magnitude() * 0.25);
       }
@@ -218,7 +218,7 @@ void Piece::update()
 
   if (mState == MODEL_JUMP)
   {
-    Vector3 target = mTarget[id];
+    Vector3 target = mTarget[id].position;
 
     float frac = fmodf((tEnlapse / mDuration[id]) * mJumps[id], 1);
     float y = (mHeight * 4 * frac * (1 - frac));
@@ -230,6 +230,7 @@ void Piece::update()
 
     if (tEnlapse > mDuration[id])
     {
+      setAngle(mTarget[id].direction);
       id++;
       if (id >= mTarget.size())
       {
