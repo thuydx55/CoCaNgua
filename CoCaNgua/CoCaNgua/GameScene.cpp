@@ -823,7 +823,7 @@ void GameScene::processMouseBegan( int x, int y )
   {
     // Click the Piece
     int index = identifyModelClicked(x, y);
-    if (index > 0)
+    if (index >= 0)
       movePiece(index);
   }
 }

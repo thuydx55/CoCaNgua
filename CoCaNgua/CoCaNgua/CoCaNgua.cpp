@@ -107,6 +107,8 @@ void initGL()
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_CULL_FACE);
 
+  //glPolygonMode( GL_FRONT_AND_BACK, GL_POINT );
+
   // track material ambient and diffuse from surface color, call it before glEnable(GL_COLOR_MATERIAL)
   //glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
   //glEnable(GL_COLOR_MATERIAL);
@@ -167,7 +169,10 @@ void showInfo(float elapse)
 }
 
 void displayCB( void )  {
+
+#if DEBUG_SHOW_INFO
   mTimer.start();
+#endif
 
   glStencilMask(0xffffffff);
   glClearStencil(0x4);
@@ -199,12 +204,15 @@ void displayCB( void )  {
     break;
   }
 
+#if DEBUG_SHOW_INFO
   double elapsed = mTimer.stop();
   if (Math::closeEnough(elapsed, 0))
   {
     elapsed = 0.001;
   }
   showInfo(elapsed);
+#endif
+
   glutSwapBuffers();
 }
 

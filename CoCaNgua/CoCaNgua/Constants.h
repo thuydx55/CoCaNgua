@@ -7,6 +7,7 @@
 #define DEBUG_CLICKING_RAY      0
 #define DEBUG_ORIGIN_AXES       0
 #define DEBUG_LIGHT_SOURCE      1
+#define DEBUG_SHOW_INFO         1
 
 #define va_start    _crt_va_start
 #define va_arg      _crt_va_arg
