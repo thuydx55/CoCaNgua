@@ -46,7 +46,7 @@ class Piece : public Model
 {
   GLSYNTHESIZE(GLfloat, mHighlightThickness, HighLightThickness);
   GLSYNTHESIZE(PieceState, mState, State);
-  GLSYNTHESIZE(Vector3, mInitPos, InitPosition);
+  GLSYNTHESIZE(Field, mInitPos, InitPosition);
   GLSYNTHESIZE(Area, mArea, Area);
 
   Sprite2D* mCircle;

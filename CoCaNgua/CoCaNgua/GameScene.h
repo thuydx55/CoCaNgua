@@ -27,7 +27,7 @@ class GameScene : public Scene
   bool mEnablePiece[4];
 
   // Array of Position in board
-  Vector3 mStartPos[16];
+  Field mStartPos[16];
   Field mFields[40];
   Field mHome[16];
   int mConnerIndex[12];

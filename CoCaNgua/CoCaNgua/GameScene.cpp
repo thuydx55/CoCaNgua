@@ -48,7 +48,16 @@ GameScene::GameScene(void)
                      Vector3(-20, 0, 20),
                      Vector3(-20, 0, 16),       // YELLOW
   };
-  memcpy(mStartPos, start, sizeof(start));
+  float startDirection[] = { -90, -90, -90, -90,
+                             180, 180, 180, 180,
+                              90,  90,  90,  90,
+                               0,   0,   0,   0};
+  for (int i = 0; i < 16; i++)
+  {
+    mStartPos[i].position = start[i];
+    mStartPos[i].direction = startDirection[i];
+  }
+  //memcpy(mStartPos, start, sizeof(start));
 
   Vector3 home[] = {Vector3(-16, 0, 0),
                       Vector3(-12, 0, 0),
@@ -202,25 +211,25 @@ void GameScene::initAllPieces()
   for (int i = 0; i < 4; i++)
   {
     mPieces[i] = new Piece(tmp);
-    mPieces[i]->setPosition(mStartPos[i]);
+    mPieces[i]->setPosition(mStartPos[i].position);
     mPieces[i]->setInitPosition(mStartPos[i]);
     mPieces[i]->setType(TURN_RED);
     mPieces[i]->setAngle(-90);
 
     mPieces[4+i] = new Piece(tmp);
-    mPieces[4+i]->setPosition(mStartPos[4+i]);
+    mPieces[4+i]->setPosition(mStartPos[4+i].position);
     mPieces[4+i]->setInitPosition(mStartPos[4+i]);
     mPieces[4+i]->setType(TURN_BLUE);
     mPieces[4+i]->setAngle(180);
 
     mPieces[8+i] = new Piece(tmp);
-    mPieces[8+i]->setPosition(mStartPos[8+i]);
+    mPieces[8+i]->setPosition(mStartPos[8+i].position);
     mPieces[8+i]->setInitPosition(mStartPos[8+i]);
     mPieces[8+i]->setType(TURN_GREEN);
     mPieces[8+i]->setAngle(90);
 
     mPieces[12+i] = new Piece(tmp);
-    mPieces[12+i]->setPosition(mStartPos[12+i]);
+    mPieces[12+i]->setPosition(mStartPos[12+i].position);
     mPieces[12+i]->setInitPosition(mStartPos[12+i]);
     mPieces[12+i]->setType(TURN_YELLOW);
   }
@@ -492,17 +501,21 @@ void GameScene::movePiece(int arrayIndex)
 
       if (mPredictMoveState[k] == MOVE_ATTACK)
       {
-        mPredictPosition[k]->piece->setArea(AREA_OUT);
-        mPredictPosition[k]->piece->setPosition(mPredictPosition[k]->piece->getInitPosition());
+        int index = getModelPositionIndex(mod->getPosition(), mHome, 16);
 
-        mPredictPosition[k]->piece = NULL;
+        mPredictPosition[k]->piece->setArea(AREA_OUT);
+        mPredictPosition[k]->piece->setPosition(mPredictPosition[k]->piece->getInitPosition().position);
+        mPredictPosition[k]->piece->setAngle(mPredictPosition[k]->piece->getInitPosition().direction);
+
+        mFields[index].piece = NULL;
         mPredictPosition[k]->piece = mod;
       }
 
       if (mPredictMoveState[k] == MOVE_START_ATTACK)
       {
         mPredictPosition[k]->piece->setArea(AREA_OUT);
-        mPredictPosition[k]->piece->setPosition(mPredictPosition[k]->piece->getInitPosition());
+        mPredictPosition[k]->piece->setPosition(mPredictPosition[k]->piece->getInitPosition().position);
+        mPredictPosition[k]->piece->setAngle(mPredictPosition[k]->piece->getInitPosition().direction);
 
         mPredictPosition[k]->piece = mod;
         mPredictPosition[k]->piece->setArea(AREA_GAME);
