@@ -488,7 +488,7 @@ void GameScene::movePiece(int arrayIndex)
     }
     else
     {
-      target.push_back(mPredictPosition[k]->position);
+      target.push_back(*mPredictPosition[k]);
 
       if (mPredictMoveState[k] == MOVE_ATTACK)
       {
@@ -516,7 +516,9 @@ void GameScene::movePiece(int arrayIndex)
 
       if (mPredictMoveState[k] == MOVE_HOME_INSIDE)
       {
-        mHome[arrayIndex].piece = NULL;
+        int index = getModelPositionIndex(mod->getPosition(), mHome, 16);
+
+        mHome[index].piece = NULL;
         mPredictPosition[k]->piece = mod;
       }
 
