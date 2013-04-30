@@ -48,10 +48,10 @@ GameScene::GameScene(void)
                      Vector3(-20, 0, 20),
                      Vector3(-20, 0, 16),       // YELLOW
   };
-  float startDirection[] = { -90, -90, -90, -90,
-                             180, 180, 180, 180,
-                              90,  90,  90,  90,
-                               0,   0,   0,   0};
+  float startDirection[] = { -90, -90, -90, -90,  // RED
+                             180, 180, 180, 180,  // BLUE
+                              90,  90,  90,  90,  // GREEN
+                               0,   0,   0,   0}; // YELLOW
   for (int i = 0; i < 16; i++)
   {
     mStartPos[i].position = start[i];
@@ -79,7 +79,7 @@ GameScene::GameScene(void)
                       Vector3(0, 0, 8),
                       Vector3(0, 0, 4)          // YELLOW
   };
-  float homeDirection[] = {  0,   0,   0,   0   // RED
+  float homeDirection[] = {  0,   0,   0,   0,  // RED
                            -90, -90, -90, -90,  // BLUE
                            180, 180, 180, 180,  // GREEN
                             90,  90,  90,  90   // YELLOW
@@ -174,7 +174,7 @@ GameScene::GameScene(void)
     mFields[i] = Field(road[i], roadDiretion[i]);
   }
 
-  int c[] = { 0, 4, 8, 10, 14, 18, 20, 24, 28, 30, 34, 38 };
+  int c[] = { 0, 4, 8, 9, 10, 14, 18, 19, 20, 24, 28, 29, 30, 34, 38, 39 };
   memcpy(mConnerIndex, c, sizeof(c));
 }
 
@@ -470,26 +470,37 @@ void GameScene::movePiece(int arrayIndex)
     if (mPredictMoveState[k] == MOVE_NORMAL)
     {
       int index = getModelPositionIndex(mod->getPosition(), mFields, 40);
-      int tmp = getModelPositionIndex(mPredictPosition[k]->position, mFields, 40);
+      int predictIndex = getModelPositionIndex(mPredictPosition[k]->position, mFields, 40);
 
       // Move with corner
-      if (tmp > index)
+      if (predictIndex > index)
       {
-        for (int i = 0; i < 12; i++)
-          if (index < mConnerIndex[i] && mConnerIndex[i] < tmp )
+        for (int i = 0; i < 16; i++)
+          if (index < mConnerIndex[i] && mConnerIndex[i] < predictIndex )
             target.push_back(mFields[mConnerIndex[i]]);
       }
-      else // corner at index 38 & 0
+      else // corner at index 39 & 0
       {
-        if (index < mConnerIndex[11])
-          target.push_back(mFields[mConnerIndex[11]]);
-        if (tmp > mConnerIndex[0])
+        if (index < mConnerIndex[15])
+          target.push_back(mFields[mConnerIndex[15]]);
+        if (predictIndex > mConnerIndex[0])
           target.push_back(mFields[mConnerIndex[0]]);
       }
-      target.push_back(mFields[tmp]);
+      target.push_back(mFields[predictIndex]);
+
+      for (int i = 0; i < target.size(); i++)
+      {
+        int predictIndex = getModelPositionIndex(target[i].position, mFields, 40);
+        predictIndex = predictIndex + 1 == 40 ? 0 : predictIndex + 1;
+
+        if (predictIndex == mPlayerTurn*10)
+        {
+          target[i].direction = mHome[4*mPlayerTurn].direction;
+        }
+      }
 
       mFields[index].piece = NULL;
-      mFields[tmp].piece = mod;
+      mFields[predictIndex].piece = mod;
 
       mod->jumpTo(target, MOVE_NORMAL);
       mPieceIsMoving = true;
@@ -498,6 +509,13 @@ void GameScene::movePiece(int arrayIndex)
     else
     {
       target.push_back(*mPredictPosition[k]);
+      int predictIndex = getModelPositionIndex(target[0].position, mFields, 40);
+      if (predictIndex%10 == 9)
+      {
+        int div = (predictIndex+1)/10;
+        div = div == 4 ? 0 : div;
+        target[0].direction = mHome[4*div].direction;
+      }
 
       if (mPredictMoveState[k] == MOVE_ATTACK)
       {
@@ -782,6 +800,7 @@ void GameScene::predictNextMove(int number)
     {
       mPieces[mPlayerTurn*4+i]->highlight(true);
       allMoveIllegal = false;
+      noPieceInTheGame = false;
     }
   }
 

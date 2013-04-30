@@ -30,7 +30,7 @@ class GameScene : public Scene
   Field mStartPos[16];
   Field mFields[40];
   Field mHome[16];
-  int mConnerIndex[12];
+  int mConnerIndex[16];
 
   // Predict Position and MoveState after roll die
   Field* mPredictPosition[4];
