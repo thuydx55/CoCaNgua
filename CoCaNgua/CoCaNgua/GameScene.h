@@ -13,41 +13,6 @@
 #include "Constants.h"
 #include "Camera.h"
 
-struct Field
-{
-  Vector3 position;
-  Piece* piece;
-  float direction; // 0, 90, 180, -90 
-
-  Field()
-  {
-    position = Vector3();
-    piece = NULL;
-    direction = 0;
-  }
-
-  Field(Vector3 pPos)
-  {
-    position = pPos;
-    piece = NULL;
-    direction = 0;
-  }
-
-  Field(Vector3 pPos, Piece* pPiece)
-  {
-    position = pPos;
-    piece = pPiece;
-    direction = 0;
-  }
-
-  Field(Vector3 pPos, float pD)
-  {
-    position = pPos;
-    piece = NULL;
-    direction = pD;
-  }
-};
-
 class GameScene : public Scene
 {
   void* font;

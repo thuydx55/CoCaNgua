@@ -176,7 +176,7 @@ void Piece::shadowMatrix(GLfloat shadowMat[4][4], GLfloat groundplane[4], GLfloa
 
 }
 
-void Piece::jumpTo( vector<Vector3> pTarget, MoveState pMoveState )
+void Piece::jumpTo( const vector<Vector3> &pTarget, MoveState pMoveState )
 {
   if (mState == MODEL_IDLE)
   {

@@ -5,6 +5,43 @@
 #include "Constants.h"
 #include "Sprite2D.h"
 
+class Piece;
+
+struct Field
+{
+  Vector3 position;
+  Piece* piece;
+  float direction; // 0, 90, 180, -90 
+
+  Field()
+  {
+    position = Vector3();
+    piece = NULL;
+    direction = 0;
+  }
+
+  Field(Vector3 pPos)
+  {
+    position = pPos;
+    piece = NULL;
+    direction = 0;
+  }
+
+  Field(Vector3 pPos, Piece* pPiece)
+  {
+    position = pPos;
+    piece = pPiece;
+    direction = 0;
+  }
+
+  Field(Vector3 pPos, float pD)
+  {
+    position = pPos;
+    piece = NULL;
+    direction = pD;
+  }
+};
+
 class Piece : public Model
 {
   GLSYNTHESIZE(GLfloat, mHighlightThickness, HighLightThickness);
@@ -55,7 +92,7 @@ public:
   void setType(Turn pType);
   int getIndexFirstPos();
 
-  void jumpTo(vector<Vector3> pTarget, MoveState pMoveState);
+  void jumpTo(const vector<Vector3> &pTarget, MoveState pMoveState);
   void update();
 };  
 
