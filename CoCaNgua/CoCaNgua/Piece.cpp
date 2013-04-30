@@ -4,11 +4,13 @@ int id = 0;
 GLfloat floorPlane[4] = {
   0, 1, 0, 0
 };
+float circleAngle = 0;
 
 Piece::Piece(void)
 {
-  mHighlight = false;
-  mShadow = true;
+  mHighlight    = false;
+  mShadow       = true;
+  mSelected     = false;
 
   mHighlightThickness =  0.7;
   mHighlightColor[0] = 0.8;
@@ -18,6 +20,8 @@ Piece::Piece(void)
 
   mState = MODEL_IDLE;
   mArea = AREA_OUT;
+
+  mCircle = Sprite2D::create("Models/circle.png");
 }
 
 Piece::Piece( const Piece* other )
@@ -28,6 +32,23 @@ Piece::Piece( const Piece* other )
 void Piece::drawModel()
 {
   Model::drawModel();
+
+#define CIRCLE_SIZE 1.5
+  if (mSelected)
+  {
+    glColor4f(1, 1, 1, 1);
+    glPushMatrix();
+    glDisable(GL_LIGHTING);
+    glTranslatef(mPos.x, mPos.y, mPos.z);
+    glRotatef(circleAngle, 0, 1, 0);
+    float size = getWidth() > getLength() ? getWidth()/2 : getLength()/2;
+    mCircle->drawImg(Vector3( -CIRCLE_SIZE*size, 0, -CIRCLE_SIZE*size),
+      Vector3( -CIRCLE_SIZE*size, 0,  CIRCLE_SIZE*size),
+      Vector3(  CIRCLE_SIZE*size, 0,  CIRCLE_SIZE*size),
+      Vector3(  CIRCLE_SIZE*size, 0, -CIRCLE_SIZE*size));
+    glEnable(GL_LIGHTING);
+    glPopMatrix();
+  }
 
   float x, y, z;
   getCenter(x, y, z);
@@ -119,21 +140,9 @@ void Piece::drawModel()
       glDisable(GL_BLEND);
       glDisable(GL_STENCIL_TEST);
       glEnable(GL_LIGHTING);
-    }
-    
+    }    
   }
   glPopMatrix();
-}
-
-// shadow
-void Piece::shadow(bool value)
-{
-  mShadow = value;
-}
-
-bool Piece::isShadow()
-{
-  return mShadow;
 }
 
 void Piece::shadowMatrix(GLfloat shadowMat[4][4], GLfloat groundplane[4], GLfloat lightpos[4])
@@ -166,24 +175,6 @@ void Piece::shadowMatrix(GLfloat shadowMat[4][4], GLfloat groundplane[4], GLfloa
   shadowMat[2][3] = 0.f - lightpos[3] * groundplane[2];
   shadowMat[3][3] = dot - lightpos[3] * groundplane[3];
 
-}
-
-void Piece::highlight(bool value)
-{
-  mHighlight = value;
-}
-
-bool Piece::isHighlight()
-{
-  return mHighlight;
-}
-
-void Piece::setHighLightColor( GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha )
-{
-  mHighlightColor[0] = red;
-  mHighlightColor[1] = green;
-  mHighlightColor[2] = blue;
-  mHighlightColor[3] = alpha;
 }
 
 void Piece::jumpTo( vector<Vector3> pTarget, MoveState pMoveState )
@@ -222,6 +213,8 @@ void Piece::jumpTo( vector<Vector3> pTarget, MoveState pMoveState )
 
 void Piece::update()
 {
+  circleAngle = (circleAngle > 360 ? circleAngle - 360 : circleAngle) + 0.3;
+
   double tEnlapse = mTimer.elapsed();
 
   if (mState == MODEL_JUMP)

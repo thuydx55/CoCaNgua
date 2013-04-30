@@ -3,6 +3,7 @@
 
 #include "Model.h"
 #include "Constants.h"
+#include "Sprite2D.h"
 
 class Piece : public Model
 {
@@ -11,12 +12,14 @@ class Piece : public Model
   GLSYNTHESIZE(Vector3, mInitPos, InitPosition);
   GLSYNTHESIZE(Area, mArea, Area);
 
+  Sprite2D* mCircle;
+
   Turn mType;
   int mIndexFirstPos;
 
   bool                mHighlight;
   GLfloat             mHighlightColor[4];
-
+  bool                mSelected;
   bool				  mShadow;
   float floorShadow[4][4];
 
@@ -44,6 +47,9 @@ public:
 
   void shadow(bool value);
   bool isShadow();
+
+  void selected(bool value);
+  bool isSelected();
 
   Turn getType();
   void setType(Turn pType);
@@ -85,6 +91,43 @@ inline void Piece::setType(Turn pType)
 inline int Piece::getIndexFirstPos()
 {
   return mIndexFirstPos;
+}
+
+inline void Piece::shadow(bool value)
+{
+  mShadow = value;
+}
+
+inline bool Piece::isShadow()
+{
+  return mShadow;
+}
+
+inline void Piece::selected(bool value)
+{
+  mSelected = value;
+}
+inline bool Piece::isSelected()
+{
+  return mSelected;
+}
+
+inline void Piece::highlight(bool value)
+{
+  mHighlight = value;
+}
+
+inline bool Piece::isHighlight()
+{
+  return mHighlight;
+}
+
+inline void Piece::setHighLightColor( GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha )
+{
+  mHighlightColor[0] = red;
+  mHighlightColor[1] = green;
+  mHighlightColor[2] = blue;
+  mHighlightColor[3] = alpha;
 }
 
 #endif // !_CG_PIECE_H_

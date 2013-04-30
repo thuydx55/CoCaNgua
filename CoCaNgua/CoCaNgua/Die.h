@@ -25,7 +25,6 @@ public:
   virtual void update();
 
   int rollDie();
-
   bool isRolling();
 };  
 

@@ -25,6 +25,7 @@ Sprite2D* Sprite2D::create( const char* pFilename )
 
 void Sprite2D::initWithFile( const char* pFilename )
 {
+  mOpacity = 255;
   mAnchor.x = mAnchor.y = 0.5;
   loadTexture(pFilename);
 }
@@ -55,24 +56,32 @@ void Sprite2D::loadTexture(const char *pszFilename)
   SOIL_free_image_data(img);
 }
 
-void Sprite2D::drawImg()
+void Sprite2D::drawImg( Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4 )
 {
   glPushMatrix();
   glTranslatef(mPos.x-mAnchor.x*size.width, mPos.y-mAnchor.y*size.height, 0);
-
+  glEnable(GL_TEXTURE_2D);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   glBindTexture(GL_TEXTURE_2D,texID);
   glBegin(GL_QUADS); 
-  glTexCoord2f(0.0f, 0.0f); glVertex2f(-size.width/2, -size.height/2); 
-  glTexCoord2f(1.0f, 0.0f); glVertex2f( size.width/2, -size.height/2); 
-  glTexCoord2f(1.0f, 1.0f); glVertex2f( size.width/2,  size.height/2); 
-  glTexCoord2f(0.0f, 1.0f); glVertex2f(-size.width/2,  size.height/2);
+  glTexCoord2f(0.0f, 0.0f); glVertex3f(v1.x, v1.y, v1.z); 
+  glTexCoord2f(1.0f, 0.0f); glVertex3f(v2.x, v2.y, v2.z); 
+  glTexCoord2f(1.0f, 1.0f); glVertex3f(v3.x, v3.y, v3.z); 
+  glTexCoord2f(0.0f, 1.0f); glVertex3f(v4.x, v4.y, v4.z);
   glEnd(); 
 
   glDisable(GL_BLEND);
   glPopMatrix();
+}
+
+void Sprite2D::drawImg()
+{
+  drawImg(Vector3(-size.width/2, -size.height/2, 0),
+          Vector3( size.width/2, -size.height/2, 0),
+          Vector3( size.width/2,  size.height/2, 0),
+          Vector3(-size.width/2,  size.height/2, 0));  
 }
 
 Rect Sprite2D::boundingBox()

@@ -37,6 +37,7 @@ public:
 
   void initWithFile(const char* pFilename);
 
+  virtual void drawImg(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4);
   virtual void drawImg();
 
   void setVisible(bool visible);

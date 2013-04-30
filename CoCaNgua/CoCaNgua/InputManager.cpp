@@ -112,7 +112,7 @@ void Mouse::processMouse( int button, int state, int x, int y )
 
     if 	((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN))
     {
-      GameScene::inst().processMouseBegan(x, y);
+      GameScene::inst().processMouseBegan(x, Graphic::inst().screenHeight-y);
     } 
   }
   else if (Graphic::inst().getAppScene() == APP_MENU)
@@ -151,6 +151,8 @@ void Mouse::processMousePassiveMotion( int x, int y )
   {
   case APP_MENU:
     MainMenuScene::inst().processMousePassiveMotion(x, Graphic::inst().screenHeight-y);
+  case APP_GAME:
+    GameScene::inst().processMousePassiveMotion(x, Graphic::inst().screenHeight-y);
   default:
     break;
   }

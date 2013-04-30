@@ -2,6 +2,7 @@
 
 bool allMoveIllegal = true;
 bool noPieceInTheGame = true;
+int selectIndex = -1;
 
 GameScene::GameScene(void)
 {
@@ -821,12 +822,29 @@ void GameScene::processMouseBegan( int x, int y )
   else
   {
     // Click the Piece
-    identifyModelClicked(x, Graphic::inst().screenHeight - y);
+    int index = identifyModelClicked(x, y);
+    if (index > 0)
+      movePiece(index);
+  }
+}
+
+void GameScene::processMousePassiveMotion( int x, int y )
+{
+  int index = identifyModelClicked(x, y);
+  if (index != selectIndex)
+  {
+    mPieces[selectIndex]->selected(false);
+    if (index >= 0)
+    {
+      mPieces[index]->selected(true);
+    }
+    selectIndex = index;
   }
 }
 
 // Identify which Piece has been clicked
-void GameScene::identifyModelClicked( int mouse_x, int mouse_y )
+// Return index of Piece in array
+int GameScene::identifyModelClicked( int mouse_x, int mouse_y )
 {
   // Get x, y coordinate in zNear plane
   int window_y = mouse_y - Graphic::inst().screenHeight/2;
@@ -883,9 +901,7 @@ void GameScene::identifyModelClicked( int mouse_x, int mouse_y )
     }
   }
 
-  if (index < 0)
-    return;
-  movePiece(index);
+  return index;
 }
 
 GameScene::~GameScene(void)

@@ -77,7 +77,7 @@ class GameScene : public Scene
   bool checkAllModelIdle();
   void nextTurn();
 
-  void identifyModelClicked(int mouse_x, int mouse_y);
+  int identifyModelClicked(int mouse_x, int mouse_y);
 
 public:
   Die*                mDice;

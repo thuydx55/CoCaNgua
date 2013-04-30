@@ -26,9 +26,9 @@ Camera::~Camera(){};
 void Camera::update(float x, float y){
   float new_phi = phi_old - (y-y_old)/50.0;	
   if (new_phi > (Math::PI/2.3))								
-      new_phi = Math::PI/2.3 + 0.001;
+    new_phi = Math::PI/2.3 + 0.001;
   else if (new_phi < 0)
-      new_phi = 0.001;
+    new_phi = 0.001;
 
   float new_theta = theta_old - (x-x_old)/50.0; 
 

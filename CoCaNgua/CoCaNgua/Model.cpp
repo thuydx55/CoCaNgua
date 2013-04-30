@@ -40,8 +40,6 @@ void Model::draw()
   const ModelOBJ::Vertex *pVertices = 0;
   ModelTextures::const_iterator iter;
 
-  //cout << getNumberOfMeshes();
-
   for (int i = 0; i < getNumberOfMeshes(); ++i)
   {
     pMesh = &getMesh(i);
@@ -130,11 +128,6 @@ void Model::loadModel(const char *pszFilename)
     throw std::runtime_error("Failed to load model.");
   }
 
-  //float x, y, z;
-  //getCenter(x, y, z);
-
-  //cout << pszFilename << ' ' << x << ' ' << y << ' ' << z << endl;
-
   minVec.set( - getWidth()/2,  - getHeight()/2,  - getLength()/2);
   maxVec.set( + getWidth()/2,  + getHeight()/2,  + getLength()/2);
 
@@ -211,6 +204,7 @@ GLuint Model::loadTexture(const char *pszFilename)
 
   if( 0 != id )
   {
+    glBindTexture(GL_TEXTURE_2D, id);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -284,7 +278,8 @@ void Model::update()
 
 BoundingBox Model::boundingbox()
 {
-  return BoundingBox(minVec+mPos-mAnchor, maxVec+mPos-mAnchor);
+  Vector3 mAnchorOffset(mAnchor.x*getWidth(), mAnchor.y*getHeight(), mAnchor.z*getLength());
+  return BoundingBox(minVec+mPos-mAnchorOffset, maxVec+mPos-mAnchorOffset);
 }
 
 Model::~Model(void)
