@@ -174,7 +174,7 @@ GameScene::GameScene(void)
     mFields[i] = Field(road[i], roadDiretion[i]);
   }
 
-  int c[] = { 0, 4, 8, 9, 10, 14, 18, 19, 20, 24, 28, 29, 30, 34, 38, 39 };
+  int c[] = { 0, 4, 8, 10, 14, 18, 20, 24, 28, 30, 34, 38 };
   memcpy(mConnerIndex, c, sizeof(c));
 }
 
@@ -467,22 +467,38 @@ void GameScene::movePiece(int arrayIndex)
 
     if (mPredictMoveState[k] == MOVE_ILLEGAL)
       return;
-    if (mPredictMoveState[k] == MOVE_NORMAL)
+    if (mPredictMoveState[k] == MOVE_NORMAL || mPredictMoveState[k] == MOVE_HOME_OUTSIDE)
     {
+      /*if (mPredictMoveState[k] == MOVE_HOME_OUTSIDE)
+      {
       int index = getModelPositionIndex(mod->getPosition(), mFields, 40);
-      int predictIndex = getModelPositionIndex(mPredictPosition[k]->position, mFields, 40);
+
+      mFields[index].piece = NULL;
+      mPredictPosition[k]->piece = mod;
+      mPredictPosition[k]->piece->setArea(AREA_HOME);
+      }*/
+
+      int index = getModelPositionIndex(mod->getPosition(), mFields, 40);
+      int predictIndex;
+      if (mPredictMoveState[k] == MOVE_NORMAL)
+        predictIndex = getModelPositionIndex(mPredictPosition[k]->position, mFields, 40);
+      else if (mPredictMoveState[k] == MOVE_HOME_OUTSIDE)
+      {
+        predictIndex = mPlayerTurn*10-1;
+        predictIndex = predictIndex == -1 ? 39 : predictIndex;
+      }
 
       // Move with corner
       if (predictIndex > index)
       {
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 12; i++)
           if (index < mConnerIndex[i] && mConnerIndex[i] < predictIndex )
             target.push_back(mFields[mConnerIndex[i]]);
       }
-      else // corner at index 39 & 0
+      else // corner at index 38 & 0
       {
-        if (index < mConnerIndex[15])
-          target.push_back(mFields[mConnerIndex[15]]);
+        if (index < mConnerIndex[11])
+          target.push_back(mFields[mConnerIndex[11]]);
         if (predictIndex > mConnerIndex[0])
           target.push_back(mFields[mConnerIndex[0]]);
       }
@@ -500,9 +516,20 @@ void GameScene::movePiece(int arrayIndex)
       }
 
       mFields[index].piece = NULL;
-      mFields[predictIndex].piece = mod;
 
-      mod->jumpTo(target, MOVE_NORMAL);
+      if (mPredictMoveState[k] == MOVE_NORMAL)
+      {
+        mFields[predictIndex].piece = mod;
+      }
+      else if (mPredictMoveState[k] == MOVE_HOME_OUTSIDE)
+      {
+        target.push_back(*mPredictPosition[k]);
+
+        mPredictPosition[k]->piece = mod;
+        mPredictPosition[k]->piece->setArea(AREA_HOME);
+      }
+
+      mod->jumpTo(target, mPredictMoveState[k]);
       mPieceIsMoving = true;
       nextTurn();
     }
@@ -519,7 +546,7 @@ void GameScene::movePiece(int arrayIndex)
 
       if (mPredictMoveState[k] == MOVE_ATTACK)
       {
-        int index = getModelPositionIndex(mod->getPosition(), mHome, 16);
+        int index = getModelPositionIndex(mod->getPosition(), mFields, 40);
 
         mPredictPosition[k]->piece->setArea(AREA_OUT);
         mPredictPosition[k]->piece->setPosition(mPredictPosition[k]->piece->getInitPosition().position);
@@ -553,14 +580,14 @@ void GameScene::movePiece(int arrayIndex)
         mPredictPosition[k]->piece = mod;
       }
 
-      if (mPredictMoveState[k] == MOVE_HOME_OUTSIDE)
+      /*if (mPredictMoveState[k] == MOVE_HOME_OUTSIDE)
       {
         int index = getModelPositionIndex(mod->getPosition(), mFields, 40);
 
         mFields[index].piece = NULL;
         mPredictPosition[k]->piece = mod;
         mPredictPosition[k]->piece->setArea(AREA_HOME);
-      }
+      }*/
 
       mod->jumpTo(target, mPredictMoveState[k]);
       mPieceIsMoving = true;
@@ -690,12 +717,12 @@ void GameScene::predictNextMove(int number)
       || (indexFirstPos == 0 && indexNext < mDieNumber))
     {
       // From road to Home
-      if ((indexCurRoad == indexFirstPos-1 || indexCurRoad == indexFirstPos-1+40) 
-        && mDieNumber <= 4)
-      {
+      //if ((indexCurRoad == indexFirstPos-1 || indexCurRoad == indexFirstPos-1+40) 
+      //  && mDieNumber <= 4)
+      //{
         bool blocked = false;
         // Checking if no piece on the way to target field
-        for (int j = mPlayerTurn*4; j < mPlayerTurn*4 + mDieNumber; j++)
+        for (int j = mPlayerTurn*4; j < mPlayerTurn*4 + indexNext - indexFirstPos + 1; j++)
         {
           if (mHome[j].piece != NULL)
           {
@@ -708,10 +735,10 @@ void GameScene::predictNextMove(int number)
         // Piece move if the way is cleared
         if (!blocked)
         {
-          mPredictPosition[i] = &mHome[mPlayerTurn*4 + mDieNumber-1];
+          mPredictPosition[i] = &mHome[mPlayerTurn*4 + indexNext - indexFirstPos];
           mPredictMoveState[i] = MOVE_HOME_OUTSIDE; 
         }
-      }
+      //}
       // Dice > 4, can not move
       continue;
     }
@@ -720,7 +747,7 @@ void GameScene::predictNextMove(int number)
     // Checking if target field is not empty
     if (mFields[indexNext].piece != NULL)
     {
-      // Target piece is the same
+      // Target piece is allied
       if (mFields[indexNext].piece->getType() == mPlayerTurn)
       {
         // There is
