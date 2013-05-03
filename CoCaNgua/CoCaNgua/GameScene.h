@@ -20,7 +20,7 @@ class GameScene : public Scene
   // Model
   Board*              mBoard;
   Piece*              mPieces[16]; // 0:3 RED, 4:7 BLUE, 8:11 GREEN, 12:16 YELLOW
-  Piece*              tmp;
+  Piece*              tmpPiece;
   Rock*               mFieldModel[40];
   
   // Disable some players
@@ -42,7 +42,7 @@ class GameScene : public Scene
   bool mDieIsThrown;
   bool mustBeStart;
   bool mFullHome;
-  bool mPieceIsMoving;
+  MoveState mPieceMovingState;
 
   Turn mWinner;
   Ray mViewRay;

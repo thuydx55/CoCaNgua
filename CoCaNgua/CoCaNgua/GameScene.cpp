@@ -14,7 +14,7 @@ GameScene::GameScene(void)
   mDieIsThrown = false;
   mDieIsDrawn = true;
   mFullHome = false;
-  mPieceIsMoving = false;
+  mPieceMovingState = MOVE_ILLEGAL;
 
   mAutoCam = true;
   
@@ -201,10 +201,10 @@ void GameScene::initDie()
 
 void GameScene::initPiece()
 {
-  tmp = new Piece();
+  tmpPiece = new Piece();
   
-  tmp->loadModel("Models/knight.obj");
-  tmp->setAnchorPoint(Vector3(0, -0.5, 0));
+  tmpPiece->loadModel("Models/knight.obj");
+  tmpPiece->setAnchorPoint(Vector3(0, -0.5, 0));
 
 }
 
@@ -212,25 +212,25 @@ void GameScene::initAllPieces()
 {
   for (int i = 0; i < 4; i++)
   {
-    mPieces[i] = new Piece(tmp);
+    mPieces[i] = new Piece(tmpPiece);
     mPieces[i]->setPosition(mStartPos[i].position);
     mPieces[i]->setInitPosition(mStartPos[i]);
     mPieces[i]->setType(TURN_RED);
     mPieces[i]->setAngle(-90);
 
-    mPieces[4+i] = new Piece(tmp);
+    mPieces[4+i] = new Piece(tmpPiece);
     mPieces[4+i]->setPosition(mStartPos[4+i].position);
     mPieces[4+i]->setInitPosition(mStartPos[4+i]);
     mPieces[4+i]->setType(TURN_BLUE);
     mPieces[4+i]->setAngle(180);
 
-    mPieces[8+i] = new Piece(tmp);
+    mPieces[8+i] = new Piece(tmpPiece);
     mPieces[8+i]->setPosition(mStartPos[8+i].position);
     mPieces[8+i]->setInitPosition(mStartPos[8+i]);
     mPieces[8+i]->setType(TURN_GREEN);
     mPieces[8+i]->setAngle(90);
 
-    mPieces[12+i] = new Piece(tmp);
+    mPieces[12+i] = new Piece(tmpPiece);
     mPieces[12+i]->setPosition(mStartPos[12+i].position);
     mPieces[12+i]->setInitPosition(mStartPos[12+i]);
     mPieces[12+i]->setType(TURN_YELLOW);
@@ -532,7 +532,8 @@ void GameScene::movePiece(int arrayIndex)
       }
 
       mod->jumpTo(target, mPredictMoveState[k]);
-      mPieceIsMoving = true;
+      mPieceMovingState = mPredictMoveState[k];
+      tmpPiece = mod;
       nextTurn();
     }
     else
@@ -592,7 +593,8 @@ void GameScene::movePiece(int arrayIndex)
       }*/
 
       mod->jumpTo(target, mPredictMoveState[k]);
-      mPieceIsMoving = true;
+      mPieceMovingState = mPredictMoveState[k];
+      tmpPiece = mod;
       nextTurn();
     }
   }
@@ -851,17 +853,23 @@ void GameScene::update()
     this->predictNextMove(mDieNumber);
   }
 
-  if (mPieceIsMoving && !mDieIsDrawn )
+  if (mPieceMovingState != MOVE_ILLEGAL && !mDieIsDrawn && !mAutoCam)
   {
     if (checkAllModelIdle())
     {
-      if (wait(1))
+      if (wait(0.5))
       {
-        mPieceIsMoving = false;
+        mPieceMovingState = MOVE_ILLEGAL;
 
         mDieIsDrawn = true;
       }
     }
+  }
+
+  if (mPieceMovingState == MOVE_NORMAL || mPieceMovingState == MOVE_START ||
+    mPieceMovingState == MOVE_HOME_INSIDE || mPieceMovingState == MOVE_HOME_OUTSIDE)
+  {
+    mUserViewAngle = calcUserViewAngle(tmpPiece->getPosition());
   }
 
   if (mAutoCam)
@@ -877,7 +885,7 @@ void GameScene::update()
       curTheta += Math::TWO_PI;
     }
 
-    float delta = abs(curTheta - mUserViewAngle)/50;
+    float delta = abs(curTheta - mUserViewAngle)/30;
 
     if (abs(curTheta - mUserViewAngle) > 0.05)
     {
