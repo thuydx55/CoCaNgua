@@ -47,7 +47,6 @@ class GameScene : public Scene
   Turn mWinner;
   Ray mViewRay;
 
-  bool mAutoCam;
   float mUserViewAngle;
 
   void drawSence();
@@ -67,6 +66,7 @@ public:
 
   bool mDieIsDrawn;
   Turn mPlayerTurn;
+  bool mAutoCam;
 
   GameScene(void);
   ~GameScene(void);

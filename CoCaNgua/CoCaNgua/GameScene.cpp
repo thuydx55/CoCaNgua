@@ -866,8 +866,6 @@ void GameScene::update()
 
   if (mAutoCam)
   {
-    float delta = 0.05;
-
     float curTheta = Camera::inst().theta;
 
     if (curTheta - mUserViewAngle > Math::PI)
@@ -879,7 +877,9 @@ void GameScene::update()
       curTheta += Math::TWO_PI;
     }
 
-    if (abs(curTheta - mUserViewAngle) > delta)
+    float delta = abs(curTheta - mUserViewAngle)/50;
+
+    if (abs(curTheta - mUserViewAngle) > 0.05)
     {
       if (curTheta > mUserViewAngle)
         Camera::inst().rotateTheta(curTheta - delta);

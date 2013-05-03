@@ -142,6 +142,7 @@ void Mouse::processMouseMotion( int x, int y )
   if(mouseRightDown)
   {
     Camera::inst().rotate(x, y);
+    GameScene::inst().mAutoCam = false;
   }
 }
 
@@ -151,8 +152,10 @@ void Mouse::processMousePassiveMotion( int x, int y )
   {
   case APP_MENU:
     MainMenuScene::inst().processMousePassiveMotion(x, Graphic::inst().screenHeight-y);
+    break;
   case APP_GAME:
     GameScene::inst().processMousePassiveMotion(x, Graphic::inst().screenHeight-y);
+    break;
   default:
     break;
   }
