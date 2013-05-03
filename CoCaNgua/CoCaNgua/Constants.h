@@ -5,7 +5,7 @@
 
 #define DEBUG_BOUNDINGBOX       0
 #define DEBUG_CLICKING_RAY      0
-#define DEBUG_ORIGIN_AXES       0
+#define DEBUG_ORIGIN_AXES       1
 #define DEBUG_LIGHT_SOURCE      1
 #define DEBUG_SHOW_INFO         1
 
@@ -20,6 +20,10 @@
 #define DIE_TIME_USER_VIEW      1
 
 #define PIECE_CIRCLE_SIZE       1.5
+
+#define DIE_VIEW_SIZE           12
+
+#define CAM_AUTO_MOVING_TIME    1.5
 
 #define GLSYNTHESIZE(varType, varName, funName)\
 protected: varType varName;\

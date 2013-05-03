@@ -11,6 +11,8 @@ Camera::Camera(){
 	//glMatrixMode(GL_MODELVIEW);
 	//glLoadIdentity();
     //gluLookAt(eye.x,eye.y,eye.z,at.x,at.y,at.z,up.x,up.y,up.z);
+
+  zeroViewVector = Vector2(0, 1);
 };
 
 
@@ -31,6 +33,10 @@ void Camera::update(float x, float y){
     new_phi = 0.001;
 
   float new_theta = theta_old - (x-x_old)/50.0; 
+  if (new_theta > Math::PI)
+    new_theta -= Math::TWO_PI;
+  else if (new_theta < -Math::PI)
+    new_theta += Math::TWO_PI;
 
   theta = new_theta;
   phi = new_phi;
@@ -56,8 +62,8 @@ void Camera::zoom(float x){
   R += x;
   if (R < 3.0)
       R = 3.0;
-  if (R > 47.0)
-      R = 47.0;
+  if (R > 75.0)
+      R = 75.0;
   eye = transf_coord();
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
@@ -76,6 +82,20 @@ void Camera::pan(float x, float z){
 
 void Camera::rotate(float x, float y){
   update(x,y);
+  eye = transf_coord();
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  gluLookAt(eye.x,eye.y,eye.z,at.x,at.y,at.z,up.x,up.y,up.z);
+}
+
+void Camera::rotateTheta( float pTheta )
+{
+  theta = pTheta;
+  if (theta > Math::PI)
+    theta -= Math::TWO_PI;
+  else if (theta < -Math::PI)
+    theta += Math::TWO_PI;
+
   eye = transf_coord();
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();

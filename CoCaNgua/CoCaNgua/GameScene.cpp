@@ -15,6 +15,8 @@ GameScene::GameScene(void)
   mDieIsDrawn = true;
   mFullHome = false;
   mPieceIsMoving = false;
+
+  mAutoCam = true;
   
   lightPosition[0] = 0;
   lightPosition[1] = 50;
@@ -257,9 +259,9 @@ void GameScene::drawSence()
 #if DEBUG_CLICKING_RAY
   glDisable(GL_LIGHTING);
   glBegin(GL_LINES);
-  Vector3 a = viewRay.origin + 100*viewRay.direction;
+  Vector3 a = mViewRay.origin + 100*mViewRay.direction;
 
-  glVertex3f(viewRay.origin.x, viewRay.origin.y, viewRay.origin.z);
+  glVertex3f(mViewRay.origin.x, mViewRay.origin.y, mViewRay.origin.z);
   glVertex3f(a.x, a.y, a.z);
   glEnd();
   glEnable(GL_LIGHTING);  
@@ -336,7 +338,7 @@ void GameScene::drawSence()
 
   glPopMatrix();
 }
-#define DIE_VIEW_SIZE 12
+
 void GameScene::drawDie()
 {
   float left  = -DIE_VIEW_SIZE*Graphic::inst().screenWidth/Graphic::inst().screenHeight;
@@ -390,7 +392,7 @@ void GameScene::loop()
 
   drawSence();
   if (mDieIsDrawn)
-    drawDie();
+    drawDie(); 
 
   // Winnnnnnnnnnnnnnnnn
   if (mFullHome && checkAllModelIdle())
@@ -861,6 +863,34 @@ void GameScene::update()
       }
     }
   }
+
+  if (mAutoCam)
+  {
+    float delta = 0.05;
+
+    float curTheta = Camera::inst().theta;
+
+    if (curTheta - mUserViewAngle > Math::PI)
+    {
+      curTheta -= Math::TWO_PI;
+    }
+    else if (curTheta - mUserViewAngle < -Math::PI)
+    {
+      curTheta += Math::TWO_PI;
+    }
+
+    if (abs(curTheta - mUserViewAngle) > delta)
+    {
+      if (curTheta > mUserViewAngle)
+        Camera::inst().rotateTheta(curTheta - delta);
+      else
+        Camera::inst().rotateTheta(curTheta + delta);
+    }
+    else
+    {
+      mAutoCam = false;
+    }
+  }
 }
 
 // Disable some Players
@@ -909,6 +939,7 @@ void GameScene::processMousePassiveMotion( int x, int y )
     if (index >= 0 && mPieces[index]->isHighlight())
     {
       mPieces[index]->selected(true);
+      mUserViewAngle = calcUserViewAngle(mPieces[index]->getPosition());
     }
     selectedIndex = index;
   }
@@ -941,7 +972,7 @@ int GameScene::identifyModelClicked( int mouse_x, int mouse_y )
 
   //cout << rayOrigin.toString();
 
-  viewRay.set(rayOrigin.toVector3(), rayVec);
+  mViewRay.set(rayOrigin.toVector3(), rayVec);
 
   Piece** piecesArray = getPiecesArray();
 
@@ -951,7 +982,7 @@ int GameScene::identifyModelClicked( int mouse_x, int mouse_y )
   for (int i = 0; i < 16; i++)
   {
     // checking click-ray intersected with piece
-    if (viewRay.hasIntersected(piecesArray[i]->boundingbox()))
+    if (mViewRay.hasIntersected(piecesArray[i]->boundingbox()))
     {
       //cout << "intersected" << endl;
       
@@ -974,6 +1005,21 @@ int GameScene::identifyModelClicked( int mouse_x, int mouse_y )
   }
 
   return index;
+}
+
+
+float GameScene::calcUserViewAngle( Vector3 pV )
+{
+  mAutoCam = true;
+
+  Vector2 viewVector = Vector2(pV.x, pV.z) - Vector2(Camera::inst().at.x, Camera::inst().at.z);
+  float angle = acos(Vector2::dot(viewVector, Camera::inst().zeroViewVector)/
+    (viewVector.magnitude() * Camera::inst().zeroViewVector.magnitude()));
+
+  if (viewVector.x >= 0)
+    return angle;
+  else
+    return -angle;
 }
 
 GameScene::~GameScene(void)

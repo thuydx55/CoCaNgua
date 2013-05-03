@@ -12,6 +12,8 @@
 class Camera {
 
 public:
+    Vector2 zeroViewVector;
+
     Vector3 eye;
     Vector3 at;
     Vector3 up;
@@ -35,6 +37,7 @@ public:
     void zoom(float x);
     void pan(float x, float y);
     void rotate(float x, float y);
+    void rotateTheta(float pTheta);
 
 private:
     Vector3 transf_coord();

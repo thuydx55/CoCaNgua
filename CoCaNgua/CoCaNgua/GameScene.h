@@ -45,7 +45,10 @@ class GameScene : public Scene
   bool mPieceIsMoving;
 
   Turn mWinner;
-  Ray viewRay;
+  Ray mViewRay;
+
+  bool mAutoCam;
+  float mUserViewAngle;
 
   void drawSence();
   void drawDie();
@@ -54,6 +57,7 @@ class GameScene : public Scene
   void nextTurn();
 
   int identifyModelClicked(int mouse_x, int mouse_y);
+  float calcUserViewAngle(Vector3 pV);
 
 public:
   Die*                mDice;
