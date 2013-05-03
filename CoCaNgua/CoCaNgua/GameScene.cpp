@@ -336,13 +336,13 @@ void GameScene::drawSence()
 
   glPopMatrix();
 }
-
+#define DIE_VIEW_SIZE 12
 void GameScene::drawDie()
 {
-  float left = -10*Graphic::inst().screenWidth/Graphic::inst().screenHeight;
-  float right = 10*Graphic::inst().screenWidth/Graphic::inst().screenHeight;
-  float bot = -10;
-  float top = 10;
+  float left  = -DIE_VIEW_SIZE*Graphic::inst().screenWidth/Graphic::inst().screenHeight;
+  float right =  DIE_VIEW_SIZE*Graphic::inst().screenWidth/Graphic::inst().screenHeight;
+  float bot   = -DIE_VIEW_SIZE;
+  float top   =  DIE_VIEW_SIZE;
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
   {

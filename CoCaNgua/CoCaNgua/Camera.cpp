@@ -6,7 +6,7 @@ Camera::Camera(){
 	up = Vector3(0.0,1.0,0.0);
 	theta = Math::PI/3;
 	phi = Math::PI/3;
-	R = 43.0;
+	R = 50.0;
   eye = transf_coord();
 	//glMatrixMode(GL_MODELVIEW);
 	//glLoadIdentity();
