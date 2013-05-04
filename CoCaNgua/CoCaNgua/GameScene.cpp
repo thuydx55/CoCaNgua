@@ -494,8 +494,11 @@ void GameScene::movePiece(int arrayIndex)
         predictIndex = predictIndex == -1 ? 39 : predictIndex;
       }
 
-      // Move with corner
-      if (predictIndex > index)
+      if (predictIndex == index)
+      {
+
+      }
+      else if (predictIndex > index) // Move with corner
       {
         for (int i = 0; i < 12; i++)
           if (index < mConnerIndex[i] && mConnerIndex[i] < predictIndex )
@@ -729,6 +732,12 @@ void GameScene::predictNextMove(int number)
       //  && mDieNumber <= 4)
       //{
         bool blocked = false;
+
+        if (indexNext - indexFirstPos > 3)
+        {
+          blocked = true;
+        }
+
         // Checking if no piece on the way to target field
         for (int j = mPlayerTurn*4; j < mPlayerTurn*4 + indexNext - indexFirstPos + 1; j++)
         {
