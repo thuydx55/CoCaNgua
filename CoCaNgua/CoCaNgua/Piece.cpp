@@ -216,7 +216,7 @@ void Piece::jumpTo( const vector<Field> &pTarget, MoveState pMoveState )
       mDuration.push_back(2);
 
       mJumps.push_back(1);
-      mDuration.push_back(0.5);
+      mDuration.push_back(0.15);
     }
 
     mTimer.start();
@@ -229,7 +229,7 @@ void Piece::update()
 
   double tEnlapse = mTimer.elapsed();
 
-  if (mState == MODEL_JUMP)
+  if (mState != MODEL_IDLE)
   {
     Vector3 target = mTarget[id].position;
 
@@ -238,6 +238,7 @@ void Piece::update()
     {
       x = z = 0;
       y = (target - mStartPos).y * (tEnlapse / mDuration[id]);
+      mState = MODEL_ATTACK;
     }
     else
     {

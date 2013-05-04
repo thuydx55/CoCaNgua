@@ -494,6 +494,7 @@ void GameScene::movePiece(int arrayIndex)
         predictIndex = predictIndex == -1 ? 39 : predictIndex;
       }
 
+      // Piece is at under Home
       if (predictIndex == index)
       {
 
@@ -871,6 +872,11 @@ void GameScene::update()
         mDieIsDrawn = true;
       }
     }
+  }
+
+  if (tmpPiece && tmpPiece->getState() == MODEL_ATTACK)
+  {
+    mPieceMovingState = MOVE_ILLEGAL;
   }
 
   if (mPieceMovingState == MOVE_NORMAL || mPieceMovingState == MOVE_START ||

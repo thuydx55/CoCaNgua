@@ -52,8 +52,8 @@ enum MoveState
 enum PieceState
 {
   MODEL_IDLE,
-  MODEL_MOVE,
-  MODEL_JUMP
+  MODEL_JUMP,
+  MODEL_ATTACK
 };
 
 enum DieState
