@@ -727,36 +727,30 @@ void GameScene::predictNextMove(int number)
     if ((indexFirstPos > indexCurRoad && indexFirstPos <= indexNext)
       || (indexFirstPos == 0 && indexNext < mDieNumber))
     {
-      // From road to Home
-      //if ((indexCurRoad == indexFirstPos-1 || indexCurRoad == indexFirstPos-1+40) 
-      //  && mDieNumber <= 4)
-      //{
-        bool blocked = false;
+      bool blocked = false;
 
-        if (indexNext - indexFirstPos > 3)
+      if (indexNext - indexFirstPos > 3)
+      {
+        blocked = true;
+      }
+
+      // Checking if no piece on the way to target field
+      for (int j = mPlayerTurn*4; j < mPlayerTurn*4 + indexNext - indexFirstPos + 1; j++)
+      {
+        if (mHome[j].piece != NULL)
         {
+          // There is
           blocked = true;
+          break;
         }
+      }
 
-        // Checking if no piece on the way to target field
-        for (int j = mPlayerTurn*4; j < mPlayerTurn*4 + indexNext - indexFirstPos + 1; j++)
-        {
-          if (mHome[j].piece != NULL)
-          {
-            // There is
-            blocked = true;
-            break;
-          }
-        }
-
-        // Piece move if the way is cleared
-        if (!blocked)
-        {
-          mPredictPosition[i] = &mHome[mPlayerTurn*4 + indexNext - indexFirstPos];
-          mPredictMoveState[i] = MOVE_HOME_OUTSIDE; 
-        }
-      //}
-      // Dice > 4, can not move
+      // Piece move if the way is cleared
+      if (!blocked)
+      {
+        mPredictPosition[i] = &mHome[mPlayerTurn*4 + indexNext - indexFirstPos];
+        mPredictMoveState[i] = MOVE_HOME_OUTSIDE; 
+      }
       continue;
     }
 
@@ -920,6 +914,7 @@ void GameScene::update()
     if (abs(curTheta - mUserViewAngle) > 0.05)
     {
       float delta = abs(curTheta - mUserViewAngle)/30;
+      delta = delta > 0.02 ? delta : 0.015;
       if (curTheta > mUserViewAngle)
         Camera::inst().rotateTheta(curTheta - delta);
       else
