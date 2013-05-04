@@ -12,6 +12,9 @@
 class Camera {
 
 public:
+    const static float Radius;
+    const static Vector3 origin;
+
     Vector2 zeroViewVector;
 
     Vector3 eye;

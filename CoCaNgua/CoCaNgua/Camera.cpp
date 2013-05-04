@@ -1,5 +1,7 @@
 #include "Camera.h"
 
+const float Camera::Radius = 50;
+const Vector3 Camera::origin = Vector3();
 
 Camera::Camera(){
   at = Vector3(0.0,0.0,0.0);

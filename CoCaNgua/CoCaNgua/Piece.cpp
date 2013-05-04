@@ -1,4 +1,5 @@
 #include "Piece.h"
+#include "Camera.h"
 
 int id = 0;
 GLfloat floorPlane[4] = {
@@ -199,9 +200,21 @@ void Piece::jumpTo( const vector<Field> &pTarget, MoveState pMoveState )
         mDuration.push_back(delta.magnitude() * 0.25);
       }
     }
-    else if (pMoveState == MOVE_ATTACK || pMoveState == MOVE_START || pMoveState == MOVE_START_ATTACK)
+    else if (pMoveState == MOVE_START)
     {
       mHeight = 10;
+      mJumps.push_back(1);
+      mDuration.push_back(0.5);
+    }
+    else if (pMoveState == MOVE_ATTACK || pMoveState == MOVE_START_ATTACK)
+    {
+      mTarget.push_back(mTarget[0]);
+      mTarget[0].position.y += getHeight();
+
+      mHeight = 3;
+      mJumps.push_back(1);
+      mDuration.push_back(2);
+
       mJumps.push_back(1);
       mDuration.push_back(0.5);
     }
@@ -220,11 +233,21 @@ void Piece::update()
   {
     Vector3 target = mTarget[id].position;
 
-    float frac = fmodf((tEnlapse / mDuration[id]) * mJumps[id], 1);
-    float y = (mHeight * 4 * frac * (1 - frac));
-    y += target.y * tEnlapse;
-    float x = (target - mStartPos).x * (tEnlapse / mDuration[id]);
-    float z = (target - mStartPos).z * (tEnlapse / mDuration[id]);
+    float x, y, z;
+    if (id > 0 && target.x == mTarget[id-1].position.x && target.z == mTarget[id-1].position.z)
+    {
+      x = z = 0;
+      y = (target - mStartPos).y * (tEnlapse / mDuration[id]);
+    }
+    else
+    {
+      float frac = fmodf((tEnlapse / mDuration[id]) * mJumps[id], 1);
+      y = (mHeight * 4 * frac * (1 - frac));
+      y += (target - mStartPos).y * (tEnlapse / mDuration[id]);
+      x = (target - mStartPos).x * (tEnlapse / mDuration[id]);
+      z = (target - mStartPos).z * (tEnlapse / mDuration[id]);
+    }
+    
 
     setPosition(Vector3(mStartPos.x + x, mStartPos.y + y, mStartPos.z + z));
 

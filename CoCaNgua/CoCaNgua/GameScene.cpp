@@ -236,6 +236,10 @@ void GameScene::initAllPieces()
     mPieces[12+i]->setType(TURN_YELLOW);
   }
 
+  mPieces[4]->setPosition(mFields[6].position);
+  mFields[6].piece = mPieces[4];
+
+  tmpPiece = NULL;
   //delete tmp;
 }
 
@@ -871,6 +875,25 @@ void GameScene::update()
   {
     mUserViewAngle = calcUserViewAngle(tmpPiece->getPosition());
   }
+  else if (mPieceMovingState == MOVE_ATTACK || mPieceMovingState == MOVE_START_ATTACK)
+  {
+    Camera::inst().rotateTheta(Camera::inst().theta + 0.1);
+    mUserViewAngle = Camera::inst().theta;
+
+    Camera::inst().R = 25;
+    Camera::inst().at = tmpPiece->getPosition();
+  }
+  else
+  {
+    Camera::inst().R = Camera::Radius;
+    Camera::inst().at = Camera::origin;
+    if (tmpPiece)
+    {
+      mUserViewAngle = calcUserViewAngle(tmpPiece->getPosition());
+      Camera::inst().rotateTheta(mUserViewAngle);
+      tmpPiece = NULL;
+    }
+  }
 
   if (mAutoCam)
   {
@@ -885,10 +908,9 @@ void GameScene::update()
       curTheta += Math::TWO_PI;
     }
 
-    float delta = abs(curTheta - mUserViewAngle)/30;
-
     if (abs(curTheta - mUserViewAngle) > 0.05)
     {
+      float delta = abs(curTheta - mUserViewAngle)/30;
       if (curTheta > mUserViewAngle)
         Camera::inst().rotateTheta(curTheta - delta);
       else
