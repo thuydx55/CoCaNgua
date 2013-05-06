@@ -787,9 +787,8 @@ void GameScene::predictNextMove(int number)
   for (int i = 0; i < 4; i++)
   {
     // Mapping index to position
-    if (predictIndexPos[i] == -1)
-      continue;
-    mPredictPosition[i] = &mFields[predictIndexPos[i]];
+    if (predictIndexPos[i] != -1)
+      mPredictPosition[i] = &mFields[predictIndexPos[i]];
 
     // Must be start
     if (mustBeStart && mPredictMoveState[i] != MOVE_START && mPredictMoveState[i] != MOVE_START_ATTACK)
