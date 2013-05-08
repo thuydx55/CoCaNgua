@@ -24,6 +24,7 @@ using namespace std;
 
 void displayCB();
 void reshapeCB(int w, int h);
+void idleCB();
 void timerCB(int millisec);
 void keyboardCB(unsigned char key, int x, int y);
 void mouseCB(int button, int stat, int x, int y);
@@ -40,6 +41,7 @@ const float DELTA_TIME      = 33;
 Timer mTimer;
 float color[4] = {1,1,1,1};
 void* font = GLUT_BITMAP_HELVETICA_18;
+double currentTime = 0;
 
 ///////////////////////////////////////////////////////////////////////////////
 // initialize global variables
@@ -79,8 +81,9 @@ int initGLUT(int argc, char **argv)
 
   // register GLUT callback functions
   glutDisplayFunc(displayCB);
-  glutTimerFunc(DELTA_TIME, timerCB, 0);             // redraw only every given millisec
+  //glutTimerFunc(DELTA_TIME, timerCB, 0);             // redraw only every given millisec
   glutReshapeFunc(reshapeCB);
+  glutIdleFunc(idleCB);
   glutKeyboardFunc(keyboardCB);
   glutMouseFunc(mouseCB);
   glutMotionFunc(mouseMotionCB);
@@ -170,10 +173,6 @@ void showInfo(float elapse)
 
 void displayCB( void )  {
 
-#if DEBUG_SHOW_INFO
-  mTimer.start();
-#endif
-
   glStencilMask(0xffffffff);
   glClearStencil(0x4);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -205,12 +204,13 @@ void displayCB( void )  {
   }
 
 #if DEBUG_SHOW_INFO
-  double elapsed = mTimer.stop();
-  if (Math::closeEnough(elapsed, 0))
+  double elapse = mTimer.elapsed() - currentTime;
+  currentTime = mTimer.elapsed();
+  if (Math::closeEnough(elapse, 0))
   {
-    elapsed = 0.001;
+    elapse = 0.001;
   }
-  showInfo(elapsed);
+  showInfo(elapse);
 #endif
 
   glutSwapBuffers();
@@ -243,6 +243,13 @@ void reshapeCB(int width, int height) {
   gluLookAt(Camera::inst().eye.x, Camera::inst().eye.y, Camera::inst().eye.z,
             Camera::inst().at.x, Camera::inst().at.y, Camera::inst().at.z,
             0, 1, 0 ); // eye(x,y,z), focal(x,y,z), up(x,y,z)
+}
+
+void idleCB()
+{
+  //GameScene::inst().lightAngle+=0.3;
+
+  glutPostRedisplay(); //Redraw scene
 }
 
 /*
@@ -293,6 +300,7 @@ int main( int argc, char *argv[] )  {
 
   LoadingScene::inst().initSprite();
 
+  mTimer.start();
   glutMainLoop( );
 }
 

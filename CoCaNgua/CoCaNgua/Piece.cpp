@@ -225,7 +225,7 @@ void Piece::jumpTo( const vector<Field> &pTarget, MoveState pMoveState )
 
 void Piece::update()
 {
-  circleAngle = (circleAngle > 360 ? circleAngle - 360 : circleAngle) + 0.3;
+  circleAngle = (circleAngle > 360 ? circleAngle - 360 : circleAngle) + 0.1;
 
   double tEnlapse = mTimer.elapsed();
 
