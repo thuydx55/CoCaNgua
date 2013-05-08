@@ -3,6 +3,7 @@
 bool allMoveIllegal = true;
 bool noPieceInTheGame = true;
 int selectedIndex = -1;
+Piece* targetPiece = NULL;
 
 GameScene::GameScene(void)
 {
@@ -560,8 +561,7 @@ void GameScene::movePiece(int arrayIndex)
         int index = getModelPositionIndex(mod->getPosition(), mFields, 40);
 
         mPredictPosition[k]->piece->setArea(AREA_OUT);
-        mPredictPosition[k]->piece->setPosition(mPredictPosition[k]->piece->getInitPosition().position);
-        mPredictPosition[k]->piece->setAngle(mPredictPosition[k]->piece->getInitPosition().direction);
+        targetPiece = mPredictPosition[k]->piece;
 
         mFields[index].piece = NULL;
         mPredictPosition[k]->piece = mod;
@@ -570,8 +570,7 @@ void GameScene::movePiece(int arrayIndex)
       if (mPredictMoveState[k] == MOVE_START_ATTACK)
       {
         mPredictPosition[k]->piece->setArea(AREA_OUT);
-        mPredictPosition[k]->piece->setPosition(mPredictPosition[k]->piece->getInitPosition().position);
-        mPredictPosition[k]->piece->setAngle(mPredictPosition[k]->piece->getInitPosition().direction);
+        targetPiece = mPredictPosition[k]->piece;
 
         mPredictPosition[k]->piece = mod;
         mPredictPosition[k]->piece->setArea(AREA_GAME);
@@ -864,7 +863,7 @@ void GameScene::update()
   {
     if (checkAllModelIdle())
     {
-      if (wait(0.5))
+      if (wait(1))
       {
         mPieceMovingState = MOVE_ILLEGAL;
 
@@ -880,6 +879,14 @@ void GameScene::update()
     Camera::inst().at = Camera::origin;
     mUserViewAngle = calcUserViewAngle(tmpPiece->getPosition());
     Camera::inst().rotateTheta(mUserViewAngle);
+
+    //tmpPiece = NULL;
+
+    if (targetPiece)
+    {
+      targetPiece->setPosition(targetPiece->getInitPosition().position);
+      targetPiece->setAngle(targetPiece->getInitPosition().direction); 
+    }
   }
 
   if (mPieceMovingState == MOVE_NORMAL || mPieceMovingState == MOVE_START ||

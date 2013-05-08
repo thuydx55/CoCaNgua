@@ -52,13 +52,6 @@ void KeyBoard::processKey( unsigned char key )
   case 'd':
     GameScene::inst().mDieIsDrawn = !GameScene::inst().mDieIsDrawn;
     break;
-
-  case 'r':
-    GameScene::inst().mDice->rollDie();
-    break;
-  case 't':
-    GameScene::inst().mDice->setState(DIE_WAITING);
-
   default:
     break;
   }
