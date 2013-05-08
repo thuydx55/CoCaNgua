@@ -875,7 +875,11 @@ void GameScene::update()
 
   if (tmpPiece && tmpPiece->getState() == MODEL_ATTACK)
   {
-    mPieceMovingState = MOVE_ILLEGAL;
+    mPieceMovingState = MOVE_NORMAL;
+    Camera::inst().R = Camera::Radius;
+    Camera::inst().at = Camera::origin;
+    mUserViewAngle = calcUserViewAngle(tmpPiece->getPosition());
+    Camera::inst().rotateTheta(mUserViewAngle);
   }
 
   if (mPieceMovingState == MOVE_NORMAL || mPieceMovingState == MOVE_START ||
@@ -885,7 +889,7 @@ void GameScene::update()
   }
   else if (mPieceMovingState == MOVE_ATTACK || mPieceMovingState == MOVE_START_ATTACK)
   {
-    Camera::inst().rotateTheta(Camera::inst().theta + 0.1);
+    Camera::inst().rotateTheta(Camera::inst().theta + 0.05);
     mUserViewAngle = Camera::inst().theta;
 
     Camera::inst().R = 25;
