@@ -12,6 +12,10 @@
 *.la
 *.a
 
+# all microsoft word temp files
+~*.docx
+~*.doc
+
 CoCaNgua/CoCaNgua/CoCaNgua.exe
 CoCaNgua/CoCaNgua/CoCaNgua.ilk
 CoCaNgua/CoCaNgua/CoCaNgua.pdb
