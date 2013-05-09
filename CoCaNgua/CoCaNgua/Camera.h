@@ -40,7 +40,7 @@ public:
     void zoom(float x);
     void pan(float x, float y);
     void rotate(float x, float y);
-    void rotateTheta(float pTheta);
+    void updateAngle();
 
 private:
     Vector3 transf_coord();

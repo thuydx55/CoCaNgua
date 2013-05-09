@@ -191,6 +191,7 @@ void GameScene::initBoard()
 {
   mBoard       = new Board();
   mBoard->loadModel("Models/board.obj");
+  mBoard->setPosition(Vector3(0, -0.1, 0));
   //mBoard->setAnchorPoint(Vector3(0, 0.5, 0));
 
   mSky         = new Sky();
@@ -883,7 +884,8 @@ void GameScene::update()
     Camera::inst().R = Camera::Radius;
     Camera::inst().at = Camera::origin;
     mUserViewAngle = calcUserViewAngle(tmpPiece->getPosition());
-    Camera::inst().rotateTheta(mUserViewAngle);
+    Camera::inst().theta = mUserViewAngle;
+    Camera::inst().updateAngle();
 
     //tmpPiece = NULL;
 
@@ -901,7 +903,8 @@ void GameScene::update()
   }
   else if (mPieceMovingState == MOVE_ATTACK || mPieceMovingState == MOVE_START_ATTACK)
   {
-    Camera::inst().rotateTheta(Camera::inst().theta + 0.05);
+    Camera::inst().theta += 0.05;
+    Camera::inst().updateAngle();
     mUserViewAngle = Camera::inst().theta;
 
     Camera::inst().R = 25;
@@ -914,7 +917,8 @@ void GameScene::update()
     if (tmpPiece)
     {
       mUserViewAngle = calcUserViewAngle(tmpPiece->getPosition());
-      Camera::inst().rotateTheta(mUserViewAngle);
+      Camera::inst().theta = mUserViewAngle;
+      Camera::inst().updateAngle();
       tmpPiece = NULL;
     }
   }
@@ -922,6 +926,7 @@ void GameScene::update()
   if (mAutoCam)
   {
     float curTheta = Camera::inst().theta;
+    float curPhi = Camera::inst().phi;
 
     if (curTheta - mUserViewAngle > Math::PI)
     {
@@ -932,16 +937,29 @@ void GameScene::update()
       curTheta += Math::TWO_PI;
     }
 
+    if (abs(curPhi - Math::PI/3) > 0.01)
+    {
+      float deltaPhi = abs(curPhi - Math::PI/3)/30;
+      deltaPhi = deltaPhi > 0.01 ? deltaPhi : 0.005;
+      if (curPhi > Math::PI/3)
+        Camera::inst().phi -= deltaPhi;
+      else
+        Camera::inst().phi += deltaPhi;
+
+      Camera::inst().updateAngle();
+    }
     if (abs(curTheta - mUserViewAngle) > 0.05)
     {
-      float delta = abs(curTheta - mUserViewAngle)/30;
-      delta = delta > 0.02 ? delta : 0.015;
+      float deltaTheta = abs(curTheta - mUserViewAngle)/30;
+      deltaTheta = deltaTheta > 0.02 ? deltaTheta : 0.015;
       if (curTheta > mUserViewAngle)
-        Camera::inst().rotateTheta(curTheta - delta);
+        Camera::inst().theta -= deltaTheta;
       else
-        Camera::inst().rotateTheta(curTheta + delta);
+        Camera::inst().theta += deltaTheta;
+
+      Camera::inst().updateAngle();
     }
-    else
+    if (abs(curPhi - Math::PI/3) <= 0.01 && abs(curTheta - mUserViewAngle) <= 0.05)
     {
       mAutoCam = false;
     }

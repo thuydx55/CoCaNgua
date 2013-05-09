@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-const float Camera::Radius = 50;
+const float Camera::Radius = 55;
 const Vector3 Camera::origin = Vector3();
 
 Camera::Camera(){
@@ -8,7 +8,7 @@ Camera::Camera(){
 	up = Vector3(0.0,1.0,0.0);
 	theta = Math::PI/3;
 	phi = Math::PI/3;
-	R = 50.0;
+	R = 55.0;
   eye = transf_coord();
 	//glMatrixMode(GL_MODELVIEW);
 	//glLoadIdentity();
@@ -90,9 +90,8 @@ void Camera::rotate(float x, float y){
   gluLookAt(eye.x,eye.y,eye.z,at.x,at.y,at.z,up.x,up.y,up.z);
 }
 
-void Camera::rotateTheta( float pTheta )
+void Camera::updateAngle()
 {
-  theta = pTheta;
   if (theta > Math::PI)
     theta -= Math::TWO_PI;
   else if (theta < -Math::PI)
