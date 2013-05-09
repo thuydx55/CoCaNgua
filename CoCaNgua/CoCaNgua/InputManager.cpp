@@ -43,12 +43,6 @@ void KeyBoard::processKey( unsigned char key )
   case '6':
     GameScene::inst().predictNextMove(key-48);
     break;
-  case 'm':
-    GameScene::inst().predictNextMove(rand() % 6 +1);
-    break;
-  case 'p':
-    cout << Light::inst().getPosition()[0] << ' ' << Light::inst().getPosition()[1] << ' ' << Light::inst().getPosition()[2] << ' ' << Light::inst().getPosition()[3] << endl;
-    break;
   case 'd':
     GameScene::inst().mDieIsDrawn = !GameScene::inst().mDieIsDrawn;
     break;

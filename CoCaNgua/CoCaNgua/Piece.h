@@ -57,8 +57,8 @@ class Piece : public Model
   bool                mHighlight;
   GLfloat             mHighlightColor[4];
   bool                mSelected;
-  bool				  mShadow;
-  float floorShadow[4][4];
+  bool                mShadow;
+  float               floorShadow[4][4];
 
   Timer mTimer;
 
@@ -66,7 +66,7 @@ class Piece : public Model
   float             mHeight;
   vector<float>     mDuration;
   Vector3           mStartPos;
-  vector<Field>   mTarget;
+  vector<Field>     mTarget;
 
   void shadowMatrix(GLfloat shadowMat[4][4], GLfloat groundplane[4], GLfloat lightpos[4]);
 
