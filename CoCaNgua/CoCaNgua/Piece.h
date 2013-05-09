@@ -2,6 +2,7 @@
 #define _CG_PIECE_H_
 
 #include "Model.h"
+#include "Knife.h"
 #include "Constants.h"
 #include "Sprite2D.h"
 
@@ -50,6 +51,8 @@ class Piece : public Model
   GLSYNTHESIZE(Area, mArea, Area);
 
   Sprite2D* mCircle;
+  Knife*    mKnife;
+  bool      mDrawKnife;
 
   Turn mType;
   int mIndexFirstPos;
@@ -91,6 +94,9 @@ public:
   Turn getType();
   void setType(Turn pType);
   int getIndexFirstPos();
+
+  void attack(bool value);
+  bool isAttacking();
 
   void jumpTo(const vector<Field> &pTarget, MoveState pMoveState);
   void update();
@@ -169,6 +175,16 @@ inline void Piece::setHighLightColor( GLfloat red, GLfloat green, GLfloat blue, 
   mHighlightColor[1] = green;
   mHighlightColor[2] = blue;
   mHighlightColor[3] = alpha;
+}
+
+inline void Piece::attack(bool value)
+{
+  mDrawKnife = value;
+}
+
+inline bool Piece::isAttacking()
+{
+  return mDrawKnife;
 }
 
 #endif // !_CG_PIECE_H_

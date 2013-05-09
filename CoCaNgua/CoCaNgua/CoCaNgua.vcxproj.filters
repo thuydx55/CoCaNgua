@@ -82,6 +82,7 @@
     <ClCompile Include="Sky.cpp">
       <Filter>Classes\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Knife.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -180,6 +181,7 @@
     <ClInclude Include="Sky.h">
       <Filter>Classes\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Knife.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Classes">

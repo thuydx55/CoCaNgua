@@ -470,6 +470,7 @@ void GameScene::movePiece(int arrayIndex)
     return;
 
   Piece* mod = mPieces[arrayIndex];
+  mod->attack(false);
   Turn playerTurn = mPlayerTurn;
 
   if (mod != NULL && mod->getType() == mPlayerTurn && checkAllModelIdle())
@@ -842,6 +843,8 @@ void GameScene::predictNextMove(int number)
     if (mPredictMoveState[i] != MOVE_ILLEGAL)
     {
       mPieces[mPlayerTurn*4+i]->highlight(true);
+      if (mPredictMoveState[mPlayerTurn*4+i] == MOVE_ATTACK)
+        mPieces[mPlayerTurn*4+i]->attack(true);
       allMoveIllegal = false;
       noPieceInTheGame = false;
     }

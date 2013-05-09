@@ -12,6 +12,7 @@ Piece::Piece(void)
   mHighlight    = false;
   mShadow       = true;
   mSelected     = false;
+  mDrawKnife    = false;
 
   mHighlightThickness =  0.7;
   mHighlightColor[0] = 0.8;
@@ -22,7 +23,9 @@ Piece::Piece(void)
   mState = MODEL_IDLE;
   mArea = AREA_OUT;
 
-  mCircle = Sprite2D::create("Models/circle.png");
+  mCircle = Sprite2D::create("img/circle.png");
+  mKnife = new Knife();
+  mKnife->loadModel("Models/knife.obj");
 }
 
 Piece::Piece( const Piece* other )
@@ -69,6 +72,14 @@ void Piece::drawModel()
         mPos.z - mAnchor.z*getLength());
       glRotatef(mAngleRotate, mRotateAxis.x, mRotateAxis.y, mRotateAxis.z);
 
+      if (mDrawKnife)
+      {
+        glPushMatrix();
+        glTranslatef(mAnchor.x*getWidth(), mAnchor.y*getHeight() + 2*getHeight(), mAnchor.z*getLength());
+        mKnife->setAngleRotate(circleAngle);
+        mKnife->drawModel();
+        glPopMatrix(); 
+      }
 
       if(mHighlight)
       {
