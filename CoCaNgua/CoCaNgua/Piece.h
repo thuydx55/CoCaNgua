@@ -3,6 +3,7 @@
 
 #include "Model.h"
 #include "Knife.h"
+#include "Shield.h"
 #include "Constants.h"
 #include "Sprite2D.h"
 
@@ -52,7 +53,9 @@ class Piece : public Model
 
   Sprite2D* mCircle;
   Knife*    mKnife;
+  Shield*   mShield;
   bool      mDrawKnife;
+  bool      mDrawShield;
 
   Turn mType;
   int mIndexFirstPos;
@@ -97,6 +100,8 @@ public:
 
   void attack(bool value);
   bool isAttacking();
+  void defence(bool value);
+  bool isDefencing();
 
   void jumpTo(const vector<Field> &pTarget, MoveState pMoveState);
   void update();
@@ -185,6 +190,16 @@ inline void Piece::attack(bool value)
 inline bool Piece::isAttacking()
 {
   return mDrawKnife;
+}
+
+inline void Piece::defence(bool value)
+{
+  mDrawShield = value;
+}
+
+inline bool Piece::isDefencing()
+{
+  return mDrawShield;
 }
 
 #endif // !_CG_PIECE_H_

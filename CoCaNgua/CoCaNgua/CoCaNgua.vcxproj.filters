@@ -82,7 +82,12 @@
     <ClCompile Include="Sky.cpp">
       <Filter>Classes\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Knife.cpp" />
+    <ClCompile Include="Knife.cpp">
+      <Filter>Classes\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Shield.cpp">
+      <Filter>Classes\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -181,7 +186,12 @@
     <ClInclude Include="Sky.h">
       <Filter>Classes\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Knife.h" />
+    <ClInclude Include="Knife.h">
+      <Filter>Classes\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Shield.h">
+      <Filter>Classes\Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Classes">

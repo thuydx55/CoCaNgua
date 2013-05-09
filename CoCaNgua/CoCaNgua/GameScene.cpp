@@ -569,6 +569,7 @@ void GameScene::movePiece(int arrayIndex)
 
         mPredictPosition[k]->piece->setArea(AREA_OUT);
         targetPiece = mPredictPosition[k]->piece;
+        targetPiece->defence(false);
 
         mFields[index].piece = NULL;
         mPredictPosition[k]->piece = mod;
@@ -844,7 +845,10 @@ void GameScene::predictNextMove(int number)
     {
       mPieces[mPlayerTurn*4+i]->highlight(true);
       if (mPredictMoveState[mPlayerTurn*4+i] == MOVE_ATTACK)
+      {
         mPieces[mPlayerTurn*4+i]->attack(true);
+        mPredictPosition[i]->piece->defence(true);
+      }
       allMoveIllegal = false;
       noPieceInTheGame = false;
     }

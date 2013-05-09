@@ -98,6 +98,7 @@
     <ClCompile Include="Rock.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SelectPlayersScene.cpp" />
+    <ClCompile Include="Shield.cpp" />
     <ClCompile Include="Sky.cpp" />
     <ClCompile Include="SOIL\image_DXT.c" />
     <ClCompile Include="SOIL\image_helper.c" />
@@ -130,6 +131,7 @@
     <ClInclude Include="Rock.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SelectPlayersScene.h" />
+    <ClInclude Include="Shield.h" />
     <ClInclude Include="Sky.h" />
     <ClInclude Include="SOIL\image_DXT.h" />
     <ClInclude Include="SOIL\image_helper.h" />
