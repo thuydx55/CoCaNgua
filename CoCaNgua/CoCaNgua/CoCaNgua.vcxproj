@@ -97,6 +97,7 @@
     <ClCompile Include="Rock.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SelectPlayersScene.cpp" />
+    <ClCompile Include="Sky.cpp" />
     <ClCompile Include="SOIL\image_DXT.c" />
     <ClCompile Include="SOIL\image_helper.c" />
     <ClCompile Include="SOIL\SOIL.c" />
@@ -127,6 +128,7 @@
     <ClInclude Include="Rock.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SelectPlayersScene.h" />
+    <ClInclude Include="Sky.h" />
     <ClInclude Include="SOIL\image_DXT.h" />
     <ClInclude Include="SOIL\image_helper.h" />
     <ClInclude Include="SOIL\SOIL.h" />

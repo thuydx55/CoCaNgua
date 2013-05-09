@@ -67,7 +67,7 @@ void Piece::drawModel()
       glTranslated(mPos.x - mAnchor.x*getWidth(), 
         mPos.y - mAnchor.y*getHeight(),
         mPos.z - mAnchor.z*getLength());
-      glRotatef(mAngle, mRotate.x, mRotate.y, mRotate.z);
+      glRotatef(mAngleRotate, mRotateAxis.x, mRotateAxis.y, mRotateAxis.z);
 
 
       if(mHighlight)
@@ -254,7 +254,7 @@ void Piece::update()
 
     if (tEnlapse > mDuration[id])
     {
-      setAngle(mTarget[id].direction);
+      setAngleRotate(mTarget[id].direction);
       id++;
       if (id >= mTarget.size())
       {

@@ -24,8 +24,8 @@ class Model : public ModelOBJ
   GLSYNTHESIZE(Vector3, mPos, Position);          // Default is (0, 0, 0)
   GLSYNTHESIZE(Vector3, mAnchor, AnchorPoint);    // Default is (0, 0, 0)
                                                   // AnchorPoint is from -0.5 to 0.5
-  GLSYNTHESIZE(Vector3, mRotate, RotateY);
-  GLSYNTHESIZE(GLfloat, mAngle, Angle);
+  GLSYNTHESIZE(Vector3, mRotateAxis, RotateAxis);
+  GLSYNTHESIZE(GLfloat, mAngleRotate, AngleRotate);
 
   GLSYNTHESIZE(bool, g_enableTextures, EnableTextures);
 

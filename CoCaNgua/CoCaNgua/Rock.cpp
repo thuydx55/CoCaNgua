@@ -24,6 +24,7 @@ void Rock::drawModel()
   glTranslated(mPos.x - mAnchor.x*getWidth(), 
     mPos.y - mAnchor.y*getHeight(),
     mPos.z - mAnchor.z*getLength());
+  glRotatef(mAngleRotate, mRotateAxis.x, mRotateAxis.y, mRotateAxis.z);
 
   draw();
   glPopMatrix();

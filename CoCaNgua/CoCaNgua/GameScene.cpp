@@ -191,7 +191,10 @@ void GameScene::initBoard()
 {
   mBoard       = new Board();
   mBoard->loadModel("Models/board.obj");
-  mBoard->setAnchorPoint(Vector3(0, 0.5, 0));
+  //mBoard->setAnchorPoint(Vector3(0, 0.5, 0));
+
+  mSky         = new Sky();
+  mSky->loadModel("Models/sky.obj");
 }
 
 void GameScene::initDie()
@@ -217,19 +220,19 @@ void GameScene::initAllPieces()
     mPieces[i]->setPosition(mStartPos[i].position);
     mPieces[i]->setInitPosition(mStartPos[i]);
     mPieces[i]->setType(TURN_RED);
-    mPieces[i]->setAngle(-90);
+    mPieces[i]->setAngleRotate(-90);
 
     mPieces[4+i] = new Piece(tmpPiece);
     mPieces[4+i]->setPosition(mStartPos[4+i].position);
     mPieces[4+i]->setInitPosition(mStartPos[4+i]);
     mPieces[4+i]->setType(TURN_BLUE);
-    mPieces[4+i]->setAngle(180);
+    mPieces[4+i]->setAngleRotate(180);
 
     mPieces[8+i] = new Piece(tmpPiece);
     mPieces[8+i]->setPosition(mStartPos[8+i].position);
     mPieces[8+i]->setInitPosition(mStartPos[8+i]);
     mPieces[8+i]->setType(TURN_GREEN);
-    mPieces[8+i]->setAngle(90);
+    mPieces[8+i]->setAngleRotate(90);
 
     mPieces[12+i] = new Piece(tmpPiece);
     mPieces[12+i]->setPosition(mStartPos[12+i].position);
@@ -251,8 +254,9 @@ void GameScene::initRoad()
   tmp->setAnchorPoint(Vector3(0, 0.5, 0));
   for (int i = 0; i < 40; i++)
   {
-    mFieldModel[i] = new Rock(tmp);
-    mFieldModel[i]->setPosition(mFields[i].position);
+    mFieldRock[i] = new Rock(tmp);
+    mFieldRock[i]->setPosition(mFields[i].position);
+    mFieldRock[i]->setAngleRotate(rand()%360);
   }
 }
 
@@ -313,9 +317,10 @@ void GameScene::drawSence()
 #endif
 
   mBoard->drawModel();
+  mSky->drawModel();
 
   for (int i = 0; i < 40; i++)
-    mFieldModel[i]->drawModel();
+    mFieldRock[i]->drawModel();
 
   for (int i = 0; i < 4; i++)
   {
@@ -885,7 +890,7 @@ void GameScene::update()
     if (targetPiece)
     {
       targetPiece->setPosition(targetPiece->getInitPosition().position);
-      targetPiece->setAngle(targetPiece->getInitPosition().direction); 
+      targetPiece->setAngleRotate(targetPiece->getInitPosition().direction); 
     }
   }
 

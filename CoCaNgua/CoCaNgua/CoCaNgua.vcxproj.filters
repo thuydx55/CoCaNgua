@@ -79,6 +79,9 @@
     <ClCompile Include="Rock.cpp">
       <Filter>Classes\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Sky.cpp">
+      <Filter>Classes\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -172,6 +175,9 @@
       <Filter>Classes\matlib</Filter>
     </ClInclude>
     <ClInclude Include="Rock.h">
+      <Filter>Classes\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Sky.h">
       <Filter>Classes\Objects</Filter>
     </ClInclude>
   </ItemGroup>

@@ -9,8 +9,8 @@ Model::Model(void)
   mColorTint[1] = 0.0;
   mColorTint[2] = 0.0;
 
-  mRotate = Vector3(0, 1, 0);
-  mAngle = 0;
+  mRotateAxis = Vector3(0, 1, 0);
+  mAngleRotate = 0;
 
   mWaitIsCalled = false;
 
