@@ -2,9 +2,10 @@
 #include "Camera.h"
 
 int id = 0;
-GLfloat floorPlane[4] = {
+GLfloat floorPlanePiece[4] = {
   0, 1, 0, 0
 };
+
 float circleAngle = 0;
 
 Piece::Piece(void)
@@ -138,7 +139,7 @@ void Piece::drawModel()
       glStencilOp(GL_KEEP, GL_KEEP, GL_INVERT);
 
       //float fP[4] = {floorPlane[0], floorPlane[1], floorPlane[2], floorPlane[3] + mPos.y };
-      shadowMatrix(floorShadow, floorPlane, Light::inst().getPosition());
+      shadowMatrix(floorShadow, floorPlanePiece, Light::inst().getPosition());
 
       glEnable(GL_BLEND);
       glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -167,38 +168,6 @@ void Piece::drawModel()
     }    
   }
   glPopMatrix();
-}
-
-void Piece::shadowMatrix(GLfloat shadowMat[4][4], GLfloat groundplane[4], GLfloat lightpos[4])
-{
-  GLfloat dot;
-
-  /* Find dot product between light position vector and ground plane normal. */
-  dot = groundplane[0] * lightpos[0] +
-    groundplane[1] * lightpos[1] +
-    groundplane[2] * lightpos[2] +
-    groundplane[3] * lightpos[3];
-
-  shadowMat[0][0] = dot - lightpos[0] * groundplane[0];
-  shadowMat[1][0] = 0.f - lightpos[0] * groundplane[1];
-  shadowMat[2][0] = 0.f - lightpos[0] * groundplane[2];
-  shadowMat[3][0] = 0.f - lightpos[0] * groundplane[3];
-
-  shadowMat[0][1] = 0.f - lightpos[1] * groundplane[0];
-  shadowMat[1][1] = dot - lightpos[1] * groundplane[1];
-  shadowMat[2][1] = 0.f - lightpos[1] * groundplane[2];
-  shadowMat[3][1] = 0.f - lightpos[1] * groundplane[3];
-
-  shadowMat[0][2] = 0.f - lightpos[2] * groundplane[0];
-  shadowMat[1][2] = 0.f - lightpos[2] * groundplane[1];
-  shadowMat[2][2] = dot - lightpos[2] * groundplane[2];
-  shadowMat[3][2] = 0.f - lightpos[2] * groundplane[3];
-
-  shadowMat[0][3] = 0.f - lightpos[3] * groundplane[0];
-  shadowMat[1][3] = 0.f - lightpos[3] * groundplane[1];
-  shadowMat[2][3] = 0.f - lightpos[3] * groundplane[2];
-  shadowMat[3][3] = dot - lightpos[3] * groundplane[3];
-
 }
 
 void Piece::jumpTo( const vector<Field> &pTarget, MoveState pMoveState )

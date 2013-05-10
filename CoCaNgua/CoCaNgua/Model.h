@@ -41,6 +41,9 @@ class Model : public ModelOBJ
   void draw();
   GLuint loadTexture(const char *pszFilename);
 
+protected:
+  void shadowMatrix(GLfloat shadowMat[4][4], GLfloat groundplane[4], GLfloat lightpos[4]);
+
 public:
   Model(void);
   Model(const Model* other);

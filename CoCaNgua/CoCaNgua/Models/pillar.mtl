@@ -1,0 +1,19 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 10.05.2013 13:45:07
+
+newmtl _pillareRender123
+	Ns 20.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.4078 0.4078 0.4078
+	Kd 0.4078 0.4078 0.4078
+	Ks 0.4050 0.4050 0.4050
+	Ke 0.0000 0.0000 0.0000
+	map_Ka D:\_Development\CG\Project\CoCaNgua\CoCaNgua\Models\Map__11_Mix.tga
+	map_Kd D:\_Development\CG\Project\CoCaNgua\CoCaNgua\Models\Map__11_Mix.tga
+	map_bump D:\_Development\CG\Project\CoCaNgua\CoCaNgua\Models\Map__16_Swirl.tga
+	bump D:\_Development\CG\Project\CoCaNgua\CoCaNgua\Models\Map__16_Swirl.tga
+	map_refl D:\_Development\CG\Project\CoCaNgua\CoCaNgua\Models\Map__18_Raytrace.tga

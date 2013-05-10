@@ -74,8 +74,6 @@ class Piece : public Model
   Vector3           mStartPos;
   vector<Field>     mTarget;
 
-  void shadowMatrix(GLfloat shadowMat[4][4], GLfloat groundplane[4], GLfloat lightpos[4]);
-
 public:
   Piece(void);
   Piece(const Piece* other);

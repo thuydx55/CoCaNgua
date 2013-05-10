@@ -24,6 +24,10 @@ class GameScene : public Scene
   Piece*              tmpPiece;
   Die*                mDice;
   Rock*               mFieldRock[40];
+  Rock*               mHomeRock[16];
+  Rock*               mStartRock[16];
+  Rock*               mCenterPillar;
+  Rock*               mApple;
   Sky*                mSky;
   
   // Disable some players
@@ -78,7 +82,7 @@ public:
   void initDie();
   void initPiece();
   void initAllPieces();
-  void initRoad();
+  void initRock();
 
   Piece** getPiecesArray();
 

@@ -110,7 +110,7 @@ void LoadingScene::load()
     mProgress->setPercent(85);
     break;
   case 6:
-    GameScene::inst().initRoad();
+    GameScene::inst().initRock();
     cout << "GAME SCENE Road" << endl;
     mProgress->setPercent(100);
     break;

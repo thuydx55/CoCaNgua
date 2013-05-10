@@ -20,7 +20,7 @@ GameScene::GameScene(void)
   mAutoCam = true;
   
   lightPosition[0] = 0;
-  lightPosition[1] = 50;
+  lightPosition[1] = 75;
   lightPosition[2] = 0;
   lightPosition[3] = 1;
   lightAngle = 0.0;
@@ -57,30 +57,31 @@ GameScene::GameScene(void)
                                0,   0,   0,   0}; // YELLOW
   for (int i = 0; i < 16; i++)
   {
+    start[i].y = 2;
     mStartPos[i].position = start[i];
     mStartPos[i].direction = startDirection[i];
   }
   //memcpy(mStartPos, start, sizeof(start));
 
-  Vector3 home[] = {Vector3(-16, 0, 0),
-                      Vector3(-12, 0, 0),
-                      Vector3(-8, 0, 0),
-                      Vector3(-4, 0, 0),        // RED
+  Vector3 home[] = {  Vector3(-16, 3, 0),
+                      Vector3(-12, 4, 0),
+                      Vector3(-8, 5, 0),
+                      Vector3(-4, 6, 0),        // RED
 
-                      Vector3(0, 0, -16),
-                      Vector3(0, 0, -12),
-                      Vector3(0, 0, -8),  
-                      Vector3(0, 0, -4),        // BLUE
+                      Vector3(0, 3, -16),
+                      Vector3(0, 4, -12),
+                      Vector3(0, 5, -8),  
+                      Vector3(0, 6, -4),        // BLUE
 
-                      Vector3(16, 0, 0),
-                      Vector3(12, 0, 0),
-                      Vector3(8, 0, 0),
-                      Vector3(4, 0, 0),         // GREEN
+                      Vector3(16, 3, 0),
+                      Vector3(12, 4, 0),
+                      Vector3(8, 5, 0),
+                      Vector3(4, 6, 0),         // GREEN
 
-                      Vector3(0, 0, 16),
-                      Vector3(0, 0, 12),
-                      Vector3(0, 0, 8),
-                      Vector3(0, 0, 4)          // YELLOW
+                      Vector3(0, 3, 16),
+                      Vector3(0, 4, 12),
+                      Vector3(0, 5, 8),
+                      Vector3(0, 6, 4)          // YELLOW
   };
   float homeDirection[] = {  0,   0,   0,   0,  // RED
                            -90, -90, -90, -90,  // BLUE
@@ -241,23 +242,59 @@ void GameScene::initAllPieces()
     mPieces[12+i]->setType(TURN_YELLOW);
   }
 
-  mPieces[4]->setPosition(mFields[6].position);
-  mFields[6].piece = mPieces[4];
+  /*mPieces[4]->setPosition(mFields[6].position);
+  mFields[6].piece = mPieces[4];*/
 
   tmpPiece = NULL;
   //delete tmp;
 }
 
-void GameScene::initRoad()
+void GameScene::initRock()
 {
-  Rock* tmp = new Rock();
-  tmp->loadModel("Models/rock.obj");
-  tmp->setAnchorPoint(Vector3(0, 0.5, 0));
+  Rock* tmpRoad = new Rock();
+  tmpRoad->loadModel("Models/rock.obj");
+  tmpRoad->setAnchorPoint(Vector3(0, 0.5, 0));
   for (int i = 0; i < 40; i++)
   {
-    mFieldRock[i] = new Rock(tmp);
+    mFieldRock[i] = new Rock(tmpRoad);
     mFieldRock[i]->setPosition(mFields[i].position);
     mFieldRock[i]->setAngleRotate(rand()%360);
+  }
+  
+  mFieldRock[ 0]->setColorTint( 0.1, -0.2, -0.2);
+  mFieldRock[10]->setColorTint(-0.2, -0.2,  0.1);
+  mFieldRock[20]->setColorTint(-0.2,  0.1, -0.2);
+  mFieldRock[30]->setColorTint( 0.1,  0.1, -0.2);
+
+  Rock* tmpHome = new Rock();
+  tmpHome->loadModel("Models/pillar.obj");
+  tmpHome->setAnchorPoint(Vector3(0, 0.5, 0));
+  for (int i = 0; i < 16; i++)
+  {
+    mHomeRock[i] = new Rock(tmpHome);
+    mHomeRock[i]->setPosition(mHome[i].position);
+  }
+  mCenterPillar = new Rock(tmpHome);
+  mCenterPillar->setPosition(Vector3(0, 7, 0));
+
+  mApple = new Rock();
+  mApple->loadModel("Models/apple.obj");
+  mApple->setAnchorPoint(Vector3(0, -0.5, 0));
+  mApple->setPosition(mCenterPillar->getPosition());
+
+  for (int i = 0; i < 16; i++)
+  {
+    mStartRock[i] = new Rock(tmpRoad);
+    mStartRock[i]->setPosition(mStartPos[i].position);
+    mStartRock[i]->setAngleRotate(rand()%360);
+  }
+
+  for (int i = 0; i < 4; i++)
+  {
+    mStartRock[   i]->setColorTint( 0.2, -0.2, -0.2);
+    mStartRock[ 4+i]->setColorTint(-0.2, -0.2,  0.2);
+    mStartRock[ 8+i]->setColorTint(-0.2,  0.2, -0.2);
+    mStartRock[12+i]->setColorTint( 0.2,  0.2, -0.2);
   }
 }
 
@@ -322,6 +359,13 @@ void GameScene::drawSence()
 
   for (int i = 0; i < 40; i++)
     mFieldRock[i]->drawModel();
+  for (int i = 0; i < 16; i++)
+  {
+    mHomeRock[i]->drawModel();
+    mStartRock[i]->drawModel();
+  }
+  mCenterPillar->drawModel();
+  mApple->drawModel();
 
   for (int i = 0; i < 4; i++)
   {
@@ -371,7 +415,7 @@ void GameScene::drawDie()
 
       mDice->drawModel();
 
-      glEnable(GL_BLEND);
+      /*glEnable(GL_BLEND);
       glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
       glColor4f(0, 0, 0, 0.5);
@@ -384,7 +428,7 @@ void GameScene::drawDie()
       glEnd();
       glEnable(GL_LIGHTING);
 
-      glDisable(GL_BLEND);
+      glDisable(GL_BLEND);*/
     }
     glPopMatrix();
 
