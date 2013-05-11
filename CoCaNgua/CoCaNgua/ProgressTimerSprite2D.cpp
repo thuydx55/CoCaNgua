@@ -54,4 +54,8 @@ void ProgressTimerSprite2D::drawImg()
 
 ProgressTimerSprite2D::~ProgressTimerSprite2D(void)
 {
+  if (texID)
+  {
+    glDeleteTextures( 1, &texID ); 
+  } 
 }

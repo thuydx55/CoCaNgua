@@ -18,13 +18,18 @@ void SelectPlayersScene::initSprite()
   mBackground = Sprite2D::create("img/select_piece/background.png");
   mBackground->setAnchorPoint(Vector2(-0.5, -0.5));
   
-  mBtnStart = Sprite2D::create("img/select_piece/StartBtn.png");
-  mBtnStart->setAnchorPoint(Vector2(0.5, -0.5));
-  mBtnStart->setPosition(Vector2(0, 0));
+  mBtnStart = Button::create("img/select_piece/btnStart.png", "img/select_piece/btnStartHover.png");
+  mBtnStart->setPosition(Vector2(686, 52.5));
 
-  mBtnBack = Sprite2D::create("img/select_piece/BackBtn.png");
-  mBtnBack->setAnchorPoint(Vector2(-0.5, -0.5));
-  mBtnStart->setPosition(Vector2(800, 0));
+  mBtnBack = Button::create("img/select_piece/btnBack.png", "img/select_piece/btnBackHover.png");
+  mBtnBack->setPosition(Vector2(72.5, 542.5));
+
+  char buffer[100];
+  for (int i = 0; i < 4; i++)
+  {
+    sprintf_s(buffer, "img/select_piece/piece%d.png", i);
+    mPiece[i] = Sprite2D::create(buffer);
+  }
 
   Sprite2D* human[3];
   Sprite2D* computer[3];
@@ -45,38 +50,44 @@ void SelectPlayersScene::initSprite()
   for (int i = 0; i < 4; i++)
   {
     mFrame[i] = new Sprite2D("img/select_piece/frame.png");
-    mFrame[i]->setPosition(Vector2(230, 433));
 
     mHuman[i] = new ToggleButton(human[0], human[1], human[2]);
-    mHuman[i]->setPosition(Vector2(205, 477));
     mHuman[i]->setAnchorPoint(Vector2(-0.5, 0));
 
     mComputer[i] = new ToggleButton(computer[0], computer[1], computer[2]);
-    mComputer[i]->setPosition(Vector2(205, 426));
     mComputer[i]->setAnchorPoint(Vector2(-0.5, 0));
-    mComputer[i]->setDisable(true);
+    //mComputer[i]->setDisable(true);
 
     mDisable[i] = new ToggleButton(disable[0], disable[1], disable[2]);
-    mDisable[i]->setPosition(Vector2(205, 375));
     mDisable[i]->setAnchorPoint(Vector2(-0.5, 0));
 
     mPlayer[i] = RadioGroup::create(mHuman[i], mComputer[i], mDisable[i], NULL); 
   }
 
-  mFrame[1   ]->setPosition(Vector2(575, 433));
-  mHuman[1]   ->setPosition(Vector2(550, 477));
-  mComputer[1]->setPosition(Vector2(550, 426));
-  mDisable[1] ->setPosition(Vector2(550, 375));
+  mFrame[0]   ->setPosition(Vector2(239, 405));
+  mHuman[0]   ->setPosition(Vector2(227, 457));
+  mComputer[0]->setPosition(Vector2(227, 399));
+  mDisable[0] ->setPosition(Vector2(227, 348));
 
-  mFrame[2]   ->setPosition(Vector2(230, 184));
-  mHuman[2]   ->setPosition(Vector2(205, 227));
-  mComputer[2]->setPosition(Vector2(205, 176));
-  mDisable[2] ->setPosition(Vector2(205, 125));
+  mFrame[1]   ->setPosition(Vector2(562, 405));
+  mHuman[1]   ->setPosition(Vector2(550, 457));
+  mComputer[1]->setPosition(Vector2(550, 399));
+  mDisable[1] ->setPosition(Vector2(550, 348));
 
-  mFrame[3]   ->setPosition(Vector2(575, 184));
-  mHuman[3]   ->setPosition(Vector2(550, 227));
-  mComputer[3]->setPosition(Vector2(550, 176));
-  mDisable[3] ->setPosition(Vector2(550, 125));
+  mFrame[2]   ->setPosition(Vector2(239, 205));
+  mHuman[2]   ->setPosition(Vector2(227, 257));
+  mComputer[2]->setPosition(Vector2(227, 199));
+  mDisable[2] ->setPosition(Vector2(227, 148));
+
+  mFrame[3]   ->setPosition(Vector2(562, 205));
+  mHuman[3]   ->setPosition(Vector2(550, 257));
+  mComputer[3]->setPosition(Vector2(550, 199));
+  mDisable[3] ->setPosition(Vector2(550, 148));
+
+  mPiece[0]->setPosition(Vector2(156.5, 400));
+  mPiece[1]->setPosition(Vector2(480.5, 400));
+  mPiece[2]->setPosition(Vector2(156.5, 200));
+  mPiece[3]->setPosition(Vector2(480.5, 200));
 }
 
 void SelectPlayersScene::drawScene()
@@ -91,6 +102,7 @@ void SelectPlayersScene::drawScene()
     mHuman[i]->drawImg();
     mComputer[i]->drawImg();
     mDisable[i]->drawImg(); 
+    mPiece[i]->drawImg();
   }
 
   //Rect bound = mPlayer[0]->boundingbox();
@@ -104,7 +116,6 @@ void SelectPlayersScene::drawScene()
 
 void SelectPlayersScene::loop()
 {
-  //cout<<"about scene loop"<<endl;
 	glMatrixMode(GL_PROJECTION);
   glPushMatrix();
   {
@@ -142,7 +153,11 @@ void SelectPlayersScene::processMouseBegan(int x, int y )
       mPlayer[i]->click(x, y);
     } 
   }
-  if (mBtnStart->boundingBox().containsPoint(Vector2(x, y)))
+}
+
+void SelectPlayersScene::processMouseEnded( int x, int y )
+{
+  if (mBtnStart->boundingbox().containsPoint(Vector2(x, y)))
   {
     Graphic::inst().setAppScene(APP_GAME);
     for (int i = 0; i < 4; i++)
@@ -151,20 +166,29 @@ void SelectPlayersScene::processMouseBegan(int x, int y )
         GameScene::inst().setDisablePiece(i);
     }
   } 
-  if (mBtnBack->boundingBox().containsPoint(Vector2(x, y)))
+  if (mBtnBack->boundingbox().containsPoint(Vector2(x, y)))
   {
     Graphic::inst().setAppScene(APP_MENU);
   } 
 }
 
-void SelectPlayersScene::processMouseEnded( int x, int y )
-{
-  
-}
-
-
 void SelectPlayersScene::processMousePassiveMotion( int x, int y )
-{}
+{
+  if (mBtnStart->getButtonState() != BUTTON_DISABLE)
+  {
+    if (mBtnStart->boundingbox().containsPoint(Vector2(x, y)))
+      mBtnStart->setButtonState(BUTTON_HOVER);
+    else
+      mBtnStart->setButtonState(BUTTON_NORMAL); 
+  }
+  if (mBtnBack->getButtonState() != BUTTON_DISABLE)
+  {
+    if (mBtnBack->boundingbox().containsPoint(Vector2(x, y)))
+      mBtnBack->setButtonState(BUTTON_HOVER);
+    else
+      mBtnBack->setButtonState(BUTTON_NORMAL); 
+  }
+}
 
 SelectPlayersScene::~SelectPlayersScene(void)
 {

@@ -84,7 +84,7 @@ void Sprite2D::drawImg()
           Vector3(-size.width/2,  size.height/2, 0));  
 }
 
-Rect Sprite2D::boundingBox()
+Rect Sprite2D::boundingbox()
 {
   Vector2 midPointRect(mPos.x-mAnchor.x*size.width, mPos.y-mAnchor.y*size.height);
   return Rect(midPointRect.x - size.width/2,
@@ -95,5 +95,8 @@ Rect Sprite2D::boundingBox()
 
 Sprite2D::~Sprite2D(void)
 {
-  glDeleteTextures( 1, &texID );
+  if (texID)
+  {
+    glDeleteTextures( 1, &texID ); 
+  }
 }

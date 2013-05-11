@@ -7,16 +7,18 @@
 #include "GameScene.h"
 #include "ToggleButton.h"
 #include "RadioGroup.h"
+#include "Button.h"
 
 #include "Graphic.h"
 
 class SelectPlayersScene : Scene
 {
   Sprite2D* mBackground;
-  Sprite2D* mBtnStart;
-  Sprite2D* mBtnBack;
+  Button* mBtnStart;
+  Button* mBtnBack;
 
   Sprite2D* mFrame[4];
+  Sprite2D* mPiece[4];
   ToggleButton* mHuman[4];
   ToggleButton* mComputer[4];
   ToggleButton* mDisable[4];

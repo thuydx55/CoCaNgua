@@ -43,7 +43,7 @@ public:
   void setVisible(bool visible);
   bool isVisible();
 
-  Rect boundingBox();
+  Rect boundingbox();
 };  
 
 inline void Sprite2D::setVisible(bool visible)

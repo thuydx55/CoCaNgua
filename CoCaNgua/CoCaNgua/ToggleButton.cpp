@@ -61,8 +61,8 @@ void ToggleButton::initWithSprite( Sprite2D* pOnImg, Sprite2D* pOffImg, Sprite2D
 void ToggleButton::drawImg()
 {
   glPushMatrix();
-  glTranslatef(mPos.x-mAnchor.x*mImg[mState]->boundingBox().size.width,
-               mPos.y-mAnchor.x*mImg[mState]->boundingBox().size.height, 0);
+  glTranslatef(mPos.x-mAnchor.x*mImg[mState]->boundingbox().size.width,
+               mPos.y-mAnchor.x*mImg[mState]->boundingbox().size.height, 0);
 
   if (mImg[mState])
     mImg[mState]->drawImg();
@@ -93,10 +93,10 @@ void ToggleButton::click()
 
 Rect ToggleButton::boundingbox()
 {
-  Rect bound = mImg[mState]->boundingBox();
+  Rect bound = mImg[mState]->boundingbox();
   bound.origin += mPos;
-  bound.origin.x -= mAnchor.x*mImg[mState]->boundingBox().size.width;
-  bound.origin.y -= mAnchor.x*mImg[mState]->boundingBox().size.height;
+  bound.origin.x -= mAnchor.x*mImg[mState]->boundingbox().size.width;
+  bound.origin.y -= mAnchor.x*mImg[mState]->boundingbox().size.height;
 
   return bound;
 }

@@ -143,6 +143,9 @@ void Mouse::processMousePassiveMotion( int x, int y )
   case APP_GAME:
     GameScene::inst().processMousePassiveMotion(x, Graphic::inst().screenHeight-y);
     break;
+  case APP_SELECT:
+    SelectPlayersScene::inst().processMousePassiveMotion(x, Graphic::inst().screenHeight-y);
+    break;
   default:
     break;
   }
