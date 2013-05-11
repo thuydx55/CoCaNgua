@@ -860,7 +860,7 @@ void GameScene::predictNextMove(int number)
   }
   if (mustBeStart)
   {
-    mUserViewAngle = calcUserViewAngle(mPieces[mPlayerTurn*4]->getPosition());
+    mUserViewAngle = calcUserViewAngle(mFields[indexFirstPos].position);
   }
 
   cout << "Player: " << mPlayerTurn << endl;
