@@ -56,7 +56,7 @@ void SelectPlayersScene::initSprite()
 
     mComputer[i] = new ToggleButton(computer[0], computer[1], computer[2]);
     mComputer[i]->setAnchorPoint(Vector2(-0.5, 0));
-    //mComputer[i]->setDisable(true);
+    mComputer[i]->setDisable(true);
 
     mDisable[i] = new ToggleButton(disable[0], disable[1], disable[2]);
     mDisable[i]->setAnchorPoint(Vector2(-0.5, 0));
